@@ -1,0 +1,26 @@
+ComponentProcessDict
+====================
+
+.. currentmodule:: rosa_kb.typedb_model_interface
+
+.. autoclass:: ComponentProcessDict
+  :members:
+  :undoc-members:
+  :special-members: __init__
+
+  
+  .. rubric:: Methods
+
+  .. autosummary::
+  
+  
+
+  
+  .. rubric:: Attributes
+
+  .. autosummary::
+  
+     ~ComponentProcessDict.pid
+     ~ComponentProcessDict.start_time
+     ~ComponentProcessDict.component
+  

@@ -1,0 +1,30 @@
+LifeCycleManager
+================
+
+.. currentmodule:: rosa_bringup.lifecycle_manager
+
+.. autoclass:: LifeCycleManager
+  :members:
+  :undoc-members:
+  :special-members: __init__
+
+  
+  .. rubric:: Methods
+
+  .. autosummary::
+  
+     ~LifeCycleManager.__init__
+     ~LifeCycleManager.activate_lc_node
+     ~LifeCycleManager.activate_managed_nodes
+     ~LifeCycleManager.call_service
+     ~LifeCycleManager.change_lc_node_state
+     ~LifeCycleManager.get_lc_node_state
+     ~LifeCycleManager.manage_lc_nodes_cb
+  
+
+  
+  .. rubric:: Attributes
+
+  .. autosummary::
+  
+  

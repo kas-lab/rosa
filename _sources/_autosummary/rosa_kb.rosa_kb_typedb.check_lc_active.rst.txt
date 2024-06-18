@@ -1,0 +1,6 @@
+rosa\_kb.rosa\_kb\_typedb.check\_lc\_active
+===========================================
+
+.. currentmodule:: rosa_kb.rosa_kb_typedb
+
+.. autofunction:: check_lc_active

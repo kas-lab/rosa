@@ -1,0 +1,6 @@
+rosa\_kb.typedb\_model\_interface.convert\_component\_parameter\_value\_to\_py\_type
+====================================================================================
+
+.. currentmodule:: rosa_kb.typedb_model_interface
+
+.. autofunction:: convert_component_parameter_value_to_py_type

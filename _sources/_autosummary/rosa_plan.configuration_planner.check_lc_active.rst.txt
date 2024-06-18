@@ -1,0 +1,6 @@
+rosa\_plan.configuration\_planner.check\_lc\_active
+===================================================
+
+.. currentmodule:: rosa_plan.configuration_planner
+
+.. autofunction:: check_lc_active

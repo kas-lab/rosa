@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ModelInterface &mdash; ROSA 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=7026087e"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ReconfigPlanDict" href="rosa_kb.typedb_model_interface.ReconfigPlanDict.html" />
+    <link rel="prev" title="MatchResultDict" href="rosa_kb.typedb_model_interface.MatchResultDict.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            ROSA
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../rosa_kb.html">rosa_kb</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="rosa_kb.rosa_kb_typedb.html">rosa_kb.rosa_kb_typedb</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="rosa_kb.typedb_model_interface.html">rosa_kb.typedb_model_interface</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="rosa_kb.typedb_model_interface.convert_component_parameter_value_to_py_type.html">rosa_kb.typedb_model_interface.convert_component_parameter_value_to_py_type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rosa_kb.typedb_model_interface.ComponentConfigurationDict.html">ComponentConfigurationDict</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rosa_kb.typedb_model_interface.ComponentDict.html">ComponentDict</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rosa_kb.typedb_model_interface.ComponentParemeterDict.html">ComponentParemeterDict</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rosa_kb.typedb_model_interface.ComponentProcessDict.html">ComponentProcessDict</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rosa_kb.typedb_model_interface.MatchResultDict.html">MatchResultDict</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">ModelInterface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rosa_kb.typedb_model_interface.ReconfigPlanDict.html">ReconfigPlanDict</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../rosa_plan.html">rosa_plan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rosa_execute.html">rosa_execute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rosa_bringup.html">rosa_bringup</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ROSA</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api.html">API</a></li>
+          <li class="breadcrumb-item"><a href="../rosa_kb.html">rosa_kb</a></li>
+          <li class="breadcrumb-item"><a href="rosa_kb.typedb_model_interface.html">rosa_kb.typedb_model_interface</a></li>
+      <li class="breadcrumb-item active">ModelInterface</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_autosummary/rosa_kb.typedb_model_interface.ModelInterface.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="modelinterface">
+<h1>ModelInterface<a class="headerlink" href="#modelinterface" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rosa_kb.typedb_model_interface.</span></span><span class="sig-name descname"><span class="pre">ModelInterface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">address</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_database</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">infer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface" title="Link to this definition"></a></dt>
+<dd><p>Class to interact with the ROSA knowledge model in typeDB.</p>
+<p>Connect to a typeDB server and interacts with it.</p>
+<p>Connects TypeDBInterface to typeDB server, creating a database,
+loading a schema and a data file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>address</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – TypeDB server address.</p></li>
+<li><p><strong>database_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – database name.</p></li>
+<li><p><strong>schema_path</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span>) – list with paths to schema files (.tql).</p></li>
+<li><p><strong>data_path</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span>) – list with paths to data files (.tql).</p></li>
+<li><p><strong>force_database</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>]</span>) – if database should override an existing database</p></li>
+<li><p><strong>force_data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>]</span>) – if the database data should be overriden.</p></li>
+<li><p><strong>infer</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>]</span>) – if inference engine should be used.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.__init__" title="rosa_kb.typedb_model_interface.ModelInterface.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(address, database_name[, ...])</p></td>
+<td><p>Connect to a typeDB server and interacts with it.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.activate_component" title="rosa_kb.typedb_model_interface.ModelInterface.activate_component"><code class="xref py py-obj docutils literal notranslate"><span class="pre">activate_component</span></code></a>(c_name, value)</p></td>
+<td><p>Activate a Component.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.add_measurement" title="rosa_kb.typedb_model_interface.ModelInterface.add_measurement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_measurement</span></code></a>(name, value)</p></td>
+<td><p>Add new Quality Attribute or EnvironmentalAttribute measurement.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.cancel_action" title="rosa_kb.typedb_model_interface.ModelInterface.cancel_action"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cancel_action</span></code></a>(action_name)</p></td>
+<td><p>Cancel Action.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.create_reconfiguration_plan" title="rosa_kb.typedb_model_interface.ModelInterface.create_reconfiguration_plan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_reconfiguration_plan</span></code></a>(c_activate, ...)</p></td>
+<td><p>Create a reconfiguration plan.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.delete_component_status" title="rosa_kb.typedb_model_interface.ModelInterface.delete_component_status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_component_status</span></code></a>(component_name)</p></td>
+<td><p>Delete Component status.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_active_component_process" title="rosa_kb.typedb_model_interface.ModelInterface.get_active_component_process"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_active_component_process</span></code></a>()</p></td>
+<td><p>Get all attributes owned by a Component, and the Component type.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_adaptable_components" title="rosa_kb.typedb_model_interface.ModelInterface.get_adaptable_components"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_adaptable_components</span></code></a>()</p></td>
+<td><p>Get the name of adaptable Components.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_adaptable_functions" title="rosa_kb.typedb_model_interface.ModelInterface.get_adaptable_functions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_adaptable_functions</span></code></a>()</p></td>
+<td><p>Get the name of adaptable Functions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_adaptable_things_raw" title="rosa_kb.typedb_model_interface.ModelInterface.get_adaptable_things_raw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_adaptable_things_raw</span></code></a>(thing)</p></td>
+<td><p>Get the name of adaptable individuals of a certain Thing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_component_all_attributes" title="rosa_kb.typedb_model_interface.ModelInterface.get_component_all_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_component_all_attributes</span></code></a>(component)</p></td>
+<td><p>Get all attributes owned by a Component, and the Component type.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_component_configuration_priority" title="rosa_kb.typedb_model_interface.ModelInterface.get_component_configuration_priority"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_component_configuration_priority</span></code></a>(cc_name)</p></td>
+<td><p>Get component configuration priority value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_component_parameters" title="rosa_kb.typedb_model_interface.ModelInterface.get_component_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_component_parameters</span></code></a>(c_config)</p></td>
+<td><p>Get ComponentParameters in a component configuration relationship.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_components_in_function_design" title="rosa_kb.typedb_model_interface.ModelInterface.get_components_in_function_design"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_components_in_function_design</span></code></a>(fd_name)</p></td>
+<td><p>Get components in relation with a function design.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_function_design_priority" title="rosa_kb.typedb_model_interface.ModelInterface.get_function_design_priority"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_function_design_priority</span></code></a>(fd_name)</p></td>
+<td><p>Get function design priority value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_instances_of_thing_with_status" title="rosa_kb.typedb_model_interface.ModelInterface.get_instances_of_thing_with_status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_instances_of_thing_with_status</span></code></a>(thing, status)</p></td>
+<td><p>Get name of instances of a certain Thing that have a certain status.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_instances_thing_always_improve" title="rosa_kb.typedb_model_interface.ModelInterface.get_instances_thing_always_improve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_instances_thing_always_improve</span></code></a>(thing)</p></td>
+<td><p>Get name of instances of a certain Thing that have always-improve true.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_latest_completed_reconfiguration_plan_time" title="rosa_kb.typedb_model_interface.ModelInterface.get_latest_completed_reconfiguration_plan_time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_latest_completed_reconfiguration_plan_time</span></code></a>()</p></td>
+<td><p>Get end-time of the most recent completed reconfiguration plan.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_latest_measurement" title="rosa_kb.typedb_model_interface.ModelInterface.get_latest_measurement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_latest_measurement</span></code></a>(name)</p></td>
+<td><p>Get latest measurement value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_latest_pending_reconfiguration_plan" title="rosa_kb.typedb_model_interface.ModelInterface.get_latest_pending_reconfiguration_plan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_latest_pending_reconfiguration_plan</span></code></a>()</p></td>
+<td><p>Get latest pending reconfiguration plan.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_latest_pending_reconfiguration_plan_time" title="rosa_kb.typedb_model_interface.ModelInterface.get_latest_pending_reconfiguration_plan_time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_latest_pending_reconfiguration_plan_time</span></code></a>()</p></td>
+<td><p>Get start-time of the most recent pending reconfiguration plan.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_latest_reconfiguration_plan" title="rosa_kb.typedb_model_interface.ModelInterface.get_latest_reconfiguration_plan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_latest_reconfiguration_plan</span></code></a>()</p></td>
+<td><p>Get latest reconfiguration plan.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_latest_reconfiguration_plan_time" title="rosa_kb.typedb_model_interface.ModelInterface.get_latest_reconfiguration_plan_time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_latest_reconfiguration_plan_time</span></code></a>()</p></td>
+<td><p>Get start-time of the most recent reconfiguration plan.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_measurement" title="rosa_kb.typedb_model_interface.ModelInterface.get_measurement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_measurement</span></code></a>(name, time)</p></td>
+<td><p>Get measured value at a certain time.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_obsolete_component_configurations" title="rosa_kb.typedb_model_interface.ModelInterface.get_obsolete_component_configurations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_obsolete_component_configurations</span></code></a>()</p></td>
+<td><p>Get selected component configurations that are not required anymore.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_obsolete_components" title="rosa_kb.typedb_model_interface.ModelInterface.get_obsolete_components"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_obsolete_components</span></code></a>()</p></td>
+<td><p>Get active components that are not required anymore.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_obsolete_fds" title="rosa_kb.typedb_model_interface.ModelInterface.get_obsolete_fds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_obsolete_fds</span></code></a>()</p></td>
+<td><p>Get selected fds that are not required anymore.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_outdated_reconfiguration_plans" title="rosa_kb.typedb_model_interface.ModelInterface.get_outdated_reconfiguration_plans"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_outdated_reconfiguration_plans</span></code></a>()</p></td>
+<td><p>Get outdated reconfiguration plans.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_reconfiguration_plan" title="rosa_kb.typedb_model_interface.ModelInterface.get_reconfiguration_plan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_reconfiguration_plan</span></code></a>(start_time)</p></td>
+<td><p>Get reconfiguration plan with start-time.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_reconfiguration_plan_result" title="rosa_kb.typedb_model_interface.ModelInterface.get_reconfiguration_plan_result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_reconfiguration_plan_result</span></code></a>(start_time)</p></td>
+<td><p>Get result of recongiration plan with <cite>start_time</cite>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_relationship_with_attribute" title="rosa_kb.typedb_model_interface.ModelInterface.get_relationship_with_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_relationship_with_attribute</span></code></a>(entity, ...)</p></td>
+<td><p>Get relationship name that has an attr and relates to a certain entity.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_selectable_actions" title="rosa_kb.typedb_model_interface.ModelInterface.get_selectable_actions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_selectable_actions</span></code></a>()</p></td>
+<td><p>Get the name of selectable Actions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_selectable_c_configs" title="rosa_kb.typedb_model_interface.ModelInterface.get_selectable_c_configs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_selectable_c_configs</span></code></a>(component_name)</p></td>
+<td><p>Get the name of selectable component configurations for a Component.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_selectable_fds" title="rosa_kb.typedb_model_interface.ModelInterface.get_selectable_fds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_selectable_fds</span></code></a>(function_name)</p></td>
+<td><p>Get the name of selectable funtion designs for a Function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_selectable_thing_raw" title="rosa_kb.typedb_model_interface.ModelInterface.get_selectable_thing_raw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_selectable_thing_raw</span></code></a>(thing)</p></td>
+<td><p>Get the name of selectable individuals of a specific Thing.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_solved_components" title="rosa_kb.typedb_model_interface.ModelInterface.get_solved_components"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_solved_components</span></code></a>()</p></td>
+<td><p>Get components with status solved.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_solved_functions" title="rosa_kb.typedb_model_interface.ModelInterface.get_solved_functions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_solved_functions</span></code></a>()</p></td>
+<td><p>Get functions with status solved.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_unsolved_components" title="rosa_kb.typedb_model_interface.ModelInterface.get_unsolved_components"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_unsolved_components</span></code></a>()</p></td>
+<td><p>Get unsolved Components.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_unsolved_functions" title="rosa_kb.typedb_model_interface.ModelInterface.get_unsolved_functions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_unsolved_functions</span></code></a>()</p></td>
+<td><p>Get unsolved Functions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.get_unsolved_thing_raw" title="rosa_kb.typedb_model_interface.ModelInterface.get_unsolved_thing_raw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_unsolved_thing_raw</span></code></a>(thing)</p></td>
+<td><p>Get unsolved individuals of a certain Thing type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.has_action" title="rosa_kb.typedb_model_interface.ModelInterface.has_action"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_action</span></code></a>(action_name)</p></td>
+<td><p>Check whether model can an specific Action.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.insert_action" title="rosa_kb.typedb_model_interface.ModelInterface.insert_action"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_action</span></code></a>(action_name)</p></td>
+<td><p>Add new Action.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.insert_component" title="rosa_kb.typedb_model_interface.ModelInterface.insert_component"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_component</span></code></a>(component_name[, ...])</p></td>
+<td><p>Add new Component.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.insert_component_process" title="rosa_kb.typedb_model_interface.ModelInterface.insert_component_process"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_component_process</span></code></a>(component_name, pid)</p></td>
+<td><p>Add new component-process.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.insert_function" title="rosa_kb.typedb_model_interface.ModelInterface.insert_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_function</span></code></a>(function_name)</p></td>
+<td><p>Add new Function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.insert_function_design" title="rosa_kb.typedb_model_interface.ModelInterface.insert_function_design"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_function_design</span></code></a>(function_design_name, ...)</p></td>
+<td><p>Add new function-design.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.insert_functional_requirement" title="rosa_kb.typedb_model_interface.ModelInterface.insert_functional_requirement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_functional_requirement</span></code></a>(action_name, ...)</p></td>
+<td><p>Add new functional-requirement.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.insert_ros_node_component" title="rosa_kb.typedb_model_interface.ModelInterface.insert_ros_node_component"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_ros_node_component</span></code></a>(component_name, ...)</p></td>
+<td><p>Add new ROSNode Component.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.is_action_feasible" title="rosa_kb.typedb_model_interface.ModelInterface.is_action_feasible"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_action_feasible</span></code></a>(action_name)</p></td>
+<td><p>Check if an Action only has status feasible.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.is_action_required" title="rosa_kb.typedb_model_interface.ModelInterface.is_action_required"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_action_required</span></code></a>(action_name)</p></td>
+<td><p>Check whether an Action is required.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.is_action_selectable" title="rosa_kb.typedb_model_interface.ModelInterface.is_action_selectable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_action_selectable</span></code></a>(action_name)</p></td>
+<td><p>Check whether an Action can be selected, i.e., it can be performed.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.is_component_active" title="rosa_kb.typedb_model_interface.ModelInterface.is_component_active"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_component_active</span></code></a>(name)</p></td>
+<td><p>Check wheter a component is active or not.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.request_action" title="rosa_kb.typedb_model_interface.ModelInterface.request_action"><code class="xref py py-obj docutils literal notranslate"><span class="pre">request_action</span></code></a>(action_name[, preference])</p></td>
+<td><p>Request Action.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.select_component_configuration" title="rosa_kb.typedb_model_interface.ModelInterface.select_component_configuration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_component_configuration</span></code></a>(c_name, cc_name)</p></td>
+<td><p>Select component-configuration 'cc_name' and unselect all other ccs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.select_components_selected_config" title="rosa_kb.typedb_model_interface.ModelInterface.select_components_selected_config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_components_selected_config</span></code></a>(...)</p></td>
+<td><p>Select component configuration and return them.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.select_configuration" title="rosa_kb.typedb_model_interface.ModelInterface.select_configuration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_configuration</span></code></a>(functions_selected_fd, ...)</p></td>
+<td><p>Select configuration and create reconfiguration plan.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.select_fd_and_get_components" title="rosa_kb.typedb_model_interface.ModelInterface.select_fd_and_get_components"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_fd_and_get_components</span></code></a>(...)</p></td>
+<td><p>Select function design, and get components to activate and deactivate.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.select_function_design" title="rosa_kb.typedb_model_interface.ModelInterface.select_function_design"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_function_design</span></code></a>(f_name, fd_name)</p></td>
+<td><p>Select function-design 'fd_name' and unselect all other fds.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.select_relationship" title="rosa_kb.typedb_model_interface.ModelInterface.select_relationship"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_relationship</span></code></a>(entity, entity_name, ...)</p></td>
+<td><p>Select relationship individual, and unselect all other individuals.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.set_component_process_end_time" title="rosa_kb.typedb_model_interface.ModelInterface.set_component_process_end_time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_component_process_end_time</span></code></a>(start_time)</p></td>
+<td><p>Set component process end time.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.unselect_obsolete_fds_cc" title="rosa_kb.typedb_model_interface.ModelInterface.unselect_obsolete_fds_cc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unselect_obsolete_fds_cc</span></code></a>()</p></td>
+<td><p>Unselect all obsolete function designs and component configurations.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.update_action_status" title="rosa_kb.typedb_model_interface.ModelInterface.update_action_status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_action_status</span></code></a>(action_name, action_status)</p></td>
+<td><p>Update Action status.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.update_component_status" title="rosa_kb.typedb_model_interface.ModelInterface.update_component_status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_component_status</span></code></a>(component_name, ...)</p></td>
+<td><p>Update Component status.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.update_function_design_priority" title="rosa_kb.typedb_model_interface.ModelInterface.update_function_design_priority"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_function_design_priority</span></code></a>(fd_name, value)</p></td>
+<td><p>Update function design priority.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.update_outdated_reconfiguration_plans_result" title="rosa_kb.typedb_model_interface.ModelInterface.update_outdated_reconfiguration_plans_result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_outdated_reconfiguration_plans_result</span></code></a>()</p></td>
+<td><p>Set outdated reconfiguration plans result to 'abandoned'.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.typedb_model_interface.ModelInterface.update_reconfiguration_plan_result" title="rosa_kb.typedb_model_interface.ModelInterface.update_reconfiguration_plan_result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_reconfiguration_plan_result</span></code></a>(...)</p></td>
+<td><p>Update reconfiguration plan result.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">address</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_database</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">infer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.__init__" title="Link to this definition"></a></dt>
+<dd><p>Connect to a typeDB server and interacts with it.</p>
+<p>Connects TypeDBInterface to typeDB server, creating a database,
+loading a schema and a data file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>address</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – TypeDB server address.</p></li>
+<li><p><strong>database_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – database name.</p></li>
+<li><p><strong>schema_path</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span>) – list with paths to schema files (.tql).</p></li>
+<li><p><strong>data_path</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span>) – list with paths to data files (.tql).</p></li>
+<li><p><strong>force_database</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>]</span>) – if database should override an existing database</p></li>
+<li><p><strong>force_data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>]</span>) – if the database data should be overriden.</p></li>
+<li><p><strong>infer</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>]</span>) – if inference engine should be used.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.activate_component">
+<span class="sig-name descname"><span class="pre">activate_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.activate_component" title="Link to this definition"></a></dt>
+<dd><p>Activate a Component.</p>
+<p>Set ‘is-active’ attribute of a Component to true or false.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>c_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – component name</p></li>
+<li><p><strong>value</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – whether the component should be active or not</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ConceptMap</span></code>]]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>update query result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.add_measurement">
+<span class="sig-name descname"><span class="pre">add_measurement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.add_measurement" title="Link to this definition"></a></dt>
+<dd><p>Add new Quality Attribute or EnvironmentalAttribute measurement.</p>
+<p>Add new Quality Attribute or EnvironmentalAttribute measurement. The
+new measurement ‘latest’ attribute is set to true, and the old
+measurements ‘latest’ attribute are set to false.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – QA/EA name</p></li>
+<li><p><strong>value</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – measured value</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ConceptMap</span></code>]]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>query result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.cancel_action">
+<span class="sig-name descname"><span class="pre">cancel_action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.cancel_action" title="Link to this definition"></a></dt>
+<dd><p>Cancel Action.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>action_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – action name</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ConceptMap</span></code>]]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>insert query result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.create_reconfiguration_plan">
+<span class="sig-name descname"><span class="pre">create_reconfiguration_plan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c_activate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_deactivate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_config</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.create_reconfiguration_plan" title="Link to this definition"></a></dt>
+<dd><p>Create a reconfiguration plan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>c_active</strong> – components to activate</p></li>
+<li><p><strong>c_deactive</strong> – components to deactivate</p></li>
+<li><p><strong>c_config</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – component configurations to select</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the time the reconfiguration plan was created, or None in case
+there was a failure creating the reconfiguration plan</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.delete_component_status">
+<span class="sig-name descname"><span class="pre">delete_component_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.delete_component_status" title="Link to this definition"></a></dt>
+<dd><p>Delete Component status.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>component_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – component name</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Literal</span></code></a>[<code class="docutils literal notranslate"><span class="pre">True</span></code>]]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>delete query result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_active_component_process">
+<span class="sig-name descname"><span class="pre">get_active_component_process</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_active_component_process" title="Link to this definition"></a></dt>
+<dd><p>Get all attributes owned by a Component, and the Component type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>component</strong> – component name.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="rosa_kb.typedb_model_interface.ComponentProcessDict.html#rosa_kb.typedb_model_interface.ComponentProcessDict" title="rosa_kb.typedb_model_interface.ComponentProcessDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">ComponentProcessDict</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict with component type and all its attributes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_adaptable_components">
+<span class="sig-name descname"><span class="pre">get_adaptable_components</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_adaptable_components" title="Link to this definition"></a></dt>
+<dd><p>Get the name of adaptable Components.</p>
+<p>Get the name of adaptable Components. A component is adaptable when its
+‘always-improve’ attribute is true, or when it status is ‘unsolved’ or
+‘configuration error’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>name of adaptable components</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_adaptable_functions">
+<span class="sig-name descname"><span class="pre">get_adaptable_functions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_adaptable_functions" title="Link to this definition"></a></dt>
+<dd><p>Get the name of adaptable Functions.</p>
+<p>Get the name of adaptable Functions. A function is adaptable when its
+‘always-improve’ attribute is true, or when it status is ‘unsolved’ or
+‘configuration error’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>name of adaptable functions</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_adaptable_things_raw">
+<span class="sig-name descname"><span class="pre">get_adaptable_things_raw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thing</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_adaptable_things_raw" title="Link to this definition"></a></dt>
+<dd><p>Get the name of adaptable individuals of a certain Thing.</p>
+<p>Get the name of adaptable individuals of a certain Thing. An individual
+is adaptable when it has an ‘always-improve’ attribute set to true, or
+when it has status ‘unsolved’ or ‘configuration error’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>thing</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Thing type</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference internal" href="rosa_kb.typedb_model_interface.MatchResultDict.html#rosa_kb.typedb_model_interface.MatchResultDict" title="rosa_kb.typedb_model_interface.MatchResultDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">MatchResultDict</span></code></a>]]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>name of adaptable individuals</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_component_all_attributes">
+<span class="sig-name descname"><span class="pre">get_component_all_attributes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_component_all_attributes" title="Link to this definition"></a></dt>
+<dd><p>Get all attributes owned by a Component, and the Component type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>component</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – component name.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="rosa_kb.typedb_model_interface.ComponentDict.html#rosa_kb.typedb_model_interface.ComponentDict" title="rosa_kb.typedb_model_interface.ComponentDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">ComponentDict</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict with component type and all its attributes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_component_configuration_priority">
+<span class="sig-name descname"><span class="pre">get_component_configuration_priority</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cc_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_component_configuration_priority" title="Link to this definition"></a></dt>
+<dd><p>Get component configuration priority value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cc_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – component configuration name</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>component configuration priority value</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_component_parameters">
+<span class="sig-name descname"><span class="pre">get_component_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c_config</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_component_parameters" title="Link to this definition"></a></dt>
+<dd><p>Get ComponentParameters in a component configuration relationship.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>c_config</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – component configuration name.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="rosa_kb.typedb_model_interface.ComponentConfigurationDict.html#rosa_kb.typedb_model_interface.ComponentConfigurationDict" title="rosa_kb.typedb_model_interface.ComponentConfigurationDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">ComponentConfigurationDict</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict with component-name, parameter-key, parameter-value</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_components_in_function_design">
+<span class="sig-name descname"><span class="pre">get_components_in_function_design</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fd_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_components_in_function_design" title="Link to this definition"></a></dt>
+<dd><p>Get components in relation with a function design.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fd_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – name of the function design.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>component names in relation with fd_name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_function_design_priority">
+<span class="sig-name descname"><span class="pre">get_function_design_priority</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fd_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_function_design_priority" title="Link to this definition"></a></dt>
+<dd><p>Get function design priority value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fd_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – function design name</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>function design priority value</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_instances_of_thing_with_status">
+<span class="sig-name descname"><span class="pre">get_instances_of_thing_with_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thing</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_instances_of_thing_with_status" title="Link to this definition"></a></dt>
+<dd><p>Get name of instances of a certain Thing that have a certain status.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>thing</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – thing type to query.</p></li>
+<li><p><strong>status</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – status.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>name of instances with status.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_instances_thing_always_improve">
+<span class="sig-name descname"><span class="pre">get_instances_thing_always_improve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thing</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_instances_thing_always_improve" title="Link to this definition"></a></dt>
+<dd><p>Get name of instances of a certain Thing that have always-improve true.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>thing</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Thing type to query.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>name of instances with always-improve true.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_latest_completed_reconfiguration_plan_time">
+<span class="sig-name descname"><span class="pre">get_latest_completed_reconfiguration_plan_time</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_latest_completed_reconfiguration_plan_time" title="Link to this definition"></a></dt>
+<dd><p>Get end-time of the most recent completed reconfiguration plan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>end-time of the most recent completed reconfiguration plan.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_latest_measurement">
+<span class="sig-name descname"><span class="pre">get_latest_measurement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_latest_measurement" title="Link to this definition"></a></dt>
+<dd><p>Get latest measurement value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – QA/EA name</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>measurement value, or None if there is no measurement</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_latest_pending_reconfiguration_plan">
+<span class="sig-name descname"><span class="pre">get_latest_pending_reconfiguration_plan</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_latest_pending_reconfiguration_plan" title="Link to this definition"></a></dt>
+<dd><p>Get latest pending reconfiguration plan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="rosa_kb.typedb_model_interface.ReconfigPlanDict.html#rosa_kb.typedb_model_interface.ReconfigPlanDict" title="rosa_kb.typedb_model_interface.ReconfigPlanDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReconfigPlanDict</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict representing the reconfiguration plan, its keys are:
+start_time, c_activate, c_deactivate, c_config</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_latest_pending_reconfiguration_plan_time">
+<span class="sig-name descname"><span class="pre">get_latest_pending_reconfiguration_plan_time</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_latest_pending_reconfiguration_plan_time" title="Link to this definition"></a></dt>
+<dd><p>Get start-time of the most recent pending reconfiguration plan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>start-time of the most recent pending reconfiguration plan.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_latest_reconfiguration_plan">
+<span class="sig-name descname"><span class="pre">get_latest_reconfiguration_plan</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_latest_reconfiguration_plan" title="Link to this definition"></a></dt>
+<dd><p>Get latest reconfiguration plan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="rosa_kb.typedb_model_interface.ReconfigPlanDict.html#rosa_kb.typedb_model_interface.ReconfigPlanDict" title="rosa_kb.typedb_model_interface.ReconfigPlanDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReconfigPlanDict</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict representing the reconfiguration plan, its keys are:
+start_time, c_activate, c_deactivate, c_config</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_latest_reconfiguration_plan_time">
+<span class="sig-name descname"><span class="pre">get_latest_reconfiguration_plan_time</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_latest_reconfiguration_plan_time" title="Link to this definition"></a></dt>
+<dd><p>Get start-time of the most recent reconfiguration plan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>start-time of the most recent reconfiguration plan.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_measurement">
+<span class="sig-name descname"><span class="pre">get_measurement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_measurement" title="Link to this definition"></a></dt>
+<dd><p>Get measured value at a certain time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – QA/EA name</p></li>
+<li><p><strong>time</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a></span>) – measurement time</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>measurement value, or None if there is no measurement</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_obsolete_component_configurations">
+<span class="sig-name descname"><span class="pre">get_obsolete_component_configurations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_obsolete_component_configurations" title="Link to this definition"></a></dt>
+<dd><p>Get selected component configurations that are not required anymore.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List with selected configs that are not required anymore</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_obsolete_components">
+<span class="sig-name descname"><span class="pre">get_obsolete_components</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_obsolete_components" title="Link to this definition"></a></dt>
+<dd><p>Get active components that are not required anymore.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List with active components that are not required anymore</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_obsolete_fds">
+<span class="sig-name descname"><span class="pre">get_obsolete_fds</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_obsolete_fds" title="Link to this definition"></a></dt>
+<dd><p>Get selected fds that are not required anymore.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List with selected fds that are not required anymore</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_outdated_reconfiguration_plans">
+<span class="sig-name descname"><span class="pre">get_outdated_reconfiguration_plans</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_outdated_reconfiguration_plans" title="Link to this definition"></a></dt>
+<dd><p>Get outdated reconfiguration plans.</p>
+<p>A reconfiguration plan is considered outdated when it doesn’t have an
+<cite>end-time</cite> and its <cite>start-time</cite> is lower than the <cite>end-time</cite> of a
+reconfiguration plan with result ‘completed’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a>]</span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>start-time of all outdated reconfiguration plans</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_reconfiguration_plan">
+<span class="sig-name descname"><span class="pre">get_reconfiguration_plan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_reconfiguration_plan" title="Link to this definition"></a></dt>
+<dd><p>Get reconfiguration plan with start-time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>start_time</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a></span>) – start-time of the desired reconfiguration plan.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="rosa_kb.typedb_model_interface.ReconfigPlanDict.html#rosa_kb.typedb_model_interface.ReconfigPlanDict" title="rosa_kb.typedb_model_interface.ReconfigPlanDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReconfigPlanDict</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict representing the reconfiguration plan, its keys are:
+start_time, c_activate, c_deactivate, c_config</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_reconfiguration_plan_result">
+<span class="sig-name descname"><span class="pre">get_reconfiguration_plan_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_reconfiguration_plan_result" title="Link to this definition"></a></dt>
+<dd><p>Get result of recongiration plan with <cite>start_time</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>start_time</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a></span>) – reconfiguration plan start-time</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>reconfiguration plan result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_relationship_with_attribute">
+<span class="sig-name descname"><span class="pre">get_relationship_with_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_attribute</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_relationship_with_attribute" title="Link to this definition"></a></dt>
+<dd><p>Get relationship name that has an attr and relates to a certain entity.</p>
+<p>Get relationship name that has an attr and relates to a certain entity.
+For example, a ‘function-design’ that has the ‘is-selected’ attribute
+set to true and is related to a ‘Function’ with ‘function-name’
+‘my_function’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entity</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – entity type</p></li>
+<li><p><strong>entity_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – entity name</p></li>
+<li><p><strong>relation</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – relation type</p></li>
+<li><p><strong>r_attribute</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – attribute name</p></li>
+<li><p><strong>r_value</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a></span>) – attribute value</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>name of individuals of the relation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_selectable_actions">
+<span class="sig-name descname"><span class="pre">get_selectable_actions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_selectable_actions" title="Link to this definition"></a></dt>
+<dd><p>Get the name of selectable Actions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>name of selectable actions</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_selectable_c_configs">
+<span class="sig-name descname"><span class="pre">get_selectable_c_configs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_selectable_c_configs" title="Link to this definition"></a></dt>
+<dd><p>Get the name of selectable component configurations for a Component.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>component_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – component name</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>name of selectable component configurations</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_selectable_fds">
+<span class="sig-name descname"><span class="pre">get_selectable_fds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_selectable_fds" title="Link to this definition"></a></dt>
+<dd><p>Get the name of selectable funtion designs for a Function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>function_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – function name</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>name of selectable function designs</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_selectable_thing_raw">
+<span class="sig-name descname"><span class="pre">get_selectable_thing_raw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thing</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_selectable_thing_raw" title="Link to this definition"></a></dt>
+<dd><p>Get the name of selectable individuals of a specific Thing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>thing</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Thing type</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference internal" href="rosa_kb.typedb_model_interface.MatchResultDict.html#rosa_kb.typedb_model_interface.MatchResultDict" title="rosa_kb.typedb_model_interface.MatchResultDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">MatchResultDict</span></code></a>]]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>name of selectable individuals</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_solved_components">
+<span class="sig-name descname"><span class="pre">get_solved_components</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_solved_components" title="Link to this definition"></a></dt>
+<dd><p>Get components with status solved.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_solved_functions">
+<span class="sig-name descname"><span class="pre">get_solved_functions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_solved_functions" title="Link to this definition"></a></dt>
+<dd><p>Get functions with status solved.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_unsolved_components">
+<span class="sig-name descname"><span class="pre">get_unsolved_components</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_unsolved_components" title="Link to this definition"></a></dt>
+<dd><p>Get unsolved Components.</p>
+<p>Get unsolved Components. A component is unsolved when its ‘is-required’
+attribute is True and its status is ‘unsolved’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>name of unsolved components</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_unsolved_functions">
+<span class="sig-name descname"><span class="pre">get_unsolved_functions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_unsolved_functions" title="Link to this definition"></a></dt>
+<dd><p>Get unsolved Functions.</p>
+<p>Get unsolved Functions. A function is unsolved when its ‘is-required’
+attribute is True and its status is ‘unsolved’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>name of unsolved functions</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.get_unsolved_thing_raw">
+<span class="sig-name descname"><span class="pre">get_unsolved_thing_raw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thing</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.get_unsolved_thing_raw" title="Link to this definition"></a></dt>
+<dd><p>Get unsolved individuals of a certain Thing type.</p>
+<p>Get unsolved individuals of a certain Thing type. An individual is
+unsolved when its ‘is-required’ attribute is True and its status is
+‘unsolved’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference internal" href="rosa_kb.typedb_model_interface.MatchResultDict.html#rosa_kb.typedb_model_interface.MatchResultDict" title="rosa_kb.typedb_model_interface.MatchResultDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">MatchResultDict</span></code></a>]]</span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>name of unsolved individuals</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.has_action">
+<span class="sig-name descname"><span class="pre">has_action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.has_action" title="Link to this definition"></a></dt>
+<dd><p>Check whether model can an specific Action.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>action_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Action name</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>whether the action exists in the model or not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.insert_action">
+<span class="sig-name descname"><span class="pre">insert_action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.insert_action" title="Link to this definition"></a></dt>
+<dd><p>Add new Action.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>action_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – action name</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ConceptMap</span></code>]]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>insert query result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.insert_component">
+<span class="sig-name descname"><span class="pre">insert_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">always_improve</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.insert_component" title="Link to this definition"></a></dt>
+<dd><p>Add new Component.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>component_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – component name</p></li>
+<li><p><strong>always_improve</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>]</span>) – if it should always try to select the best</p></li>
+</ul>
+</dd>
+</dl>
+<p>component configuration
+:rtype: <span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ConceptMap</span></code>]]</span>
+:return: insert query result</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.insert_component_process">
+<span class="sig-name descname"><span class="pre">insert_component_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pid</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.insert_component_process" title="Link to this definition"></a></dt>
+<dd><p>Add new component-process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>component_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – component name</p></li>
+<li><p><strong>pid</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) – pid</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ConceptMap</span></code>]]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>insert query result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.insert_function">
+<span class="sig-name descname"><span class="pre">insert_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.insert_function" title="Link to this definition"></a></dt>
+<dd><p>Add new Function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>function_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – function name</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ConceptMap</span></code>]]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>insert query result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.insert_function_design">
+<span class="sig-name descname"><span class="pre">insert_function_design</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function_design_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">function_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">components_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.insert_function_design" title="Link to this definition"></a></dt>
+<dd><p>Add new function-design.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>function_design_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – function design name</p></li>
+<li><p><strong>function_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – function name</p></li>
+<li><p><strong>components_names</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – list of required components</p></li>
+<li><p><strong>priority</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]</span>) – function design priority</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ConceptMap</span></code>]]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>insert query result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.insert_functional_requirement">
+<span class="sig-name descname"><span class="pre">insert_functional_requirement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">functions_names</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.insert_functional_requirement" title="Link to this definition"></a></dt>
+<dd><p>Add new functional-requirement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>action_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – action name</p></li>
+<li><p><strong>functions_names</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – list of required functions</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ConceptMap</span></code>]]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>insert query result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.insert_ros_node_component">
+<span class="sig-name descname"><span class="pre">insert_ros_node_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">package</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">executable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">always_improve</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lifecycle_node</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.insert_ros_node_component" title="Link to this definition"></a></dt>
+<dd><p>Add new ROSNode Component.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>component_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – component name</p></li>
+<li><p><strong>package</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – ros package name</p></li>
+<li><p><strong>executable</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – ros executable name</p></li>
+<li><p><strong>always_improve</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>]</span>) – if it should always try to select the best</p></li>
+</ul>
+</dd>
+</dl>
+<p>component configuration
+:type lifecycle_node: <span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>]</span>
+:param lifecycle_node: if the ros node is a lifecycle node
+:rtype: <span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ConceptMap</span></code>]]</span>
+:return: insert query result</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.is_action_feasible">
+<span class="sig-name descname"><span class="pre">is_action_feasible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.is_action_feasible" title="Link to this definition"></a></dt>
+<dd><p>Check if an Action only has status feasible.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>action_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Action name</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>whether the action is feasible or not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.is_action_required">
+<span class="sig-name descname"><span class="pre">is_action_required</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.is_action_required" title="Link to this definition"></a></dt>
+<dd><p>Check whether an Action is required.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>action_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Action name</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>whether the action is required or not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.is_action_selectable">
+<span class="sig-name descname"><span class="pre">is_action_selectable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.is_action_selectable" title="Link to this definition"></a></dt>
+<dd><p>Check whether an Action can be selected, i.e., it can be performed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>action_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Action name</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>whether the action is feasible or not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.is_component_active">
+<span class="sig-name descname"><span class="pre">is_component_active</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.is_component_active" title="Link to this definition"></a></dt>
+<dd><p>Check wheter a component is active or not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – component name</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>whether the component is active or not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.request_action">
+<span class="sig-name descname"><span class="pre">request_action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.request_action" title="Link to this definition"></a></dt>
+<dd><p>Request Action.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>action_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – action name</p></li>
+<li><p><strong>preference</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – QA/EA that has preference when selecting a config</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ConceptMap</span></code>]]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>insert query result or None when the action was already
+required</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.select_component_configuration">
+<span class="sig-name descname"><span class="pre">select_component_configuration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cc_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.select_component_configuration" title="Link to this definition"></a></dt>
+<dd><p>Select component-configuration ‘cc_name’ and unselect all other ccs.</p>
+<p>Set the ‘is-selected’ attribute of the ‘cc_name’ component
+configuration to true, and set ‘is-selected’ to false for all other
+component configurations related to ‘c_name’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>c_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – component name</p></li>
+<li><p><strong>cc_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – component configuration name</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ConceptMap</span></code>]]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>update query result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.select_components_selected_config">
+<span class="sig-name descname"><span class="pre">select_components_selected_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">components_selected_config</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.select_components_selected_config" title="Link to this definition"></a></dt>
+<dd><p>Select component configuration and return them.</p>
+<p>Set the ‘is-selected’ attribute of the component configurations in
+<cite>components_selected_config</cite> to true, and returns a list with
+the name of the component configurations that need to be updated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>components_selected_config</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]</span>) – a list of tuples with the form
+(COMPONENT_NAME, CC_NAME) representing the component configurations
+that were selected for which components</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list with the name of the component configurations that need
+to be updated</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.select_configuration">
+<span class="sig-name descname"><span class="pre">select_configuration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">functions_selected_fd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">components_selected_config</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.select_configuration" title="Link to this definition"></a></dt>
+<dd><p>Select configuration and create reconfiguration plan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>functions_selected_fd</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]</span>) – a list of tuples with the form
+(FUNCTION_NAME, FD_NAME) representing the function designs that
+were selected for which function</p></li>
+<li><p><strong>components_selected_config</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]</span>) – a list of tuples with the form
+(COMPONENT_NAME, CC_NAME) representing the component configurations
+that were selected for which components</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>reconfig plan creation time.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.select_fd_and_get_components">
+<span class="sig-name descname"><span class="pre">select_fd_and_get_components</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">functions_selected_fd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.select_fd_and_get_components" title="Link to this definition"></a></dt>
+<dd><p>Select function design, and get components to activate and deactivate.</p>
+<p>Set the ‘is-selected’ attribute of the function desings in
+<cite>functions_selected_fd</cite> to true, and returns a tuple with a list with
+the components that need to be activated and a list with the components
+that need to be deactivated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>functions_selected_fd</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]</span>) – a list of tuples with the form
+(FUNCTION_NAME, FD_NAME) representing the function designs that
+were selected for which function</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple with the form (c_activate, c_deactivate), indicating
+which components should be activated and deactivated</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.select_function_design">
+<span class="sig-name descname"><span class="pre">select_function_design</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fd_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.select_function_design" title="Link to this definition"></a></dt>
+<dd><p>Select function-design ‘fd_name’ and unselect all other fds.</p>
+<p>Set the ‘is-selected’ attribute of the ‘fd_name’ function design to
+true, and set ‘is-selected’ to false for all other function designs
+related to ‘f_name’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – function name</p></li>
+<li><p><strong>fd_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – function design name</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ConceptMap</span></code>]]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>update query result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.select_relationship">
+<span class="sig-name descname"><span class="pre">select_relationship</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.select_relationship" title="Link to this definition"></a></dt>
+<dd><p>Select relationship individual, and unselect all other individuals.</p>
+<p>Set the ‘is-selected’ attribute of the ‘r_name’ individual to true, and
+set ‘is-selected’ to false for all other ‘relation’ individuals related
+to ‘entity_name’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entity</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – entity type</p></li>
+<li><p><strong>entity_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – entity name</p></li>
+<li><p><strong>relation</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – relation type</p></li>
+<li><p><strong>r_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – relationship name</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ConceptMap</span></code>]]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>update query result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.set_component_process_end_time">
+<span class="sig-name descname"><span class="pre">set_component_process_end_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.set_component_process_end_time" title="Link to this definition"></a></dt>
+<dd><p>Set component process end time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>start_time</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a></span>) – component-process start-time.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ConceptMap</span></code>]]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>update query result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.unselect_obsolete_fds_cc">
+<span class="sig-name descname"><span class="pre">unselect_obsolete_fds_cc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.unselect_obsolete_fds_cc" title="Link to this definition"></a></dt>
+<dd><p>Unselect all obsolete function designs and component configurations.</p>
+<p>An obsolete function design or component configuration is the one that
+has ‘is-selected’ attribute set to true, but it is no required anymore</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.update_action_status">
+<span class="sig-name descname"><span class="pre">update_action_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action_status</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.update_action_status" title="Link to this definition"></a></dt>
+<dd><p>Update Action status.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>action_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – action name</p></li>
+<li><p><strong>action_status</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – action_status</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ConceptMap</span></code>]]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>insert query result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.update_component_status">
+<span class="sig-name descname"><span class="pre">update_component_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_status</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.update_component_status" title="Link to this definition"></a></dt>
+<dd><p>Update Component status.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>component_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – component name</p></li>
+<li><p><strong>component_status</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – component status</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ConceptMap</span></code>]]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>delete query result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.update_function_design_priority">
+<span class="sig-name descname"><span class="pre">update_function_design_priority</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fd_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.update_function_design_priority" title="Link to this definition"></a></dt>
+<dd><p>Update function design priority.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fd_name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – function design name</p></li>
+<li><p><strong>value</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) – new priority value</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ConceptMap</span></code>]]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>query result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.update_outdated_reconfiguration_plans_result">
+<span class="sig-name descname"><span class="pre">update_outdated_reconfiguration_plans_result</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.update_outdated_reconfiguration_plans_result" title="Link to this definition"></a></dt>
+<dd><p>Set outdated reconfiguration plans result to ‘abandoned’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ConceptMap</span></code>]]</span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>update query result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.typedb_model_interface.ModelInterface.update_reconfiguration_plan_result">
+<span class="sig-name descname"><span class="pre">update_reconfiguration_plan_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.typedb_model_interface.ModelInterface.update_reconfiguration_plan_result" title="Link to this definition"></a></dt>
+<dd><p>Update reconfiguration plan result.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start_time</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a></span>) – reconfiguration plan start_time</p></li>
+<li><p><strong>result_value</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Literal</span></code></a>[<code class="docutils literal notranslate"><span class="pre">'completed'</span></code>, <code class="docutils literal notranslate"><span class="pre">'failed'</span></code>, <code class="docutils literal notranslate"><span class="pre">'abandoned'</span></code>]</span>) – reconfig plan result</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">ConceptMap</span></code>]]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>update query result</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rosa_kb.typedb_model_interface.MatchResultDict.html" class="btn btn-neutral float-left" title="MatchResultDict" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rosa_kb.typedb_model_interface.ReconfigPlanDict.html" class="btn btn-neutral float-right" title="ReconfigPlanDict" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Gustavo Rezende.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

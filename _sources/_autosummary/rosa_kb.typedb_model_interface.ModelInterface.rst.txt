@@ -1,0 +1,84 @@
+ModelInterface
+==============
+
+.. currentmodule:: rosa_kb.typedb_model_interface
+
+.. autoclass:: ModelInterface
+  :members:
+  :undoc-members:
+  :special-members: __init__
+
+  
+  .. rubric:: Methods
+
+  .. autosummary::
+  
+     ~ModelInterface.__init__
+     ~ModelInterface.activate_component
+     ~ModelInterface.add_measurement
+     ~ModelInterface.cancel_action
+     ~ModelInterface.create_reconfiguration_plan
+     ~ModelInterface.delete_component_status
+     ~ModelInterface.get_active_component_process
+     ~ModelInterface.get_adaptable_components
+     ~ModelInterface.get_adaptable_functions
+     ~ModelInterface.get_adaptable_things_raw
+     ~ModelInterface.get_component_all_attributes
+     ~ModelInterface.get_component_configuration_priority
+     ~ModelInterface.get_component_parameters
+     ~ModelInterface.get_components_in_function_design
+     ~ModelInterface.get_function_design_priority
+     ~ModelInterface.get_instances_of_thing_with_status
+     ~ModelInterface.get_instances_thing_always_improve
+     ~ModelInterface.get_latest_completed_reconfiguration_plan_time
+     ~ModelInterface.get_latest_measurement
+     ~ModelInterface.get_latest_pending_reconfiguration_plan
+     ~ModelInterface.get_latest_pending_reconfiguration_plan_time
+     ~ModelInterface.get_latest_reconfiguration_plan
+     ~ModelInterface.get_latest_reconfiguration_plan_time
+     ~ModelInterface.get_measurement
+     ~ModelInterface.get_obsolete_component_configurations
+     ~ModelInterface.get_obsolete_components
+     ~ModelInterface.get_obsolete_fds
+     ~ModelInterface.get_outdated_reconfiguration_plans
+     ~ModelInterface.get_reconfiguration_plan
+     ~ModelInterface.get_reconfiguration_plan_result
+     ~ModelInterface.get_relationship_with_attribute
+     ~ModelInterface.get_selectable_actions
+     ~ModelInterface.get_selectable_c_configs
+     ~ModelInterface.get_selectable_fds
+     ~ModelInterface.get_selectable_thing_raw
+     ~ModelInterface.get_solved_components
+     ~ModelInterface.get_solved_functions
+     ~ModelInterface.get_unsolved_components
+     ~ModelInterface.get_unsolved_functions
+     ~ModelInterface.get_unsolved_thing_raw
+     ~ModelInterface.has_action
+     ~ModelInterface.insert_action
+     ~ModelInterface.insert_component
+     ~ModelInterface.insert_component_process
+     ~ModelInterface.insert_function
+     ~ModelInterface.insert_function_design
+     ~ModelInterface.insert_functional_requirement
+     ~ModelInterface.insert_ros_node_component
+     ~ModelInterface.is_action_feasible
+     ~ModelInterface.is_action_required
+     ~ModelInterface.is_action_selectable
+     ~ModelInterface.is_component_active
+     ~ModelInterface.request_action
+     ~ModelInterface.select_component_configuration
+     ~ModelInterface.select_components_selected_config
+     ~ModelInterface.select_configuration
+     ~ModelInterface.select_fd_and_get_components
+     ~ModelInterface.select_function_design
+     ~ModelInterface.select_relationship
+     ~ModelInterface.set_component_process_end_time
+     ~ModelInterface.unselect_obsolete_fds_cc
+     ~ModelInterface.update_action_status
+     ~ModelInterface.update_component_status
+     ~ModelInterface.update_function_design_priority
+     ~ModelInterface.update_outdated_reconfiguration_plans_result
+     ~ModelInterface.update_reconfiguration_plan_result
+  
+
+  

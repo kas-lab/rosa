@@ -1,0 +1,30 @@
+ComponentDict
+=============
+
+.. currentmodule:: rosa_kb.typedb_model_interface
+
+.. autoclass:: ComponentDict
+  :members:
+  :undoc-members:
+  :special-members: __init__
+
+  
+  .. rubric:: Methods
+
+  .. autosummary::
+  
+  
+
+  
+  .. rubric:: Attributes
+
+  .. autosummary::
+  
+     ~ComponentDict.type
+     ~ComponentDict.component_name
+     ~ComponentDict.is_required
+     ~ComponentDict.is_active
+     ~ComponentDict.component_status
+     ~ComponentDict.package
+     ~ComponentDict.executable
+  

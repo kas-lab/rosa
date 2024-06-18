@@ -1,0 +1,27 @@
+ReconfigPlanDict
+================
+
+.. currentmodule:: rosa_kb.typedb_model_interface
+
+.. autoclass:: ReconfigPlanDict
+  :members:
+  :undoc-members:
+  :special-members: __init__
+
+  
+  .. rubric:: Methods
+
+  .. autosummary::
+  
+  
+
+  
+  .. rubric:: Attributes
+
+  .. autosummary::
+  
+     ~ReconfigPlanDict.start_time
+     ~ReconfigPlanDict.c_activate
+     ~ReconfigPlanDict.c_deactivate
+     ~ReconfigPlanDict.c_config
+  

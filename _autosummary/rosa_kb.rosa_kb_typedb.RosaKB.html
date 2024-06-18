@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RosaKB &mdash; ROSA 0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=7026087e"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="rosa_kb.typedb_model_interface" href="rosa_kb.typedb_model_interface.html" />
+    <link rel="prev" title="rosa_kb.rosa_kb_typedb.publish_event" href="rosa_kb.rosa_kb_typedb.publish_event.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            ROSA
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../rosa_kb.html">rosa_kb</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="rosa_kb.rosa_kb_typedb.html">rosa_kb.rosa_kb_typedb</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="rosa_kb.rosa_kb_typedb.check_lc_active.html">rosa_kb.rosa_kb_typedb.check_lc_active</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rosa_kb.rosa_kb_typedb.publish_event.html">rosa_kb.rosa_kb_typedb.publish_event</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">RosaKB</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rosa_kb.typedb_model_interface.html">rosa_kb.typedb_model_interface</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../rosa_plan.html">rosa_plan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rosa_execute.html">rosa_execute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rosa_bringup.html">rosa_bringup</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ROSA</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api.html">API</a></li>
+          <li class="breadcrumb-item"><a href="../rosa_kb.html">rosa_kb</a></li>
+          <li class="breadcrumb-item"><a href="rosa_kb.rosa_kb_typedb.html">rosa_kb.rosa_kb_typedb</a></li>
+      <li class="breadcrumb-item active">RosaKB</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_autosummary/rosa_kb.rosa_kb_typedb.RosaKB.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rosakb">
+<h1>RosaKB<a class="headerlink" href="#rosakb" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rosa_kb.rosa_kb_typedb.</span></span><span class="sig-name descname"><span class="pre">RosaKB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB" title="Link to this definition"></a></dt>
+<dd><p>ROS lifecycle node implementing ROSA’s KB.</p>
+<p>Create RosaKB node, inherits from <code class="xref py py-class docutils literal notranslate"><span class="pre">ROSTypeDBInterface</span></code>.</p>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.__init__" title="rosa_kb.rosa_kb_typedb.RosaKB.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(node_name, **kwargs)</p></td>
+<td><p>Create RosaKB node, inherits from <code class="xref py py-class docutils literal notranslate"><span class="pre">ROSTypeDBInterface</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.action_exists_cb" title="rosa_kb.rosa_kb_typedb.RosaKB.action_exists_cb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">action_exists_cb</span></code></a>(**kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.action_insert_cb" title="rosa_kb.rosa_kb_typedb.RosaKB.action_insert_cb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">action_insert_cb</span></code></a>(**kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.action_request_cb" title="rosa_kb.rosa_kb_typedb.RosaKB.action_request_cb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">action_request_cb</span></code></a>(**kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.action_selectable_cb" title="rosa_kb.rosa_kb_typedb.RosaKB.action_selectable_cb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">action_selectable_cb</span></code></a>(**kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.component_adaptable_cb" title="rosa_kb.rosa_kb_typedb.RosaKB.component_adaptable_cb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">component_adaptable_cb</span></code></a>(**kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.component_configuration_priority_cb" title="rosa_kb.rosa_kb_typedb.RosaKB.component_configuration_priority_cb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">component_configuration_priority_cb</span></code></a>(**kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.component_insert_cb" title="rosa_kb.rosa_kb_typedb.RosaKB.component_insert_cb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">component_insert_cb</span></code></a>(**kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.component_process_get_active_cb" title="rosa_kb.rosa_kb_typedb.RosaKB.component_process_get_active_cb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">component_process_get_active_cb</span></code></a>(**kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.component_process_insert_cb" title="rosa_kb.rosa_kb_typedb.RosaKB.component_process_insert_cb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">component_process_insert_cb</span></code></a>(**kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.component_process_set_end_cb" title="rosa_kb.rosa_kb_typedb.RosaKB.component_process_set_end_cb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">component_process_set_end_cb</span></code></a>(**kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.diagnostics_callback" title="rosa_kb.rosa_kb_typedb.RosaKB.diagnostics_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diagnostics_callback</span></code></a>(**kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.function_adaptable_cb" title="rosa_kb.rosa_kb_typedb.RosaKB.function_adaptable_cb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">function_adaptable_cb</span></code></a>(**kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.function_design_insert_cb" title="rosa_kb.rosa_kb_typedb.RosaKB.function_design_insert_cb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">function_design_insert_cb</span></code></a>(**kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.function_design_priority_cb" title="rosa_kb.rosa_kb_typedb.RosaKB.function_design_priority_cb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">function_design_priority_cb</span></code></a>(**kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.function_insert_cb" title="rosa_kb.rosa_kb_typedb.RosaKB.function_insert_cb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">function_insert_cb</span></code></a>(**kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.functional_requirement_insert_cb" title="rosa_kb.rosa_kb_typedb.RosaKB.functional_requirement_insert_cb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">functional_requirement_insert_cb</span></code></a>(**kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.get_component_active_cb" title="rosa_kb.rosa_kb_typedb.RosaKB.get_component_active_cb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_component_active_cb</span></code></a>(**kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.get_component_all_attributes" title="rosa_kb.rosa_kb_typedb.RosaKB.get_component_all_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_component_all_attributes</span></code></a>(component)</p></td>
+<td><p>Get all attributes of a component.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.get_component_parameters_cb" title="rosa_kb.rosa_kb_typedb.RosaKB.get_component_parameters_cb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_component_parameters_cb</span></code></a>(**kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.get_latest_reconfiguration_plan_cb" title="rosa_kb.rosa_kb_typedb.RosaKB.get_latest_reconfiguration_plan_cb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_latest_reconfiguration_plan_cb</span></code></a>(**kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.get_reconfiguration_plan_cb" title="rosa_kb.rosa_kb_typedb.RosaKB.get_reconfiguration_plan_cb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_reconfiguration_plan_cb</span></code></a>(**kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.on_activate" title="rosa_kb.rosa_kb_typedb.RosaKB.on_activate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_activate</span></code></a>(state)</p></td>
+<td><p>Handle an activating transition.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.on_cleanup" title="rosa_kb.rosa_kb_typedb.RosaKB.on_cleanup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_cleanup</span></code></a>(state)</p></td>
+<td><p>Cleanup RosaKB when the cleanup transition is called.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.on_configure" title="rosa_kb.rosa_kb_typedb.RosaKB.on_configure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_configure</span></code></a>(state)</p></td>
+<td><p>Configure RosaKB when the configure transition is called.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.on_deactivate" title="rosa_kb.rosa_kb_typedb.RosaKB.on_deactivate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_deactivate</span></code></a>(state)</p></td>
+<td><p>Handle a deactivating transition.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.reconfig_plan_dict_to_ros_msg" title="rosa_kb.rosa_kb_typedb.RosaKB.reconfig_plan_dict_to_ros_msg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reconfig_plan_dict_to_ros_msg</span></code></a>(reconfig_plan_dict)</p></td>
+<td><p>Convert reconfig plan to <code class="xref py py-class docutils literal notranslate"><span class="pre">rosa_msgs.msg.ReconfigurationPlan</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.select_configuration_cb" title="rosa_kb.rosa_kb_typedb.RosaKB.select_configuration_cb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_configuration_cb</span></code></a>(**kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.selectable_c_config_cb" title="rosa_kb.rosa_kb_typedb.RosaKB.selectable_c_config_cb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">selectable_c_config_cb</span></code></a>(**kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.selectable_fd_cb" title="rosa_kb.rosa_kb_typedb.RosaKB.selectable_fd_cb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">selectable_fd_cb</span></code></a>(**kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.set_component_active_cb" title="rosa_kb.rosa_kb_typedb.RosaKB.set_component_active_cb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_component_active_cb</span></code></a>(**kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.set_reconfiguration_plan_result_service_cb" title="rosa_kb.rosa_kb_typedb.RosaKB.set_reconfiguration_plan_result_service_cb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_reconfiguration_plan_result_service_cb</span></code></a>(...)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.update_component_status" title="rosa_kb.rosa_kb_typedb.RosaKB.update_component_status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_component_status</span></code></a>(**kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rosa_kb.rosa_kb_typedb.RosaKB.update_measurement" title="rosa_kb.rosa_kb_typedb.RosaKB.update_measurement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_measurement</span></code></a>(**kwargs)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.__init__" title="Link to this definition"></a></dt>
+<dd><p>Create RosaKB node, inherits from <code class="xref py py-class docutils literal notranslate"><span class="pre">ROSTypeDBInterface</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.action_exists_cb">
+<span class="sig-name descname"><span class="pre">action_exists_cb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.action_exists_cb" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.action_insert_cb">
+<span class="sig-name descname"><span class="pre">action_insert_cb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.action_insert_cb" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.action_request_cb">
+<span class="sig-name descname"><span class="pre">action_request_cb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.action_request_cb" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.action_selectable_cb">
+<span class="sig-name descname"><span class="pre">action_selectable_cb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.action_selectable_cb" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.component_adaptable_cb">
+<span class="sig-name descname"><span class="pre">component_adaptable_cb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.component_adaptable_cb" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.component_configuration_priority_cb">
+<span class="sig-name descname"><span class="pre">component_configuration_priority_cb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.component_configuration_priority_cb" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.component_insert_cb">
+<span class="sig-name descname"><span class="pre">component_insert_cb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.component_insert_cb" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.component_process_get_active_cb">
+<span class="sig-name descname"><span class="pre">component_process_get_active_cb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.component_process_get_active_cb" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.component_process_insert_cb">
+<span class="sig-name descname"><span class="pre">component_process_insert_cb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.component_process_insert_cb" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.component_process_set_end_cb">
+<span class="sig-name descname"><span class="pre">component_process_set_end_cb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.component_process_set_end_cb" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.diagnostics_callback">
+<span class="sig-name descname"><span class="pre">diagnostics_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.diagnostics_callback" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.function_adaptable_cb">
+<span class="sig-name descname"><span class="pre">function_adaptable_cb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.function_adaptable_cb" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.function_design_insert_cb">
+<span class="sig-name descname"><span class="pre">function_design_insert_cb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.function_design_insert_cb" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.function_design_priority_cb">
+<span class="sig-name descname"><span class="pre">function_design_priority_cb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.function_design_priority_cb" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.function_insert_cb">
+<span class="sig-name descname"><span class="pre">function_insert_cb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.function_insert_cb" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.functional_requirement_insert_cb">
+<span class="sig-name descname"><span class="pre">functional_requirement_insert_cb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.functional_requirement_insert_cb" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.get_component_active_cb">
+<span class="sig-name descname"><span class="pre">get_component_active_cb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.get_component_active_cb" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.get_component_all_attributes">
+<span class="sig-name descname"><span class="pre">get_component_all_attributes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.get_component_all_attributes" title="Link to this definition"></a></dt>
+<dd><p>Get all attributes of a component.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>component</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – component name</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Component</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rosa_msgs.msg.Component msg with all attributes set</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.get_component_parameters_cb">
+<span class="sig-name descname"><span class="pre">get_component_parameters_cb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.get_component_parameters_cb" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.get_latest_reconfiguration_plan_cb">
+<span class="sig-name descname"><span class="pre">get_latest_reconfiguration_plan_cb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.get_latest_reconfiguration_plan_cb" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.get_reconfiguration_plan_cb">
+<span class="sig-name descname"><span class="pre">get_reconfiguration_plan_cb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.get_reconfiguration_plan_cb" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.on_activate">
+<span class="sig-name descname"><span class="pre">on_activate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.on_activate" title="Link to this definition"></a></dt>
+<dd><p>Handle an activating transition.</p>
+<p>This is the default on_activate() callback.
+It will call all on_activate() callbacks of managed entities, giving up at the first
+entity that returns TransitionCallbackReturn.FAILURE or TransitionCallbackReturn.ERROR.</p>
+<p>It’s possible to override this callback if the default behavior is not desired.
+If you only want to extend what this callback does, make sure to call
+super().on_activate() in derived classes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransitionCallbackReturnType</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.on_cleanup">
+<span class="sig-name descname"><span class="pre">on_cleanup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.on_cleanup" title="Link to this definition"></a></dt>
+<dd><p>Cleanup RosaKB when the cleanup transition is called.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransitionCallbackReturnType</span></code></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>transition result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.on_configure">
+<span class="sig-name descname"><span class="pre">on_configure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.on_configure" title="Link to this definition"></a></dt>
+<dd><p>Configure RosaKB when the configure transition is called.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransitionCallbackReturnType</span></code></span></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>transition result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.on_deactivate">
+<span class="sig-name descname"><span class="pre">on_deactivate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.on_deactivate" title="Link to this definition"></a></dt>
+<dd><p>Handle a deactivating transition.</p>
+<p>This is the default on_deactivate() callback.
+It will call all on_deactivate() callbacks of managed entities, giving up at the first
+entity that returns TransitionCallbackReturn.FAILURE or TransitionCallbackReturn.ERROR.</p>
+<p>It’s possible to override this callback if the default behavior is not desired.
+If you only want to extend what this callback does, make sure to call
+super().on_deactivate() in derived classes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransitionCallbackReturnType</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.reconfig_plan_dict_to_ros_msg">
+<span class="sig-name descname"><span class="pre">reconfig_plan_dict_to_ros_msg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reconfig_plan_dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.reconfig_plan_dict_to_ros_msg" title="Link to this definition"></a></dt>
+<dd><p>Convert reconfig plan to <code class="xref py py-class docutils literal notranslate"><span class="pre">rosa_msgs.msg.ReconfigurationPlan</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>reconfig_plan_dict</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="rosa_kb.typedb_model_interface.ReconfigPlanDict.html#rosa_kb.typedb_model_interface.ReconfigPlanDict" title="rosa_kb.typedb_model_interface.ReconfigPlanDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReconfigPlanDict</span></code></a></span>) – reconfig plan dict</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReconfigurationPlan</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>reconfig plan rosa msg</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.select_configuration_cb">
+<span class="sig-name descname"><span class="pre">select_configuration_cb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.select_configuration_cb" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.selectable_c_config_cb">
+<span class="sig-name descname"><span class="pre">selectable_c_config_cb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.selectable_c_config_cb" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.selectable_fd_cb">
+<span class="sig-name descname"><span class="pre">selectable_fd_cb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.selectable_fd_cb" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.set_component_active_cb">
+<span class="sig-name descname"><span class="pre">set_component_active_cb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.set_component_active_cb" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.set_reconfiguration_plan_result_service_cb">
+<span class="sig-name descname"><span class="pre">set_reconfiguration_plan_result_service_cb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.set_reconfiguration_plan_result_service_cb" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.update_component_status">
+<span class="sig-name descname"><span class="pre">update_component_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.update_component_status" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rosa_kb.rosa_kb_typedb.RosaKB.update_measurement">
+<span class="sig-name descname"><span class="pre">update_measurement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rosa_kb.rosa_kb_typedb.RosaKB.update_measurement" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rosa_kb.rosa_kb_typedb.publish_event.html" class="btn btn-neutral float-left" title="rosa_kb.rosa_kb_typedb.publish_event" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rosa_kb.typedb_model_interface.html" class="btn btn-neutral float-right" title="rosa_kb.typedb_model_interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Gustavo Rezende.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
