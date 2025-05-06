@@ -51,6 +51,8 @@ colcon build --symlink-install
 
 ## Running
 
+
+
 Start typedb:
 
 ```Bash
@@ -60,6 +62,31 @@ typedb server
 Run ROSA:
 ```Bash
 ros2 launch rosa_bringup rosa_bringup.launch.py
+```
+
+### TypeDB 3.0 with docker
+
+[Typedb 3.0](https://typedb.com/docs/manual/install/CE)
+
+```Bash
+docker pull typedb/typedb:latest
+```
+
+```Bash
+docker volume create typedb-data
+docker create --name typedb -v typedb-data:/opt/typedb-all-linux-x86_64/server/data -p 1729:1729 --platform linux/amd64 typedb/typedb:latest
+```
+
+```Bash
+docker start typedb
+```
+
+```Bash
+docker stop typedb
+```
+
+```Bash
+sudo typedb console --address typedb-core://localhost:1729 --username admin --tls-disabled
 ```
 
 ## Example

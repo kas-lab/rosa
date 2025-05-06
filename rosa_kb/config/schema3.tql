@@ -1,0 +1,42 @@
+define 
+
+## Atributes
+attribute name @abstract,
+    value string;
+    
+attribute action-name sub name;
+attribute function-name sub name;
+attribute function-design-name sub name;
+attribute component-name sub name;
+attribute component-configuration-name sub name;
+attribute attribute-name sub name;
+
+attribute status @abstract,
+    value string;
+
+attribute action-status sub status, 
+    value string @regex("^(solved|unsolved|feasible|unfeasible|implicit configuration error)$");
+
+attribute function-status sub status, 
+    value string @regex("^(unfeasible|configuration error|implicit configuration error|feasible|unsolved|solved)$");
+
+attribute function-design-status sub status, 
+    value string @regex("^(unfeasible|implicit configuration error|feasible|unsolved|solved)$");
+
+attribute component-status sub status, 
+    value string @regex("^(failure|unfeasible|configuration error|feasible|unsolved|solved)$");
+
+attribute component-configuration-status sub status, 
+    value string @regex("^(unfeasible|feasible)$");
+
+attribute constraint-status sub status, 
+    value string @regex("^(violated|not evaluated|satisfied)$");
+    
+attribute parameter-key,
+    value string;
+
+attribute parameter-value,
+    value string;
+
+attribute parameter-type,
+    value string  @regex "^(boolean|boolean_array|double|double_array|long|long_array|string|string_array)$";
