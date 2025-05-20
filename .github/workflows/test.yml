@@ -13,6 +13,13 @@ jobs:
     container: ubuntu:22.04
     steps:
       - uses: actions/checkout@v3.3.0
+      - name: Install prerequisites
+        run: |
+          apt-get update
+          apt-get install -y sudo gpg curl lsb-release software-properties-common python3-pip locales
+          locale-gen en_US en_US.UTF-8
+          update-locale LANG=en_US.UTF-8
+          pip3 install -U pip setuptools wheel
       - name: install typedb
         run: .github/workflows/install_typedb.sh
       - name: run typedb
