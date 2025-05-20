@@ -10,6 +10,7 @@ jobs:
   test:
     name: build and test rosa
     runs-on: ubuntu-latest
+    container: ubuntu:22.04
     steps:
       - uses: actions/checkout@v3.3.0
       - name: install typedb
