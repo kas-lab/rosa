@@ -17,14 +17,14 @@ Install TypeDB:
 
 ```Bash
 sudo apt install software-properties-common apt-transport-https gpg
-gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 8F3DA4B5E9AEF44C
-gpg --export 8F3DA4B5E9AEF44C | sudo tee /etc/apt/trusted.gpg.d/vaticle.gpg > /dev/null
-echo "deb https://repo.vaticle.com/repository/apt/ trusty main" | sudo tee /etc/apt/sources.list.d/vaticle.list > /dev/null
+gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 17507562824cfdcc
+gpg --export 17507562824cfdcc | sudo tee /etc/apt/trusted.gpg.d/vaticle.gpg > /dev/null
+echo "deb https://repo.typedb.com/public/public-release/deb/ubuntu trusty main" | sudo tee /etc/apt/sources.list.d/vaticle.list > /dev/null
 
 sudo apt update
 sudo apt install openjdk-11-jre
-sudo apt install typedb-server=2.24.17 typedb-console=2.24.15 typedb-bin=2.24.16
-pip3 install typedb-driver==2.24.15
+sudo apt install typedb=2.27.0
+pip3 install typedb-driver==2.27.0
 ```
 
 Download ROSA:
@@ -32,7 +32,7 @@ Download ROSA:
 mkdir -p ~/rosa_ws/src
 cd ~/rosa_ws/src
 git clone git@github.com:kas-lab/rosa.git
-vcs import . < rosa/rosa.rosinstall
+vcs import . < rosa/rosa.repos
 ```
 
 Install dependencies:
@@ -89,6 +89,32 @@ typedb server
 
 ```Bash
 colcon test --event-handlers console_cohesion+ --packages-select rosa_kb rosa_plan rosa_execute
+```
+
+## Citation
+
+If you find this repository useful, please consider citing the [ROSA paper](https://www.frontiersin.org/journals/robotics-and-ai/articles/10.3389/frobt.2025.1531743/full):
+
+```
+@ARTICLE{10.3389/frobt.2025.1531743,
+  
+AUTHOR={Rezende Silva, Gustavo  and Päßler, Juliane  and Tapia Tarifa, S. Lizeth  and Johnsen, Einar Broch  and Hernández Corbato, Carlos },
+         
+TITLE={ROSA: a knowledge-based solution for robot self-adaptation},
+        
+JOURNAL={Frontiers in Robotics and AI},
+        
+VOLUME={Volume 12 - 2025},
+
+YEAR={2025},
+
+URL={https://www.frontiersin.org/journals/robotics-and-ai/articles/10.3389/frobt.2025.1531743},
+
+DOI={10.3389/frobt.2025.1531743},
+
+ISSN={2296-9144},
+
+ABSTRACT={Autonomous robots must operate in diverse environments and handle multiple tasks despite uncertainties. This creates challenges in designing software architectures and task decision-making algorithms, as different contexts may require distinct task logic and architectural configurations. To address this, robotic systems can be designed as self-adaptive systems capable of adapting their task execution and software architecture at runtime based on their context. This paper introduces ROSA, a novel knowledge-based framework for RObot Self-Adaptation, which enables task-and-architecture co-adaptation (TACA) in robotic systems. ROSA achieves this by providing a knowledge model that captures all application-specific knowledge required for adaptation and by reasoning over this knowledge at runtime to determine when and how adaptation should occur. In addition to a conceptual framework, this work provides an open-source ROS 2-based reference implementation of ROSA and evaluates its feasibility and performance in an underwater robotics application. Experimental results highlight ROSA’s advantages in reusability and development effort for designing self-adaptive robotic systems.}}
 ```
 
 ## Acknowledgments

@@ -23,7 +23,7 @@ jobs:
           package-name: rosa_msgs rosa_kb rosa_plan rosa_execute rosa_bringup
           target-ros2-distro: humble
           skip-tests: true
-          vcs-repo-file-url: rosa.rosinstall
+          vcs-repo-file-url: rosa.repos
           import-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Install dependencies
         run: |
