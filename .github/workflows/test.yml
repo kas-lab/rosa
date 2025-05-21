@@ -15,9 +15,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3.3.0
       - name: install typedb
+        shell: bash
         run: .github/workflows/install_typedb.sh
       - name: run typedb
-        run: typedb server&
+        shell: bash
+        run: typedb server &
       - uses: ros-tooling/setup-ros@0.7.1
         with:
           required-ros-distributions: humble
