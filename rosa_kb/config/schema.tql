@@ -11,6 +11,7 @@ function-design-name sub name;
 component-name sub name;
 component-configuration-name sub name;
 measure-name sub name;
+measurement-interface-name sub name;
 
 status sub attribute,
     abstract,
@@ -93,6 +94,15 @@ latest sub attribute,
 component-pid sub attribute,
     value long;
 
+measurement-interface-type sub attribute,
+    value string;
+measurement-function-name sub attribute,
+    value string;
+measurement-function-lib sub attribute,
+    value string;
+measurement-function-args sub attribute,
+    value string;
+
 ### Relationships
 functional-requirement sub relation,
     relates action,
@@ -158,6 +168,15 @@ measurement sub relation,
     owns latest,
     relates measured-attribute;
 
+measurement-interface sub relation,
+    abstract,
+    owns measurement-interface-name,
+    owns measurement-interface-type,
+    owns measurement-function-name,
+    owns measurement-function-lib,
+    owns measurement-function-args,
+    relates measure;
+
 required-action sub relation,
     owns start-time,
     owns end-time,
@@ -214,7 +233,8 @@ Measure sub entity,
     plays constraint:constraint,
     plays estimation:affected,
     plays measurement:measured-attribute,
-    plays required-action:preference;
+    plays required-action:preference,
+    plays measurement-interface:measure;
 
 EnvironmentalAttribute sub Measure;
 QualityAttribute sub Measure;
