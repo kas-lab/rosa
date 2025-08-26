@@ -13,6 +13,7 @@
 # limitations under the License.
 """ROS wrapper for ROSA's typedb model."""
 import sys
+import importlib
 from datetime import datetime
 
 import rosa_msgs
@@ -85,6 +86,21 @@ def check_lc_active(response):
         return inner
     return _check_lc_active
 
+def get_ros_msg_type_from_string(message_type: str):
+    msg_type_list = message_type.split('/')
+    msg_module = importlib.import_module(msg_type_list[0] + "." + msg_type_list[1])
+    return getattr(msg_module, msg_type_list[2])
+
+_QOS_DICT = {
+    ('reliability', 'BEST_EFFORT') : QoSReliabilityPolicy.BEST_EFFORT,
+    ('reliability', 'RELIABLE') : QoSReliabilityPolicy.RELIABLE,
+    ('history', 'KEEP_LAST') : QoSHistoryPolicy.KEEP_LAST,
+    ('history', 'KEEP_ALL') : QoSHistoryPolicy.KEEP_ALL,
+    ('durability', 'TRANSIENT_LOCAL') : QoSDurabilityPolicy.TRANSIENT_LOCAL,
+    ('durability', 'VOLATILE') : QoSDurabilityPolicy.VOLATILE,
+    ('liveliness', 'AUTOMATIC') : QoSLivelinessPolicy.AUTOMATIC,
+    ('liveliness', 'MANUAL') : QoSLivelinessPolicy.MANUAL_BY_TOPIC,
+}
 
 class RosaKB(ROSTypeDBInterface):
     """ROS lifecycle node implementing ROSA's KB."""

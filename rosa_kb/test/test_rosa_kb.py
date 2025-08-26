@@ -65,6 +65,7 @@ from ros_typedb_msgs.srv import Query
 
 from rclpy.node import Node
 
+from rosa_kb.rosa_kb_typedb import get_ros_msg_type_from_string
 
 @launch_pytest.fixture
 def generate_test_description():
@@ -108,6 +109,11 @@ def rosa_kb_node():
     finally:
         if rclpy.ok():
             rclpy.shutdown()
+
+def test_get_ros_msg_type_from_string():
+    import rcl_interfaces
+    assert get_ros_msg_type_from_string('rcl_interfaces/msg/ParameterEvent') == rcl_interfaces.msg.ParameterEvent
+    assert get_ros_msg_type_from_string('rosa_msgs/srv/ActionQuery') == ActionQuery
 
 @pytest.mark.launch(fixture=generate_test_description)
 def test_rosa_kb_lc_states(rosa_kb_node):
