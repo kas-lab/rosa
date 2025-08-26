@@ -654,3 +654,46 @@ def test_get_active_component_process(kb_interface):
 ])
 def test_has_action(kb_interface, action_name, result):
     assert kb_interface.has_action(action_name) == result
+
+def test_get_measures_inferfaces(kb_interface):
+    interfaces = kb_interface.get_measures_inferfaces()
+    qa_test_topic_dict = {
+        'type': 'topic-interface',
+        'measure-name': 'qa_test_topic',
+        'measurement-interface-name': '/subscription',
+        'measurement-interface-type': 'std_msgs/msg/Float64',
+        'measurement-function-name': 'get_data_field',
+        'measurement-function-lib': 'rosa_monitor.monitor_functions',
+        'measurement-function-args': 'data',
+    }
+    qa_test_topic_dict_2 = {
+        'type': 'topic-interface',
+        'measure-name': 'qa_test_topic_2',
+        'measurement-interface-name': '/subscription',
+        'measurement-interface-type': 'std_msgs/msg/Float64',
+        'qos': {
+            'reliability' : 'RELIABLE',
+            'history': 'KEEP_LAST',
+            'depth': 10,
+            'durability': 'VOLATILE',
+            'lifespan': 0.0,
+            'deadline': 0.0,
+            'liveliness': 'AUTOMATIC',
+            'lease-duration': 0.0,
+        }
+    }
+    qa_test_service_dict = {
+        'type': 'service-interface',
+        'measure-name': 'qa_test_service',
+        'measurement-interface-name': '/service',
+        'measurement-interface-type': 'std_srvs/srv/SetBool',
+        'measurement-function-name': 'get_data_field',
+        'measurement-function-lib': 'rosa_monitor.monitor_functions',
+        'measurement-function-args': 'success',
+        'rate': 10.0,
+    }
+
+    assert len(interfaces) == 3
+    assert qa_test_topic_dict in interfaces
+    assert qa_test_topic_dict_2 in interfaces
+    assert qa_test_service_dict in interfaces
