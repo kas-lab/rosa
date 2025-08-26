@@ -93,38 +93,43 @@ def generate_test_description():
         rosa_kb_node,
     ])
 
+@pytest.fixture
+def rosa_kb_node():
+    rclpy.init()
+    node = MakeTestNode()
+
+    # force-create the default executor once; prevents shutdown AttributeError
+    rclpy.spin_once(node, timeout_sec=0.0)
+
+    yield node
+
+    try:
+        node.destroy_node()
+    finally:
+        if rclpy.ok():
+            rclpy.shutdown()
 
 @pytest.mark.launch(fixture=generate_test_description)
-def test_rosa_kb_lc_states():
-    rclpy.init()
-    try:
-        node = MakeTestNode()
-        node.start_node()
+def test_rosa_kb_lc_states(rosa_kb_node):
+    configure_res = rosa_kb_node.change_node_state(1)
+    get_inactive_state_res = rosa_kb_node.get_node_state()
 
-        configure_res = node.change_node_state(1)
-        get_inactive_state_res = node.get_node_state()
+    activate_res = rosa_kb_node.change_node_state(3)
+    get_active_state_res = rosa_kb_node.get_node_state()
 
-        activate_res = node.change_node_state(3)
-        get_active_state_res = node.get_node_state()
-
-        assert configure_res.success is True and \
-            get_inactive_state_res.current_state.id == 2 and \
-            activate_res.success is True and \
+    assert configure_res.success is True and \
+        get_inactive_state_res.current_state.id == 2 and \
+        activate_res.success is True and \
             get_active_state_res.current_state.id == 3
-    finally:
-        rclpy.shutdown()
-
 
 # @pytest.mark.skip(
 #     reason='Bugs when publishing')
 @pytest.mark.launch(fixture=generate_test_description)
-def test_rosa_kb_diagnostics():
-    rclpy.init()
+def test_rosa_kb_diagnostics(rosa_kb_node):
     traceback_logger = rclpy.logging.get_logger('node_class_traceback_logger')
     try:
-        node = MakeTestNode()
-        node.start_node()
-        node.activate_rosa_kb()
+        rosa_kb_node = MakeTestNode()
+        rosa_kb_node.activate_rosa_kb()
 
         status_msg = DiagnosticStatus()
         status_msg.level = DiagnosticStatus.OK
@@ -154,12 +159,12 @@ def test_rosa_kb_diagnostics():
         status_msg3.message = 'component status'
 
         diag_msg = DiagnosticArray()
-        diag_msg.header.stamp = node.get_clock().now().to_msg()
+        diag_msg.header.stamp = rosa_kb_node.get_clock().now().to_msg()
         diag_msg.status.append(status_msg)
         diag_msg.status.append(status_msg2)
         diag_msg.status.append(status_msg3)
 
-        node.diagnostics_pub.publish(diag_msg)
+        rosa_kb_node.diagnostics_pub.publish(diag_msg)
 
         query_req = Query.Request()
         query_req.query_type = 'fetch'
@@ -170,7 +175,7 @@ def test_rosa_kb_diagnostics():
                     has measurement-value $measurement;
             fetch $measurement;
         """
-        query_res = node.call_service(node.query_srv, query_req)
+        query_res = rosa_kb_node.call_service(rosa_kb_node.query_srv, query_req)
 
         measurement = Attribute(
             name='measurement',
@@ -185,7 +190,7 @@ def test_rosa_kb_diagnostics():
                 has component-status $c_status;
             fetch $c_status;
         """
-        query_res2 = node.call_service(node.query_srv, query_req)
+        query_res2 = rosa_kb_node.call_service(rosa_kb_node.query_srv, query_req)
         c_status = Attribute(
             name='c_status',
             label='component-status',
@@ -199,7 +204,7 @@ def test_rosa_kb_diagnostics():
                 has component-status $c_status;
             fetch $c_status;
         """
-        query_res3 = node.call_service(node.query_srv, query_req)
+        query_res3 = rosa_kb_node.call_service(rosa_kb_node.query_srv, query_req)
         c_status2 = Attribute(
             name='c_status',
             label='component-status',
@@ -225,82 +230,66 @@ def test_rosa_kb_diagnostics():
     except Exception as exception:
         traceback_logger.error(traceback.format_exc())
         raise exception
-    finally:
-        rclpy.shutdown()
-
 
 @pytest.mark.parametrize("name, is_required", [
     ('action1', True),
     ('action_required', False),
 ])
 @pytest.mark.launch(fixture=generate_test_description)
-def test_rosa_kb_action_request(name, is_required):
-    rclpy.init()
-    try:
-        node = MakeTestNode()
-        node.start_node()
-        node.activate_rosa_kb()
+def test_rosa_kb_action_request(rosa_kb_node, name, is_required):
+    rosa_kb_node.activate_rosa_kb()
 
-        request = ActionQuery.Request()
-        request.action.name = name
-        request.action.is_required = is_required
-        request.preference = 'ea1'
+    request = ActionQuery.Request()
+    request.action.name = name
+    request.action.is_required = is_required
+    request.preference = 'ea1'
 
-        response = node.call_service(node.action_req_srv, request)
+    response = rosa_kb_node.call_service(rosa_kb_node.action_req_srv, request)
 
-        query_req = Query.Request()
-        query_req.query_type = 'fetch'
-        query_req.query = f"""
-            match $ea isa Action,
-                has action-name "{name}",
-                has is-required $action-required;
-            fetch $action-required;
-        """
-        query_res = node.call_service(node.query_srv, query_req)
-        correct_res = False
-        for result in query_res.results:
-            for r in result.attributes:
-                if r.name == 'action-required' \
-                   and r.value.bool_value is is_required:
-                    correct_res = True
+    query_req = Query.Request()
+    query_req.query_type = 'fetch'
+    query_req.query = f"""
+        match $ea isa Action,
+            has action-name "{name}",
+            has is-required $action-required;
+        fetch $action-required;
+    """
+    query_res = rosa_kb_node.call_service(rosa_kb_node.query_srv, query_req)
+    correct_res = False
+    for result in query_res.results:
+        for r in result.attributes:
+            if r.name == 'action-required' \
+                and r.value.bool_value is is_required:
+                correct_res = True
 
-        if len(query_res.results) == 0 and is_required is False:
-            correct_res = True
+    if len(query_res.results) == 0 and is_required is False:
+        correct_res = True
 
-        assert response.success is True and correct_res is True
-    finally:
-        rclpy.shutdown()
-
+    assert response.success is True and correct_res is True
 
 @pytest.mark.launch(fixture=generate_test_description)
-def test_rosa_kb_action_insert():
-    rclpy.init()
-    try:
-        node = MakeTestNode()
-        node.start_node()
-        node.activate_rosa_kb()
-        node.insert_srv = node.create_client(
-            ActionQuery, '/rosa_kb/action/insert')
+def test_rosa_kb_action_insert(rosa_kb_node):
+    rosa_kb_node.activate_rosa_kb()
+    rosa_kb_node.insert_srv = rosa_kb_node.create_client(
+        ActionQuery, '/rosa_kb/action/insert')
 
-        name = 'action_insert_test'
+    name = 'action_insert_test'
 
-        request = ActionQuery.Request()
-        request.action.name = name
+    request = ActionQuery.Request()
+    request.action.name = name
 
-        response = node.call_service(node.insert_srv, request)
+    response = rosa_kb_node.call_service(rosa_kb_node.insert_srv, request)
 
-        query_req = Query.Request()
-        query_req.query_type = 'get_aggregate'
-        query_req.query = f"""
-            match $action isa Action,
-                has action-name "{name}";
-            get;
-            count;
-        """
-        query_res = node.call_service(node.query_srv, query_req)
-        assert response.success is True and len(query_res.results) > 0
-    finally:
-        rclpy.shutdown()
+    query_req = Query.Request()
+    query_req.query_type = 'get_aggregate'
+    query_req.query = f"""
+        match $action isa Action,
+            has action-name "{name}";
+        get;
+        count;
+    """
+    query_res = rosa_kb_node.call_service(rosa_kb_node.query_srv, query_req)
+    assert response.success is True and len(query_res.results) > 0
 
 
 @pytest.mark.parametrize("action_name, result", [
@@ -308,793 +297,652 @@ def test_rosa_kb_action_insert():
     ('action_not_in_model', False),
 ])
 @pytest.mark.launch(fixture=generate_test_description)
-def test_rosa_kb_action_exists(action_name, result):
-    rclpy.init()
-    try:
-        node = MakeTestNode()
-        node.start_node()
-        node.activate_rosa_kb()
-        node.exists_srv = node.create_client(
-            ActionQuery, '/rosa_kb/action/exists')
+def test_rosa_kb_action_exists(rosa_kb_node, action_name, result):
+    rosa_kb_node.activate_rosa_kb()
+    rosa_kb_node.exists_srv = rosa_kb_node.create_client(
+        ActionQuery, '/rosa_kb/action/exists')
 
-        request = ActionQuery.Request()
-        request.action.name = action_name
+    request = ActionQuery.Request()
+    request.action.name = action_name
 
-        response = node.call_service(node.exists_srv, request)
+    response = rosa_kb_node.call_service(rosa_kb_node.exists_srv, request)
 
-        assert response.success == result
-    finally:
-        rclpy.shutdown()
+    assert response.success == result
+
+@pytest.mark.launch(fixture=generate_test_description)
+def test_rosa_kb_function_insert(rosa_kb_node):
+    rosa_kb_node.activate_rosa_kb()
+    rosa_kb_node.insert_srv = rosa_kb_node.create_client(
+        FunctionQuery, '/rosa_kb/function/insert')
+
+    name = 'function_insert_test'
+
+    request = FunctionQuery.Request()
+    request.function.name = name
+
+    response = rosa_kb_node.call_service(rosa_kb_node.insert_srv, request)
+
+    query_req = Query.Request()
+    query_req.query_type = 'get_aggregate'
+    query_req.query = f"""
+        match $function isa Function,
+            has function-name "{name}";
+            get;
+            count;
+    """
+    query_res = rosa_kb_node.call_service(rosa_kb_node.query_srv, query_req)
+    assert response.success is True and len(query_res.results) > 0
+
+@pytest.mark.launch(fixture=generate_test_description)
+def test_rosa_kb_component_insert(rosa_kb_node):
+    rosa_kb_node.activate_rosa_kb()
+    rosa_kb_node.insert_srv = rosa_kb_node.create_client(
+        ComponentQuery, '/rosa_kb/component/insert')
+
+    name = 'component_insert_test'
+
+    request = ComponentQuery.Request()
+    request.component.name = name
+    request.component.package = 'rosa_kb'
+    request.component.executable = 'rosa_test'
+    request.component.node_type = 'LifeCycleNode'
+
+    response = rosa_kb_node.call_service(rosa_kb_node.insert_srv, request)
+
+    query_req = Query.Request()
+    query_req.query_type = 'get_aggregate'
+    query_req.query = f"""
+        match $component isa LifeCycleNode,
+            has component-name "{name}",
+            has package "rosa_kb",
+            has executable "rosa_test";
+            get;
+            count;
+    """
+    query_res = rosa_kb_node.call_service(rosa_kb_node.query_srv, query_req)
+    assert response.success is True and len(query_res.results) > 0
 
 
 @pytest.mark.launch(fixture=generate_test_description)
-def test_rosa_kb_function_insert():
-    rclpy.init()
-    try:
-        node = MakeTestNode()
-        node.start_node()
-        node.activate_rosa_kb()
-        node.insert_srv = node.create_client(
-            FunctionQuery, '/rosa_kb/function/insert')
+def test_rosa_kb_function_design_insert(rosa_kb_node):
+    rosa_kb_node.activate_rosa_kb()
 
-        name = 'function_insert_test'
+    f_name = 'f_function_design_insert_test'
+    rosa_kb_node.function_insert_srv = rosa_kb_node.create_client(
+        FunctionQuery, '/rosa_kb/function/insert')
 
-        request = FunctionQuery.Request()
-        request.function.name = name
+    request = FunctionQuery.Request()
+    request.function.name = f_name
+    response = rosa_kb_node.call_service(rosa_kb_node.function_insert_srv, request)
 
-        response = node.call_service(node.insert_srv, request)
+    c_names = [
+        'c_function_design_insert_test',
+        'c2_function_design_insert_test'
+    ]
+    rosa_kb_node.component_insert_srv = rosa_kb_node.create_client(
+        ComponentQuery, '/rosa_kb/component/insert')
 
-        query_req = Query.Request()
-        query_req.query_type = 'get_aggregate'
-        query_req.query = f"""
-            match $function isa Function,
-                has function-name "{name}";
-                get;
-                count;
-        """
-        query_res = node.call_service(node.query_srv, query_req)
-        assert response.success is True and len(query_res.results) > 0
-    finally:
-        rclpy.shutdown()
+    request = ComponentQuery.Request()
+    request.component.name = c_names[0]
+    request.component.package = 'package'
+    request.component.executable = 'executable'
+    response = rosa_kb_node.call_service(rosa_kb_node.component_insert_srv, request)
+    request = ComponentQuery.Request()
+    request.component.name = c_names[1]
+    request.component.package = 'package'
+    request.component.executable = 'executable'
+    response = rosa_kb_node.call_service(rosa_kb_node.component_insert_srv, request)
 
+    fd_name = 'function_design_insert_test'
+    rosa_kb_node.fd_insert_srv = rosa_kb_node.create_client(
+        FunctionDesignQuery, '/rosa_kb/function_design/insert')
 
-@pytest.mark.launch(fixture=generate_test_description)
-def test_rosa_kb_component_insert():
-    rclpy.init()
-    try:
-        node = MakeTestNode()
-        node.start_node()
-        node.activate_rosa_kb()
-        node.insert_srv = node.create_client(
-            ComponentQuery, '/rosa_kb/component/insert')
+    request = FunctionDesignQuery.Request()
+    request.function_design.name = fd_name
+    request.function_design.priority = 1.5
+    request.function_design.function.name = f_name
+    request.function_design.required_components = [
+        Component(name=c_names[0]),
+        Component(name=c_names[1]),
+    ]
+    response = rosa_kb_node.call_service(rosa_kb_node.fd_insert_srv, request)
 
-        name = 'component_insert_test'
+    query_req = Query.Request()
+    query_req.query_type = 'fetch'
+    query_req.query = f"""
+        match
+            $fd (function: $f, required-component: $c)
+                isa function-design,
+            has function-design-name "{fd_name}",
+            has priority $priority;
+            $f has function-name $f_name;
+            $c has component-name $c_name;
+        fetch $priority; $f_name; $c_name;
+    """
+    query_res = rosa_kb_node.call_service(rosa_kb_node.query_srv, query_req)
+    correct_function = False
+    correct_components = False
+    correct_priority = False
+    for result in query_res.results:
+        for attr in result.attributes:
+            if attr.name == 'c_name' and attr.value.string_value in c_names:
+                correct_components = True
+            elif attr.name == 'c_name':
+                correct_components = False
 
-        request = ComponentQuery.Request()
-        request.component.name = name
-        request.component.package = 'rosa_kb'
-        request.component.executable = 'rosa_test'
-        request.component.node_type = 'LifeCycleNode'
+            if attr.name == 'f_name' \
+                and attr.value.string_value == 'f_function_design_insert_test':
+                correct_function = True
 
-        response = node.call_service(node.insert_srv, request)
+            if attr.name == 'priority' and attr.value.double_value == 1.5:
+                correct_priority = True
 
-        query_req = Query.Request()
-        query_req.query_type = 'get_aggregate'
-        query_req.query = f"""
-            match $component isa LifeCycleNode,
-                has component-name "{name}",
-                has package "rosa_kb",
-                has executable "rosa_test";
-                get;
-                count;
-        """
-        query_res = node.call_service(node.query_srv, query_req)
-        assert response.success is True and len(query_res.results) > 0
-    finally:
-        rclpy.shutdown()
-
-
-@pytest.mark.launch(fixture=generate_test_description)
-def test_rosa_kb_function_design_insert():
-    rclpy.init()
-    try:
-        node = MakeTestNode()
-        node.start_node()
-        node.activate_rosa_kb()
-
-        f_name = 'f_function_design_insert_test'
-        node.function_insert_srv = node.create_client(
-            FunctionQuery, '/rosa_kb/function/insert')
-
-        request = FunctionQuery.Request()
-        request.function.name = f_name
-        response = node.call_service(node.function_insert_srv, request)
-
-        c_names = [
-            'c_function_design_insert_test',
-            'c2_function_design_insert_test'
-        ]
-        node.component_insert_srv = node.create_client(
-            ComponentQuery, '/rosa_kb/component/insert')
-
-        request = ComponentQuery.Request()
-        request.component.name = c_names[0]
-        request.component.package = 'package'
-        request.component.executable = 'executable'
-        response = node.call_service(node.component_insert_srv, request)
-        request = ComponentQuery.Request()
-        request.component.name = c_names[1]
-        request.component.package = 'package'
-        request.component.executable = 'executable'
-        response = node.call_service(node.component_insert_srv, request)
-
-        fd_name = 'function_design_insert_test'
-        node.fd_insert_srv = node.create_client(
-            FunctionDesignQuery, '/rosa_kb/function_design/insert')
-
-        request = FunctionDesignQuery.Request()
-        request.function_design.name = fd_name
-        request.function_design.priority = 1.5
-        request.function_design.function.name = f_name
-        request.function_design.required_components = [
-            Component(name=c_names[0]),
-            Component(name=c_names[1]),
-        ]
-        response = node.call_service(node.fd_insert_srv, request)
-
-        query_req = Query.Request()
-        query_req.query_type = 'fetch'
-        query_req.query = f"""
-            match
-                $fd (function: $f, required-component: $c)
-                    isa function-design,
-                has function-design-name "{fd_name}",
-                has priority $priority;
-                $f has function-name $f_name;
-                $c has component-name $c_name;
-            fetch $priority; $f_name; $c_name;
-        """
-        query_res = node.call_service(node.query_srv, query_req)
-        correct_function = False
-        correct_components = False
-        correct_priority = False
-        for result in query_res.results:
-            for attr in result.attributes:
-                if attr.name == 'c_name' and attr.value.string_value in c_names:
-                    correct_components = True
-                elif attr.name == 'c_name':
-                    correct_components = False
-
-                if attr.name == 'f_name' \
-                   and attr.value.string_value == 'f_function_design_insert_test':
-                    correct_function = True
-
-                if attr.name == 'priority' and attr.value.double_value == 1.5:
-                    correct_priority = True
-
-        assert response.success is True and correct_function and \
-            correct_components and correct_priority
-    finally:
-        rclpy.shutdown()
-
+    assert response.success is True and correct_function and \
+        correct_components and correct_priority
 
 @pytest.mark.launch(fixture=generate_test_description)
-def test_rosa_kb_functional_requirement_insert():
-    rclpy.init()
-    try:
-        node = MakeTestNode()
-        node.start_node()
-        node.activate_rosa_kb()
+def test_rosa_kb_functional_requirement_insert(rosa_kb_node):
+    rosa_kb_node.activate_rosa_kb()
 
-        a_name = 'action_insert_test'
-        node.action_insert_srv = node.create_client(
-            ActionQuery, '/rosa_kb/action/insert')
-        request = ActionQuery.Request()
-        request.action.name = a_name
-        response = node.call_service(node.action_insert_srv, request)
+    a_name = 'action_insert_test'
+    rosa_kb_node.action_insert_srv = rosa_kb_node.create_client(
+        ActionQuery, '/rosa_kb/action/insert')
+    request = ActionQuery.Request()
+    request.action.name = a_name
+    response = rosa_kb_node.call_service(rosa_kb_node.action_insert_srv, request)
 
-        f_name = 'f_functional_requirement_insert_test'
-        node.function_insert_srv = node.create_client(
-            FunctionQuery, '/rosa_kb/function/insert')
+    f_name = 'f_functional_requirement_insert_test'
+    rosa_kb_node.function_insert_srv = rosa_kb_node.create_client(
+        FunctionQuery, '/rosa_kb/function/insert')
 
-        request = FunctionQuery.Request()
-        request.function.name = f_name
-        response = node.call_service(node.function_insert_srv, request)
+    request = FunctionQuery.Request()
+    request.function.name = f_name
+    response = rosa_kb_node.call_service(rosa_kb_node.function_insert_srv, request)
 
-        node.fr_insert_srv = node.create_client(
-            FunctionalRequirementQuery,
-            '/rosa_kb/functional_requirement/insert')
+    rosa_kb_node.fr_insert_srv = rosa_kb_node.create_client(
+        FunctionalRequirementQuery,
+        '/rosa_kb/functional_requirement/insert')
 
-        request = FunctionalRequirementQuery.Request()
-        request.functional_requirement.action.name = a_name
-        request.functional_requirement.required_functions = [
-            Function(name=f_name),
-        ]
-        response = node.call_service(node.fr_insert_srv, request)
+    request = FunctionalRequirementQuery.Request()
+    request.functional_requirement.action.name = a_name
+    request.functional_requirement.required_functions = [
+        Function(name=f_name),
+    ]
+    response = rosa_kb_node.call_service(rosa_kb_node.fr_insert_srv, request)
 
-        query_req = Query.Request()
-        query_req.query_type = 'get_aggregate'
-        query_req.query = f"""
-            match
-                $a has action-name "{a_name}";
-                $f has function-name "{f_name}";
-                $fr (action: $a, required-function: $f)
-                    isa functional-requirement;
-                get;
-                count;
-        """
-        query_res = node.call_service(node.query_srv, query_req)
-        assert response.success is True and len(query_res.results) > 0
-    finally:
-        rclpy.shutdown()
-
+    query_req = Query.Request()
+    query_req.query_type = 'get_aggregate'
+    query_req.query = f"""
+        match
+            $a has action-name "{a_name}";
+            $f has function-name "{f_name}";
+            $fr (action: $a, required-function: $f)
+                isa functional-requirement;
+            get;
+            count;
+    """
+    query_res = rosa_kb_node.call_service(rosa_kb_node.query_srv, query_req)
+    assert response.success is True and len(query_res.results) > 0
 
 @pytest.mark.launch(fixture=generate_test_description)
-def test_rosa_kb_component_process_insert():
-    rclpy.init()
-    try:
-        node = MakeTestNode()
-        node.start_node()
-        node.activate_rosa_kb()
+def test_rosa_kb_component_process_insert(rosa_kb_node):
+    rosa_kb_node.activate_rosa_kb()
 
-        c_name = 'c_component_process_insert_test'
-        node.component_insert_srv = node.create_client(
-            ComponentQuery, '/rosa_kb/component/insert')
+    c_name = 'c_component_process_insert_test'
+    rosa_kb_node.component_insert_srv = rosa_kb_node.create_client(
+        ComponentQuery, '/rosa_kb/component/insert')
 
-        request = ComponentQuery.Request()
-        request.component.name = c_name
-        request.component.package = 'package'
-        request.component.executable = 'executable'
-        response = node.call_service(node.component_insert_srv, request)
+    request = ComponentQuery.Request()
+    request.component.name = c_name
+    request.component.package = 'package'
+    request.component.executable = 'executable'
+    response = rosa_kb_node.call_service(rosa_kb_node.component_insert_srv, request)
 
-        c_process_pid = 65755
-        node.component_process_insert_srv = node.create_client(
-            ComponentProcessQuery, '/rosa_kb/component_process/insert')
+    c_process_pid = 65755
+    rosa_kb_node.component_process_insert_srv = rosa_kb_node.create_client(
+        ComponentProcessQuery, '/rosa_kb/component_process/insert')
 
-        request = ComponentProcessQuery.Request()
-        request.component_process.component.name = c_name
-        request.component_process.pid = c_process_pid
-        response = node.call_service(
-            node.component_process_insert_srv, request)
+    request = ComponentProcessQuery.Request()
+    request.component_process.component.name = c_name
+    request.component_process.pid = c_process_pid
+    response = rosa_kb_node.call_service(
+        rosa_kb_node.component_process_insert_srv, request)
 
-        query_req = Query.Request()
-        query_req.query_type = 'get_aggregate'
-        query_req.query = f"""
-            match
-                $c has component-name "{c_name}";
-                $cp (component: $c) isa component-process;
-                get;
-                count;
-        """
-        query_res = node.call_service(node.query_srv, query_req)
-        assert response.success is True and len(query_res.results) > 0
-    finally:
-        rclpy.shutdown()
-
+    query_req = Query.Request()
+    query_req.query_type = 'get_aggregate'
+    query_req.query = f"""
+        match
+            $c has component-name "{c_name}";
+            $cp (component: $c) isa component-process;
+            get;
+            count;
+    """
+    query_res = rosa_kb_node.call_service(rosa_kb_node.query_srv, query_req)
+    assert response.success is True and len(query_res.results) > 0
 
 @pytest.mark.launch(fixture=generate_test_description)
-def test_rosa_kb_component_process_get_active():
-    rclpy.init()
-    try:
-        node = MakeTestNode()
-        node.start_node()
-        node.activate_rosa_kb()
+def test_rosa_kb_component_process_get_active(rosa_kb_node):
+    rosa_kb_node.activate_rosa_kb()
 
-        c_name = 'c_component_process_insert_test'
-        node.component_insert_srv = node.create_client(
-            ComponentQuery, '/rosa_kb/component/insert')
+    c_name = 'c_component_process_insert_test'
+    rosa_kb_node.component_insert_srv = rosa_kb_node.create_client(
+        ComponentQuery, '/rosa_kb/component/insert')
 
-        request = ComponentQuery.Request()
-        request.component.name = c_name
-        request.component.package = 'package'
-        request.component.executable = 'executable'
-        node.call_service(node.component_insert_srv, request)
+    request = ComponentQuery.Request()
+    request.component.name = c_name
+    request.component.package = 'package'
+    request.component.executable = 'executable'
+    rosa_kb_node.call_service(rosa_kb_node.component_insert_srv, request)
 
-        c_process_pid = 65755
-        node.component_process_insert_srv = node.create_client(
-            ComponentProcessQuery, '/rosa_kb/component_process/insert')
+    c_process_pid = 65755
+    rosa_kb_node.component_process_insert_srv = rosa_kb_node.create_client(
+        ComponentProcessQuery, '/rosa_kb/component_process/insert')
 
-        request = ComponentProcessQuery.Request()
-        request.component_process.component.name = c_name
-        request.component_process.pid = c_process_pid
-        node.call_service(node.component_process_insert_srv, request)
+    request = ComponentProcessQuery.Request()
+    request.component_process.component.name = c_name
+    request.component_process.pid = c_process_pid
+    rosa_kb_node.call_service(rosa_kb_node.component_process_insert_srv, request)
 
-        node.component_process_get_active_srv = node.create_client(
-            ComponentProcessQueryArray,
-            '/rosa_kb/component_process/get_active'
-        )
+    rosa_kb_node.component_process_get_active_srv = rosa_kb_node.create_client(
+        ComponentProcessQueryArray,
+        '/rosa_kb/component_process/get_active'
+    )
 
-        response_get = node.call_service(
-            node.component_process_get_active_srv,
-            ComponentProcessQueryArray.Request()
-        )
-        assert response_get.success is True and \
-            response_get.component_process[0].pid == c_process_pid and \
-            response_get.component_process[0].component.name == c_name
-
-    finally:
-        rclpy.shutdown()
-
+    response_get = rosa_kb_node.call_service(
+        rosa_kb_node.component_process_get_active_srv,
+        ComponentProcessQueryArray.Request()
+    )
+    assert response_get.success is True and \
+        response_get.component_process[0].pid == c_process_pid and \
+        response_get.component_process[0].component.name == c_name
 
 @pytest.mark.launch(fixture=generate_test_description)
-def test_rosa_kb_component_process_set_end_active():
-    rclpy.init()
-    try:
-        node = MakeTestNode()
-        node.start_node()
-        node.activate_rosa_kb()
+def test_rosa_kb_component_process_set_end_active(rosa_kb_node):
+    rosa_kb_node.activate_rosa_kb()
 
-        c_name = 'c_component_process_insert_test'
-        node.component_insert_srv = node.create_client(
-            ComponentQuery, '/rosa_kb/component/insert')
+    c_name = 'c_component_process_insert_test'
+    rosa_kb_node.component_insert_srv = rosa_kb_node.create_client(
+        ComponentQuery, '/rosa_kb/component/insert')
 
-        request = ComponentQuery.Request()
-        request.component.name = c_name
-        request.component.package = 'package'
-        request.component.executable = 'executable'
-        node.call_service(node.component_insert_srv, request)
+    request = ComponentQuery.Request()
+    request.component.name = c_name
+    request.component.package = 'package'
+    request.component.executable = 'executable'
+    rosa_kb_node.call_service(rosa_kb_node.component_insert_srv, request)
 
-        c_process_pid = 65755
-        node.component_process_insert_srv = node.create_client(
-            ComponentProcessQuery, '/rosa_kb/component_process/insert')
+    c_process_pid = 65755
+    rosa_kb_node.component_process_insert_srv = rosa_kb_node.create_client(
+        ComponentProcessQuery, '/rosa_kb/component_process/insert')
 
-        request = ComponentProcessQuery.Request()
-        request.component_process.component.name = c_name
-        request.component_process.pid = c_process_pid
-        node.call_service(node.component_process_insert_srv, request)
+    request = ComponentProcessQuery.Request()
+    request.component_process.component.name = c_name
+    request.component_process.pid = c_process_pid
+    rosa_kb_node.call_service(rosa_kb_node.component_process_insert_srv, request)
 
-        node.component_process_get_active_srv = node.create_client(
-            ComponentProcessQueryArray,
-            '/rosa_kb/component_process/get_active'
-        )
+    rosa_kb_node.component_process_get_active_srv = rosa_kb_node.create_client(
+        ComponentProcessQueryArray,
+        '/rosa_kb/component_process/get_active'
+    )
 
-        response_get = node.call_service(
-            node.component_process_get_active_srv,
-            ComponentProcessQueryArray.Request()
-        )
+    response_get = rosa_kb_node.call_service(
+        rosa_kb_node.component_process_get_active_srv,
+        ComponentProcessQueryArray.Request()
+    )
 
-        node.component_process_set_end_srv = node.create_client(
-            ComponentProcessQuery,
-            '/rosa_kb/component_process/end/set'
-        )
+    rosa_kb_node.component_process_set_end_srv = rosa_kb_node.create_client(
+        ComponentProcessQuery,
+        '/rosa_kb/component_process/end/set'
+    )
 
-        response_set_end = node.call_service(
-            node.component_process_set_end_srv,
-            ComponentProcessQuery.Request(
-                component_process=ComponentProcess(
-                    start_time=response_get.component_process[0].start_time))
-        )
+    response_set_end = rosa_kb_node.call_service(
+        rosa_kb_node.component_process_set_end_srv,
+        ComponentProcessQuery.Request(
+            component_process=ComponentProcess(
+                start_time=response_get.component_process[0].start_time))
+    )
 
-        query_req = Query.Request()
-        query_req.query_type = 'get_aggregate'
-        query_req.query = f"""
-            match
-                $c has component-name "{c_name}";
-                $cp (component: $c) isa component-process,
-                    has end-time $time;
-                get;
-                count;
-        """
-        query_res = node.call_service(node.query_srv, query_req)
+    query_req = Query.Request()
+    query_req.query_type = 'get_aggregate'
+    query_req.query = f"""
+        match
+            $c has component-name "{c_name}";
+            $cp (component: $c) isa component-process,
+                has end-time $time;
+            get;
+            count;
+    """
+    query_res = rosa_kb_node.call_service(rosa_kb_node.query_srv, query_req)
 
-        assert response_set_end.success is True and \
-            len(query_res.results) > 0
-
-    finally:
-        rclpy.shutdown()
-
+    assert response_set_end.success is True and \
+        len(query_res.results) > 0
 
 @pytest.mark.launch(fixture=generate_test_description)
-def test_rosa_kb_action_selectable():
-    rclpy.init()
-    try:
-        node = MakeTestNode()
-        node.start_node()
-        node.activate_rosa_kb()
+def test_rosa_kb_action_selectable(rosa_kb_node):
+    rosa_kb_node.activate_rosa_kb()
 
-        request = ActionQueryArray.Request()
-        response = node.call_service(node.action_selectable_srv, request)
-        res_names = [r.name for r in response.actions]
-        expected_result = [
-            'action_feasible', 'action_required_solved']
-        assert ('action_unfeasible' not in res_names) \
-            and all(r in res_names for r in expected_result)
-    finally:
-        rclpy.shutdown()
-
+    request = ActionQueryArray.Request()
+    response = rosa_kb_node.call_service(rosa_kb_node.action_selectable_srv, request)
+    res_names = [r.name for r in response.actions]
+    expected_result = [
+        'action_feasible', 'action_required_solved']
+    assert ('action_unfeasible' not in res_names) \
+        and all(r in res_names for r in expected_result)
 
 @pytest.mark.launch(fixture=generate_test_description)
-def test_rosa_kb_functions_adaptable():
-    rclpy.init()
-    try:
-        node = MakeTestNode()
-        node.start_node()
-        node.activate_rosa_kb()
-        node.function_adaptable_srv = node.create_client(
-            AdaptableFunctions, '/rosa_kb/function/adaptable')
+def test_rosa_kb_functions_adaptable(rosa_kb_node):
+    rosa_kb_node.activate_rosa_kb()
+    rosa_kb_node.function_adaptable_srv = rosa_kb_node.create_client(
+        AdaptableFunctions, '/rosa_kb/function/adaptable')
 
-        request = AdaptableFunctions.Request()
-        response = node.call_service(node.function_adaptable_srv, request)
-        result = [r.name for r in response.functions]
-        expected_result = ['f_unsolved', 'f_always_improve']
-        assert all(r in result for r in expected_result) \
-            and response.success is True
-    finally:
-        rclpy.shutdown()
-
+    request = AdaptableFunctions.Request()
+    response = rosa_kb_node.call_service(rosa_kb_node.function_adaptable_srv, request)
+    result = [r.name for r in response.functions]
+    expected_result = ['f_unsolved', 'f_always_improve']
+    assert all(r in result for r in expected_result) \
+        and response.success is True
 
 @pytest.mark.launch(fixture=generate_test_description)
-def test_rosa_kb_components_adaptable():
-    rclpy.init()
-    try:
-        node = MakeTestNode()
-        node.start_node()
-        node.activate_rosa_kb()
-        node.component_adaptable_srv = node.create_client(
-            AdaptableComponents, '/rosa_kb/component/adaptable')
+def test_rosa_kb_components_adaptable(rosa_kb_node):
+    rosa_kb_node.activate_rosa_kb()
+    rosa_kb_node.component_adaptable_srv = rosa_kb_node.create_client(
+        AdaptableComponents, '/rosa_kb/component/adaptable')
 
-        request = AdaptableComponents.Request()
-        response = node.call_service(node.component_adaptable_srv, request)
-        result = [r.name for r in response.components]
-        expected_result = ['c_unsolved', 'c_always_improve']
-        assert all(r in result for r in expected_result) \
-            and response.success is True
-    finally:
-        rclpy.shutdown()
-
+    request = AdaptableComponents.Request()
+    response = rosa_kb_node.call_service(rosa_kb_node.component_adaptable_srv, request)
+    result = [r.name for r in response.components]
+    expected_result = ['c_unsolved', 'c_always_improve']
+    assert all(r in result for r in expected_result) \
+        and response.success is True
 
 @pytest.mark.launch(fixture=generate_test_description)
-def test_rosa_kb_selectable_fds():
-    rclpy.init()
-    try:
-        node = MakeTestNode()
-        node.start_node()
-        node.activate_rosa_kb()
-        node.selectable_fds_srv = node.create_client(
-            SelectableFunctionDesigns, '/rosa_kb/function_designs/selectable')
+def test_rosa_kb_selectable_fds(rosa_kb_node):
+    rosa_kb_node.activate_rosa_kb()
+    rosa_kb_node.selectable_fds_srv = rosa_kb_node.create_client(
+        SelectableFunctionDesigns, '/rosa_kb/function_designs/selectable')
 
-        request = SelectableFunctionDesigns.Request()
+    request = SelectableFunctionDesigns.Request()
 
-        _f = Function()
-        _f.name = 'f_fd_feasible_unfeasible'
-        request.function = _f
+    _f = Function()
+    _f.name = 'f_fd_feasible_unfeasible'
+    request.function = _f
 
-        response = node.call_service(node.selectable_fds_srv, request)
-        result = [fd.name for fd in response.fds]
-        expected_result = ['f_fd_feasible']
-        assert all(r in result for r in expected_result) \
-            and response.success is True
-    finally:
-        rclpy.shutdown()
-
+    response = rosa_kb_node.call_service(rosa_kb_node.selectable_fds_srv, request)
+    result = [fd.name for fd in response.fds]
+    expected_result = ['f_fd_feasible']
+    assert all(r in result for r in expected_result) \
+        and response.success is True
 
 @pytest.mark.launch(fixture=generate_test_description)
-def test_rosa_kb_selectable_c_configs():
-    rclpy.init()
-    try:
-        node = MakeTestNode()
-        node.start_node()
-        node.activate_rosa_kb()
-        node.selectable_c_configs_srv = node.create_client(
-            SelectableComponentConfigurations,
-            '/rosa_kb/component_configuration/selectable')
+def test_rosa_kb_selectable_c_configs(rosa_kb_node):
+    rosa_kb_node.activate_rosa_kb()
+    rosa_kb_node.selectable_c_configs_srv = rosa_kb_node.create_client(
+        SelectableComponentConfigurations,
+        '/rosa_kb/component_configuration/selectable')
 
-        request = SelectableComponentConfigurations.Request()
+    request = SelectableComponentConfigurations.Request()
 
-        _c = Component()
-        _c.name = 'c_cc_feasible_unfeasible'
-        request.component = _c
+    _c = Component()
+    _c.name = 'c_cc_feasible_unfeasible'
+    request.component = _c
 
-        response = node.call_service(node.selectable_c_configs_srv, request)
-        result = [c_config.name for c_config in response.c_configs]
-        expected_result = ['c_cc_feasible']
-        assert all(r in result for r in expected_result) \
-            and response.success is True
-    finally:
-        rclpy.shutdown()
-
+    response = rosa_kb_node.call_service(rosa_kb_node.selectable_c_configs_srv, request)
+    result = [c_config.name for c_config in response.c_configs]
+    expected_result = ['c_cc_feasible']
+    assert all(r in result for r in expected_result) \
+        and response.success is True
 
 @pytest.mark.launch(fixture=generate_test_description)
-def test_rosa_kb_get_fds_priority():
-    rclpy.init()
-    try:
-        node = MakeTestNode()
-        node.start_node()
-        node.activate_rosa_kb()
-        node.selectable_fds_srv = node.create_client(
-            SelectableFunctionDesigns, '/rosa_kb/function_designs/selectable')
-        node.fd_priority_srv = node.create_client(
-            GetFunctionDesignPriority, '/rosa_kb/function_designs/priority')
+def test_rosa_kb_get_fds_priority(rosa_kb_node):
+    rosa_kb_node.activate_rosa_kb()
+    rosa_kb_node.selectable_fds_srv = rosa_kb_node.create_client(
+        SelectableFunctionDesigns, '/rosa_kb/function_designs/selectable')
+    rosa_kb_node.fd_priority_srv = rosa_kb_node.create_client(
+        GetFunctionDesignPriority, '/rosa_kb/function_designs/priority')
 
-        request_fds = SelectableFunctionDesigns.Request()
+    request_fds = SelectableFunctionDesigns.Request()
 
-        _f = Function()
-        _f.name = 'f_fd_feasible_unfeasible'
-        request_fds.function = _f
+    _f = Function()
+    _f.name = 'f_fd_feasible_unfeasible'
+    request_fds.function = _f
 
-        response_fd = node.call_service(node.selectable_fds_srv, request_fds)
+    response_fd = rosa_kb_node.call_service(rosa_kb_node.selectable_fds_srv, request_fds)
 
-        request_p = GetFunctionDesignPriority.Request()
-        request_p.fds = response_fd.fds
-        response_p = node.call_service(node.fd_priority_srv, request_p)
-        result = [fd.priority for fd in response_p.fds]
-        expected_result = [1.0]
-        assert all(r in result for r in expected_result) \
-            and response_p.success is True
-    finally:
-        rclpy.shutdown()
-
+    request_p = GetFunctionDesignPriority.Request()
+    request_p.fds = response_fd.fds
+    response_p = rosa_kb_node.call_service(rosa_kb_node.fd_priority_srv, request_p)
+    result = [fd.priority for fd in response_p.fds]
+    expected_result = [1.0]
+    assert all(r in result for r in expected_result) \
+        and response_p.success is True
 
 @pytest.mark.launch(fixture=generate_test_description)
-def test_rosa_kb_get_component_configuration_priority():
-    rclpy.init()
-    try:
-        node = MakeTestNode()
-        node.start_node()
-        node.activate_rosa_kb()
-        node.selectable_c_configs_srv = node.create_client(
-            SelectableComponentConfigurations,
-            '/rosa_kb/component_configuration/selectable')
-        node.c_configs_priority_srv = node.create_client(
-            GetComponentConfigurationPriority,
-            '/rosa_kb/component_configuration/priority')
+def test_rosa_kb_get_component_configuration_priority(rosa_kb_node):
+    rosa_kb_node.activate_rosa_kb()
+    rosa_kb_node.selectable_c_configs_srv = rosa_kb_node.create_client(
+        SelectableComponentConfigurations,
+        '/rosa_kb/component_configuration/selectable')
+    rosa_kb_node.c_configs_priority_srv = rosa_kb_node.create_client(
+        GetComponentConfigurationPriority,
+        '/rosa_kb/component_configuration/priority')
 
-        request_c_configs = SelectableComponentConfigurations.Request()
+    request_c_configs = SelectableComponentConfigurations.Request()
 
-        _cc = Component()
-        _cc.name = 'c_cc_feasible_unfeasible'
-        request_c_configs.component = _cc
+    _cc = Component()
+    _cc.name = 'c_cc_feasible_unfeasible'
+    request_c_configs.component = _cc
 
-        response_c_configs = node.call_service(
-            node.selectable_c_configs_srv, request_c_configs)
+    response_c_configs = rosa_kb_node.call_service(
+        rosa_kb_node.selectable_c_configs_srv, request_c_configs)
 
-        request_p = GetComponentConfigurationPriority.Request()
-        request_p.c_configs = response_c_configs.c_configs
-        response_p = node.call_service(
-            node.c_configs_priority_srv, request_p)
-        result = [c_config.priority for c_config in response_p.c_configs]
-        expected_result = [1.0]
-        assert all(r in result for r in expected_result) \
-            and response_p.success is True
-    finally:
-        rclpy.shutdown()
-
+    request_p = GetComponentConfigurationPriority.Request()
+    request_p.c_configs = response_c_configs.c_configs
+    response_p = rosa_kb_node.call_service(
+        rosa_kb_node.c_configs_priority_srv, request_p)
+    result = [c_config.priority for c_config in response_p.c_configs]
+    expected_result = [1.0]
+    assert all(r in result for r in expected_result) \
+        and response_p.success is True
 
 @pytest.mark.launch(fixture=generate_test_description)
-def test_rosa_kb_select_configuration():
-    rclpy.init()
-    try:
-        node = MakeTestNode()
-        node.start_node()
-        node.activate_rosa_kb()
-        node.selected_config_srv = node.create_client(
-            SelectedConfigurations, '/rosa_kb/select_configuration')
+def test_rosa_kb_select_configuration(rosa_kb_node):
+    rosa_kb_node.activate_rosa_kb()
+    rosa_kb_node.selected_config_srv = rosa_kb_node.create_client(
+        SelectedConfigurations, '/rosa_kb/select_configuration')
 
-        selected_config = SelectedConfigurations.Request()
+    selected_config = SelectedConfigurations.Request()
 
-        selected_fd = FunctionDesign()
-        selected_fd.function.name = 'f_reconfigure_fd'
-        selected_fd.name = 'fd_reconfig_2'
+    selected_fd = FunctionDesign()
+    selected_fd.function.name = 'f_reconfigure_fd'
+    selected_fd.name = 'fd_reconfig_2'
 
-        selected_cc = ComponentConfiguration()
-        selected_cc.component.name = 'component_reconfig_3'
-        selected_cc.name = 'cp_reconfig_2'
+    selected_cc = ComponentConfiguration()
+    selected_cc.component.name = 'component_reconfig_3'
+    selected_cc.name = 'cp_reconfig_2'
 
-        selected_config.selected_fds.append(selected_fd)
-        selected_config.selected_component_configs.append(selected_cc)
+    selected_config.selected_fds.append(selected_fd)
+    selected_config.selected_component_configs.append(selected_cc)
 
-        response_select_config = node.call_service(
-            node.selected_config_srv, selected_config)
+    response_select_config = rosa_kb_node.call_service(
+        rosa_kb_node.selected_config_srv, selected_config)
 
-        assert response_select_config.success is True
-    finally:
-        rclpy.shutdown()
-
+    assert response_select_config.success is True
 
 @pytest.mark.launch(fixture=generate_test_description)
-def test_rosa_kb_get_reconfiguration_plan():
-    rclpy.init()
-    try:
-        node = MakeTestNode()
-        node.start_node()
-        node.activate_rosa_kb()
+def test_rosa_kb_get_reconfiguration_plan(rosa_kb_node):
+    rosa_kb_node.activate_rosa_kb()
 
-        node.selected_config_srv = node.create_client(
-            SelectedConfigurations, '/rosa_kb/select_configuration')
+    rosa_kb_node.selected_config_srv = rosa_kb_node.create_client(
+        SelectedConfigurations, '/rosa_kb/select_configuration')
 
-        selected_config = SelectedConfigurations.Request()
+    selected_config = SelectedConfigurations.Request()
 
-        selected_fd = FunctionDesign()
-        selected_fd.function.name = 'f_reconfigure_fd'
-        selected_fd.name = 'fd_reconfig_2'
+    selected_fd = FunctionDesign()
+    selected_fd.function.name = 'f_reconfigure_fd'
+    selected_fd.name = 'fd_reconfig_2'
 
-        selected_cc = ComponentConfiguration()
-        selected_cc.component.name = 'component_reconfig_3'
-        selected_cc.name = 'cp_reconfig_2'
+    selected_cc = ComponentConfiguration()
+    selected_cc.component.name = 'component_reconfig_3'
+    selected_cc.name = 'cp_reconfig_2'
 
-        selected_config.selected_fds.append(selected_fd)
-        selected_config.selected_component_configs.append(selected_cc)
+    selected_config.selected_fds.append(selected_fd)
+    selected_config.selected_component_configs.append(selected_cc)
 
-        node.call_service(node.selected_config_srv, selected_config)
+    rosa_kb_node.call_service(rosa_kb_node.selected_config_srv, selected_config)
 
-        node.get_latest_reconfig_plan_srv = node.create_client(
-            ReconfigurationPlanQuery,
-            '/rosa_kb/reconfiguration_plan/get_latest')
-        reconfig_plan = node.call_service(
-            node.get_latest_reconfig_plan_srv,
-            ReconfigurationPlanQuery.Request())
+    rosa_kb_node.get_latest_reconfig_plan_srv = rosa_kb_node.create_client(
+        ReconfigurationPlanQuery,
+        '/rosa_kb/reconfiguration_plan/get_latest')
+    reconfig_plan = rosa_kb_node.call_service(
+        rosa_kb_node.get_latest_reconfig_plan_srv,
+        ReconfigurationPlanQuery.Request())
 
-        node.get_reconfig_plan_srv = node.create_client(
-            ReconfigurationPlanQuery,
-            '/rosa_kb/reconfiguration_plan/get')
-        reconfig_plan_2 = node.call_service(
-            node.get_reconfig_plan_srv,
-            ReconfigurationPlanQuery.Request(
-                reconfig_plan=reconfig_plan.reconfig_plan))
+    rosa_kb_node.get_reconfig_plan_srv = rosa_kb_node.create_client(
+        ReconfigurationPlanQuery,
+        '/rosa_kb/reconfiguration_plan/get')
+    reconfig_plan_2 = rosa_kb_node.call_service(
+        rosa_kb_node.get_reconfig_plan_srv,
+        ReconfigurationPlanQuery.Request(
+            reconfig_plan=reconfig_plan.reconfig_plan))
 
-        _c = Component()
-        _c.name = 'component_reconfig_2'
-        _c.status = 'unsolved'
-        _c.node_type = 'Component'
+    _c = Component()
+    _c.name = 'component_reconfig_2'
+    _c.status = 'unsolved'
+    _c.node_type = 'Component'
 
-        _cc = ComponentConfiguration()
-        _cc.name = 'cp_reconfig_2'
-        assert reconfig_plan.success is True \
-            and _c in reconfig_plan.reconfig_plan.components_activate \
-            and _cc in reconfig_plan.reconfig_plan.component_configurations \
-            and reconfig_plan.reconfig_plan.start_time != '' \
-            and reconfig_plan_2.success is True \
-            and reconfig_plan.reconfig_plan.start_time == \
-            reconfig_plan_2.reconfig_plan.start_time
-    finally:
-        rclpy.shutdown()
-
+    _cc = ComponentConfiguration()
+    _cc.name = 'cp_reconfig_2'
+    assert reconfig_plan.success is True \
+        and _c in reconfig_plan.reconfig_plan.components_activate \
+        and _cc in reconfig_plan.reconfig_plan.component_configurations \
+        and reconfig_plan.reconfig_plan.start_time != '' \
+        and reconfig_plan_2.success is True \
+        and reconfig_plan.reconfig_plan.start_time == \
+        reconfig_plan_2.reconfig_plan.start_time
 
 @pytest.mark.launch(fixture=generate_test_description)
-def test_set_get_component_activate():
-    rclpy.init()
-    try:
-        node = MakeTestNode()
-        node.start_node()
-        node.activate_rosa_kb()
+def test_set_get_component_activate(rosa_kb_node):
+    rosa_kb_node.activate_rosa_kb()
 
-        component_1 = Component()
-        component_1.name = 'c_active'
-        component_1.is_active = False
-        cq_1 = ComponentQuery.Request()
-        cq_1.component = component_1
+    component_1 = Component()
+    component_1.name = 'c_active'
+    component_1.is_active = False
+    cq_1 = ComponentQuery.Request()
+    cq_1.component = component_1
 
-        component_2 = Component()
-        component_2.name = 'c_inactive'
-        component_2.is_active = True
-        cq_2 = ComponentQuery.Request()
-        cq_2.component = component_2
+    component_2 = Component()
+    component_2.name = 'c_inactive'
+    component_2.is_active = True
+    cq_2 = ComponentQuery.Request()
+    cq_2.component = component_2
 
-        srv_set = node.create_client(
-            ComponentQuery, '/rosa_kb/component/active/set')
-        srv_get = node.create_client(
-            ComponentQuery, '/rosa_kb/component/active/get')
+    srv_set = rosa_kb_node.create_client(
+        ComponentQuery, '/rosa_kb/component/active/set')
+    srv_get = rosa_kb_node.create_client(
+        ComponentQuery, '/rosa_kb/component/active/get')
 
-        res_set_1 = node.call_service(srv_set, cq_1)
-        res_set_2 = node.call_service(srv_set, cq_2)
-        res_get_1 = node.call_service(srv_get, cq_1)
-        res_get_2 = node.call_service(srv_get, cq_2)
-        assert res_set_1.success is True and res_set_2.success is True and \
-            res_get_1.component.is_active is False and \
-            res_get_2.component.is_active is True
-    finally:
-        rclpy.shutdown()
-
+    res_set_1 = rosa_kb_node.call_service(srv_set, cq_1)
+    res_set_2 = rosa_kb_node.call_service(srv_set, cq_2)
+    res_get_1 = rosa_kb_node.call_service(srv_get, cq_1)
+    res_get_2 = rosa_kb_node.call_service(srv_get, cq_2)
+    assert res_set_1.success is True and res_set_2.success is True and \
+        res_get_1.component.is_active is False and \
+        res_get_2.component.is_active is True
 
 @pytest.mark.launch(fixture=generate_test_description)
-def test_get_component_parameters_cb():
-    rclpy.init()
-    try:
-        node = MakeTestNode()
-        node.start_node()
-        node.activate_rosa_kb()
+def test_get_component_parameters_cb(rosa_kb_node):
+    rosa_kb_node.activate_rosa_kb()
 
-        c_config = ComponentConfiguration()
-        c_config.name = 'get_cp_cc'
+    c_config = ComponentConfiguration()
+    c_config.name = 'get_cp_cc'
 
-        srv_get = node.create_client(
-            GetComponentParameters, '/rosa_kb/component_parameters/get')
+    srv_get = rosa_kb_node.create_client(
+        GetComponentParameters, '/rosa_kb/component_parameters/get')
 
-        request = GetComponentParameters.Request()
-        request.c_config = c_config
+    request = GetComponentParameters.Request()
+    request.c_config = c_config
 
-        result = node.call_service(srv_get, request)
-        expected_params = [
-            Parameter(
-                name='get_cp_1',
-                value=ParameterValue(type=1, bool_value=True)),
-            Parameter(
-                name='get_cp_2',
-                value=ParameterValue(type=6, bool_array_value=[True, False])),
-            Parameter(
-                name='get_cp_3',
-                value=ParameterValue(type=3, double_value=3.0)),
-            Parameter(
-                name='get_cp_4',
-                value=ParameterValue(type=8, double_array_value=[3.0, 5.0])),
-            Parameter(
-                name='get_cp_5',
-                value=ParameterValue(type=2, integer_value=10)),
-            Parameter(
-                name='get_cp_6',
-                value=ParameterValue(type=7, integer_array_value=[10, 14])),
-            Parameter(
-                name='get_cp_7',
-                value=ParameterValue(type=4, string_value='teste')),
-            Parameter(
-                name='get_cp_8',
-                value=ParameterValue(
-                    type=9, string_array_value=['teste', 'teste2'])),
-        ]
+    result = rosa_kb_node.call_service(srv_get, request)
+    expected_params = [
+        Parameter(
+            name='get_cp_1',
+            value=ParameterValue(type=1, bool_value=True)),
+        Parameter(
+            name='get_cp_2',
+            value=ParameterValue(type=6, bool_array_value=[True, False])),
+        Parameter(
+            name='get_cp_3',
+            value=ParameterValue(type=3, double_value=3.0)),
+        Parameter(
+            name='get_cp_4',
+            value=ParameterValue(type=8, double_array_value=[3.0, 5.0])),
+        Parameter(
+            name='get_cp_5',
+            value=ParameterValue(type=2, integer_value=10)),
+        Parameter(
+            name='get_cp_6',
+            value=ParameterValue(type=7, integer_array_value=[10, 14])),
+        Parameter(
+            name='get_cp_7',
+            value=ParameterValue(type=4, string_value='teste')),
+        Parameter(
+            name='get_cp_8',
+            value=ParameterValue(
+                type=9, string_array_value=['teste', 'teste2'])),
+    ]
 
-        assert result.success is True and result.component.name == 'get_cp_c' \
-            and all(p in result.parameters for p in expected_params)
-    finally:
-        rclpy.shutdown()
-
+    assert result.success is True and result.component.name == 'get_cp_c' \
+        and all(p in result.parameters for p in expected_params)
 
 @pytest.mark.launch(fixture=generate_test_description)
-def test_set_reconfiguration_plan_result_service_cb():
-    rclpy.init()
-    try:
-        node = MakeTestNode()
-        node.start_node()
-        node.activate_rosa_kb()
+def test_set_reconfiguration_plan_result_service_cb(rosa_kb_node):
+    rosa_kb_node.activate_rosa_kb()
 
-        node.selected_config_srv = node.create_client(
-            SelectedConfigurations, '/rosa_kb/select_configuration')
+    rosa_kb_node.selected_config_srv = rosa_kb_node.create_client(
+        SelectedConfigurations, '/rosa_kb/select_configuration')
 
-        selected_config = SelectedConfigurations.Request()
+    selected_config = SelectedConfigurations.Request()
 
-        selected_fd = FunctionDesign()
-        selected_fd.function.name = 'f_reconfigure_fd'
-        selected_fd.name = 'fd_reconfig_2'
+    selected_fd = FunctionDesign()
+    selected_fd.function.name = 'f_reconfigure_fd'
+    selected_fd.name = 'fd_reconfig_2'
 
-        selected_cc = ComponentConfiguration()
-        selected_cc.component.name = 'component_reconfig_3'
-        selected_cc.name = 'cp_reconfig_2'
+    selected_cc = ComponentConfiguration()
+    selected_cc.component.name = 'component_reconfig_3'
+    selected_cc.name = 'cp_reconfig_2'
 
-        selected_config.selected_fds.append(selected_fd)
-        selected_config.selected_component_configs.append(selected_cc)
+    selected_config.selected_fds.append(selected_fd)
+    selected_config.selected_component_configs.append(selected_cc)
 
-        node.call_service(node.selected_config_srv, selected_config)
+    rosa_kb_node.call_service(rosa_kb_node.selected_config_srv, selected_config)
 
-        node.get_latest_reconfig_plan = node.create_client(
-            ReconfigurationPlanQuery,
-            '/rosa_kb/reconfiguration_plan/get_latest')
-        reconfig_plan = node.call_service(
-            node.get_latest_reconfig_plan, ReconfigurationPlanQuery.Request())
+    rosa_kb_node.get_latest_reconfig_plan = rosa_kb_node.create_client(
+        ReconfigurationPlanQuery,
+        '/rosa_kb/reconfiguration_plan/get_latest')
+    reconfig_plan = rosa_kb_node.call_service(
+        rosa_kb_node.get_latest_reconfig_plan, ReconfigurationPlanQuery.Request())
 
-        node.set_reconfig_plan_result_srv = node.create_client(
-            ReconfigurationPlanQuery,
-            '/rosa_kb/reconfiguration_plan/result/set')
-        rp_query = ReconfigurationPlanQuery.Request()
-        rp_query.reconfig_plan.start_time = \
-            reconfig_plan.reconfig_plan.start_time
-        rp_query.reconfig_plan.result = 'completed'
-        set_result = node.call_service(
-            node.set_reconfig_plan_result_srv, rp_query)
+    rosa_kb_node.set_reconfig_plan_result_srv = rosa_kb_node.create_client(
+        ReconfigurationPlanQuery,
+        '/rosa_kb/reconfiguration_plan/result/set')
+    rp_query = ReconfigurationPlanQuery.Request()
+    rp_query.reconfig_plan.start_time = \
+        reconfig_plan.reconfig_plan.start_time
+    rp_query.reconfig_plan.result = 'completed'
+    set_result = rosa_kb_node.call_service(
+        rosa_kb_node.set_reconfig_plan_result_srv, rp_query)
 
-        node.get_reconfig_plan_srv = node.create_client(
-            ReconfigurationPlanQuery,
-            '/rosa_kb/reconfiguration_plan/get')
+    rosa_kb_node.get_reconfig_plan_srv = rosa_kb_node.create_client(
+        ReconfigurationPlanQuery,
+        '/rosa_kb/reconfiguration_plan/get')
 
-        rp_req = ReconfigurationPlanQuery.Request()
-        rp_req.reconfig_plan.start_time = \
-            reconfig_plan.reconfig_plan.start_time
-        reconfig_plan_2 = node.call_service(
-            node.get_reconfig_plan_srv, rp_req)
+    rp_req = ReconfigurationPlanQuery.Request()
+    rp_req.reconfig_plan.start_time = \
+        reconfig_plan.reconfig_plan.start_time
+    reconfig_plan_2 = rosa_kb_node.call_service(
+        rosa_kb_node.get_reconfig_plan_srv, rp_req)
 
-        assert set_result.success is True and reconfig_plan_2.success is True \
-            and reconfig_plan_2.reconfig_plan.result == 'completed'
-    finally:
-        rclpy.shutdown()
-
+    assert set_result.success is True and reconfig_plan_2.success is True \
+        and reconfig_plan_2.reconfig_plan.result == 'completed'
 
 class MakeTestNode(Node):
 
@@ -1121,11 +969,7 @@ class MakeTestNode(Node):
         self.action_selectable_srv = self.create_client(
             ActionQueryArray, '/rosa_kb/action/selectable')
 
-    def start_node(self):
-        self.ros_spin_thread = Thread(
-            target=lambda node: rclpy.spin(node),
-            args=(self,))
-        self.ros_spin_thread.start()
+        self.ros_spin_thread = None
 
     def change_node_state(self, transition_id):
         change_state_req = ChangeState.Request()
@@ -1142,7 +986,7 @@ class MakeTestNode(Node):
                 'service not available {}'.format(cli.srv_name))
             return None
         future = cli.call_async(request)
-        self.executor.spin_until_future_complete(future, timeout_sec=5.0)
+        rclpy.spin_until_future_complete(self, future, timeout_sec=5.0)
         if future.done() is False:
             self.get_logger().error(
                 'Future not completed {}'.format(cli.srv_name))
