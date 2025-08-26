@@ -306,7 +306,7 @@ class ModelInterface(TypeDBInterface):
         related_dict['action'] = ["action"]
 
         if preference != '':
-            query += "$attr isa Attribute, has attribute-name '{}';".format(
+            query += "$attr isa Measure, has measure-name '{}';".format(
                 preference)
             related_dict['preference'] = ["attr"]
 
@@ -644,7 +644,7 @@ class ModelInterface(TypeDBInterface):
         """
         query = f"""
             match
-                $attr isa Attribute, has attribute-name "{name}";
+                $attr isa Measure, has measure-name "{name}";
                 $m (measured-attribute:$attr) isa measurement,
                     has latest $latest;
                 $latest == true;
@@ -655,7 +655,7 @@ class ModelInterface(TypeDBInterface):
         time = convert_py_type_to_query_type(datetime.now())
         query = f"""
             match
-                $attr isa Attribute, has attribute-name "{name}";
+                $attr isa Measure, has measure-name "{name}";
             insert
                 $m (measured-attribute:$attr) isa measurement,
                     has latest true,
@@ -673,7 +673,7 @@ class ModelInterface(TypeDBInterface):
         """
         query = f"""
             match
-                $attr isa Attribute, has attribute-name "{name}";
+                $attr isa Measure, has measure-name "{name}";
                 $m (measured-attribute:$attr) isa measurement,
                     has latest true , has measurement-value $value;
                 fetch $value;
@@ -694,8 +694,8 @@ class ModelInterface(TypeDBInterface):
         time = convert_py_type_to_query_type(time)
         query = f"""
             match
-                $attr isa Attribute,
-                    has attribute-name "{name}";
+                $attr isa Measure,
+                    has measure-name "{name}";
                 $m (measured-attribute:$attr) isa measurement,
                     has measurement-time {time} , has measurement-value $value;
                 fetch $value;

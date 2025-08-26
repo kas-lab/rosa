@@ -10,7 +10,7 @@ function-name sub name;
 function-design-name sub name;
 component-name sub name;
 component-configuration-name sub name;
-attribute-name sub name;
+measure-name sub name;
 
 status sub attribute,
     abstract,
@@ -208,16 +208,16 @@ ComponentParameter sub entity,
     plays component-configuration:parameter;
 
 
-Attribute sub entity,
+Measure sub entity,
     abstract,
-    owns attribute-name @key,
+    owns measure-name @key,
     plays constraint:constraint,
     plays estimation:affected,
     plays measurement:measured-attribute,
     plays required-action:preference;
 
-EnvironmentalAttribute sub Attribute;
-QualityAttribute sub Attribute;
+EnvironmentalAttribute sub Measure;
+QualityAttribute sub Measure;
 
 # Rules
 

@@ -169,8 +169,8 @@ def test_rosa_kb_diagnostics(rosa_kb_node):
         query_req = Query.Request()
         query_req.query_type = 'fetch'
         query_req.query = """
-            match $ea isa Attribute,
-                has attribute-name "ea_measurement";
+            match $ea isa Measure,
+                has measure-name "ea_measurement";
                 $m (measured-attribute:$ea) isa measurement,
                     has measurement-value $measurement;
             fetch $measurement;

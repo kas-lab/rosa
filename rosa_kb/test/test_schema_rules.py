@@ -49,7 +49,7 @@ def test_constraint_status_inference(
         kb_interface.add_measurement(att_name, att_value)
     query = f'''
         match
-            $ea isa EnvironmentalAttribute, has attribute-name "{att_name}";
+            $ea isa EnvironmentalAttribute, has measure-name "{att_name}";
             $config isa component-configuration,
                 has component-configuration-name "{config_name}";
             (constraint: $ea, constrained: $config) isa constraint,
