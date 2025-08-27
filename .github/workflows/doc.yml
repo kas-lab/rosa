@@ -22,7 +22,7 @@ jobs:
       - uses: ros-tooling/action-ros-ci@0.4.3
         id: action_ros_ci_step
         with:
-          package-name: rosa_msgs rosa_kb rosa_plan rosa_execute rosa_bringup
+          package-name: rosa_msgs rosa_kb rosa_plan rosa_execute rosa_bringup rosa_monitor
           target-ros2-distro: humble
           skip-tests: true
           vcs-repo-file-url: rosa.repos
