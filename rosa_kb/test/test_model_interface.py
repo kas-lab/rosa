@@ -683,6 +683,26 @@ def test_get_measures_inferfaces(kb_interface):
         }
     }
 
-    assert len(interfaces) == 2
+    laser_scan_dict = {
+        'type': 'topic-interface',
+        'measure-name': 'laser_nearest_object',
+        'measurement-interface-name': '/scan',
+        'measurement-interface-type': 'sensor_msgs/msg/LaserScan',
+        'measurement-function-name': 'get_nearest_laser_scan_distance',
+        'measurement-function-lib': 'rosa_monitor.monitor_functions',
+        'qos': {
+            'reliability' : 'BEST_EFFORT',
+            'history': 'KEEP_LAST',
+            'depth': 5,
+            'durability': 'VOLATILE',
+            'lifespan': 0.0,
+            'deadline': 0.0,
+            'liveliness': 'SYSTEM_DEFAULT',
+            'lease-duration': 0.0,
+        }
+    }
+
+    assert len(interfaces) == 3
     assert qa_test_topic_dict in interfaces
     assert qa_test_topic_dict_2 in interfaces
+    assert laser_scan_dict in interfaces
