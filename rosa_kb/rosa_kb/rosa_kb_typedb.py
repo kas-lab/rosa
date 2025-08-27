@@ -180,6 +180,7 @@ class RosaKB(ROSTypeDBInterface):
         self.active = False
         super().__init__(node_name, **kwargs)
         self.typedb_interface_class = ModelInterface
+        self.measures_subscribers = {}
 
     def on_activate(self, state: State) -> TransitionCallbackReturn:
         self.get_logger().info(self.get_name() + ': on_activate() is called.')
@@ -391,6 +392,50 @@ class RosaKB(ROSTypeDBInterface):
         """
         self.active = False
         return super().on_cleanup(state)
+
+    def create_measure_topic_interface(self, topic_interface):
+        """
+        Create a subscription for a measure topic using details in `topic_interface`.
+        Expected keys:
+        - 'measure-name' (str)
+        - 'measurement-interface-name' (str)
+        - 'measurement-interface-type' (str ROS msg type)
+        - optional: 'measurement-function-lib' (str, module path)
+        - optional: 'measurement-function-name' (str, callable name)
+        - optional: 'measurement-function-args' (str, comma-separated args)
+        - optional: 'qos' (dict for QoSProfile construction)
+        """
+        measure_name = topic_interface['measure-name']
+        topic_name = topic_interface['measurement-interface-name']
+        ros_msg_type_str = topic_interface['measurement-interface-type']
+
+        topic_type = get_ros_msg_type_from_string(ros_msg_type_str)
+        measurement_qos = get_qos_from_qos_dict(topic_interface.get('qos', {}))
+
+        function_lib_name = (topic_interface.get('measurement-function-lib')
+                                or 'rosa_monitor.monitor_functions')
+        function_name = (topic_interface.get('measurement-function-name')
+                            or 'get_data_field')
+
+        function_args_str = topic_interface.get('measurement-function-args')
+        function_args = [arg.strip() for arg in function_args_str.split(',')] if function_args_str else ['data']
+
+        function_lib = importlib.import_module(function_lib_name)
+        measure_function = getattr(function_lib, function_name)
+
+        def _cb(msg,
+                _measure_name=measure_name,
+                _measure_function=measure_function,
+                _function_args=function_args):
+            self.typedb_interface.add_measurement(_measure_name, _measure_function(msg, *_function_args))
+
+        self.measures_subscribers[measure_name] = self.create_subscription(
+            topic_type,
+            topic_name,
+            _cb,
+            measurement_qos,
+            callback_group=self.query_cb_group
+        )
 
     @publish_event(event_type='insert_monitoring_data')
     def update_measurement(

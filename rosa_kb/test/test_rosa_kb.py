@@ -20,7 +20,9 @@ from pathlib import Path
 
 import pytest
 import rclpy
+import time
 import traceback
+import threading
 
 import sys
 
@@ -32,6 +34,8 @@ from lifecycle_msgs.srv import ChangeState
 from lifecycle_msgs.srv import GetState
 
 from rclpy.duration import Duration
+
+from rclpy.executors import SingleThreadedExecutor
 
 from rclpy.qos import QoSDurabilityPolicy
 from rclpy.qos import QoSLivelinessPolicy
@@ -72,6 +76,8 @@ from rclpy.node import Node
 
 from rosa_kb.rosa_kb_typedb import get_qos_from_qos_dict
 from rosa_kb.rosa_kb_typedb import get_ros_msg_type_from_string
+from rosa_kb.rosa_kb_typedb import _to_duration
+from rosa_kb.rosa_kb_typedb import RosaKB
 
 @launch_pytest.fixture
 def generate_test_description():
@@ -118,16 +124,33 @@ def test_node():
     finally:
         node.destroy_node()
 
-    # force-create the default executor once; prevents shutdown AttributeError
-    rclpy.spin_once(node, timeout_sec=0.0)
-
-    yield node
-
+@pytest.fixture
+def rosa_kb_node():
+    rosa_kb_node = RosaKB('rosa_kb')
+    rosa_kb_node.init_typedb_interface(
+        'localhost:1729',
+        'test_model_interface',
+        ['config/schema.tql', 'config/ros_schema.tql'],
+        ['test/test_data/test_data.tql', 'test/test_data/ros_test_data.tql'],
+        force_database=True,
+        force_data=True,
+        infer=True
+    )
     try:
-        node.destroy_node()
+        yield rosa_kb_node
     finally:
-        if rclpy.ok():
-            rclpy.shutdown()
+        rosa_kb_node.destroy_node()
+
+@pytest.fixture
+def executor():
+    ex = SingleThreadedExecutor()
+    t = threading.Thread(target=ex.spin, daemon=True)
+    t.start()
+    try:
+        yield ex
+    finally:
+        ex.shutdown()
+        t.join(timeout=2.0)
 
 def test_get_ros_msg_type_from_string():
     import rcl_interfaces
@@ -998,6 +1021,97 @@ def test_set_reconfiguration_plan_result_service_cb(test_node):
 
     assert set_result.success is True and reconfig_plan_2.success is True \
         and reconfig_plan_2.reconfig_plan.result == 'completed'
+
+def test_create_measure_topic_interface(executor, test_node, rosa_kb_node):
+    executor.add_node(test_node)
+    executor.add_node(rosa_kb_node)
+
+    qa_test_topic_dict = {
+        'type': 'topic-interface',
+        'measure-name': 'qa_test_topic',
+        'measurement-interface-name': '/subscription',
+        'measurement-interface-type': 'std_msgs/msg/Float64',
+        'measurement-function-name': 'get_data_field',
+        'measurement-function-lib': 'rosa_monitor.monitor_functions',
+        'measurement-function-args': 'data',
+    }
+    rosa_kb_node.create_measure_topic_interface(qa_test_topic_dict)
+    assert 'qa_test_topic' in rosa_kb_node.measures_subscribers
+
+    from std_msgs.msg import Float64
+    publisher = test_node.create_publisher(
+        Float64,
+        '/subscription',
+        10
+    )
+
+    # Wait for discovery
+    deadline = time.time() + 2.0
+    while time.time() < deadline and publisher.get_subscription_count() == 0:
+        time.sleep(0.02)
+
+    publisher.publish(Float64(data=3.0))
+
+    t_end = time.time() + 1.0
+    while time.time() < t_end:
+        time.sleep(0.1)
+
+    measurement = rosa_kb_node.typedb_interface.get_latest_measurement('qa_test_topic')
+    assert measurement == 3.0
+
+    qa_test_topic_dict_2 = {
+        'type': 'topic-interface',
+        'measure-name': 'qa_test_topic_2',
+        'measurement-interface-name': '/subscription2',
+        'measurement-interface-type': 'std_msgs/msg/Float64',
+        'qos': {
+            'reliability' : 'RELIABLE',
+            'history': 'KEEP_LAST',
+            'depth': 10,
+            'durability': 'TRANSIENT_LOCAL',
+            'lifespan': 2.0,
+            'deadline': 2.0,
+            'liveliness': 'MANUAL_BY_TOPIC',
+            'lease-duration': 2.0,
+        }
+    }
+    rosa_kb_node.create_measure_topic_interface(qa_test_topic_dict_2)
+    assert 'qa_test_topic_2' in rosa_kb_node.measures_subscribers
+
+    pub_qos = QoSProfile(
+        reliability=QoSReliabilityPolicy.RELIABLE,
+        history=QoSHistoryPolicy.KEEP_LAST,
+        depth=10,
+        durability=QoSDurabilityPolicy.TRANSIENT_LOCAL,
+        lifespan=_to_duration(2.0),
+        deadline=_to_duration(1.0),
+        liveliness=QoSLivelinessPolicy.MANUAL_BY_TOPIC,
+        liveliness_lease_duration=_to_duration(1.0)
+    )
+
+    publisher2 = test_node.create_publisher(
+        Float64,
+        '/subscription2',
+        pub_qos
+    )
+
+    # Wait for discovery
+    deadline = time.time() + 2.0
+    while time.time() < deadline and publisher2.get_subscription_count() == 0:
+        time.sleep(0.02)
+
+    publisher2.publish(Float64(data=4.5))
+
+    t_end = time.time() + 1.0
+    while time.time() < t_end:
+        time.sleep(0.1)
+
+    measurement = rosa_kb_node.typedb_interface.get_latest_measurement('qa_test_topic_2')
+    assert measurement == 4.5
+
+    executor.remove_node(test_node)
+    executor.remove_node(rosa_kb_node)
+
 
 class MakeTestNode(Node):
 
