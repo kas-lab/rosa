@@ -38,3 +38,19 @@ $qa_interface_test2 isa QualityAttribute, has measure-name 'qa_test_topic_2';
 (measure: $qa_interface_test2, qos: $qos_test) isa topic-interface,
     has measurement-interface-name '/subscription2',
     has measurement-interface-type 'std_msgs/msg/Float64';
+
+$sensor_qos isa QoSProfile,
+	has reliability 'BEST_EFFORT',
+	has history 'KEEP_LAST',
+	has depth 5,
+	has durability 'VOLATILE',
+	has lifespan 0.0,
+	has deadline 0.0,
+	has liveliness 'SYSTEM_DEFAULT',
+	has lease-duration 0.0;
+$ea_laser_nearest_object isa EnvironmentalAttribute, has measure-name "laser_nearest_object";
+(measure: $ea_laser_nearest_object, qos: $sensor_qos) isa topic-interface,
+    has measurement-interface-name '/scan',
+    has measurement-interface-type 'sensor_msgs/msg/LaserScan',
+    has measurement-function-name 'get_nearest_laser_scan_distance',
+    has measurement-function-lib 'rosa_monitor.monitor_functions';

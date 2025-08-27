@@ -1128,7 +1128,7 @@ def test_create_measures_interfaces(executor, test_node, rosa_kb_node):
     )
 
     # Wait for discovery
-    deadline = time.time() + 2.0
+    deadline = time.time() + 1.0
     while time.time() < deadline and publisher.get_subscription_count() == 0:
         time.sleep(0.02)
 
@@ -1161,7 +1161,7 @@ def test_create_measures_interfaces(executor, test_node, rosa_kb_node):
     )
 
     # Wait for discovery
-    deadline = time.time() + 2.0
+    deadline = time.time() + 1.0
     while time.time() < deadline and publisher2.get_subscription_count() == 0:
         time.sleep(0.02)
 
@@ -1173,6 +1173,27 @@ def test_create_measures_interfaces(executor, test_node, rosa_kb_node):
 
     measurement = rosa_kb_node.typedb_interface.get_latest_measurement('qa_test_topic_2')
     assert measurement == 4.5
+
+    from sensor_msgs.msg import LaserScan
+    publish_laser_scan = test_node.create_publisher(
+        LaserScan,
+        '/scan',
+        10
+    )
+
+    # Wait for discovery
+    deadline = time.time() + 1.0
+    while time.time() < deadline and publish_laser_scan.get_subscription_count() == 0:
+        time.sleep(0.02)
+
+    publish_laser_scan.publish(LaserScan(ranges=[3.0, 2.3, 1.1, 1.57, 6.6]))
+
+    t_end = time.time() + 1.0
+    while time.time() < t_end:
+        time.sleep(0.1)
+
+    measurement = rosa_kb_node.typedb_interface.get_latest_measurement('laser_nearest_object')
+    assert measurement == pytest.approx(1.1)
 
     executor.remove_node(test_node)
     executor.remove_node(rosa_kb_node)
