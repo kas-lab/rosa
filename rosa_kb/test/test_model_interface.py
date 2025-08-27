@@ -669,20 +669,20 @@ def test_get_measures_inferfaces(kb_interface):
     qa_test_topic_dict_2 = {
         'type': 'topic-interface',
         'measure-name': 'qa_test_topic_2',
-        'measurement-interface-name': '/subscription',
+        'measurement-interface-name': '/subscription2',
         'measurement-interface-type': 'std_msgs/msg/Float64',
         'qos': {
             'reliability' : 'RELIABLE',
             'history': 'KEEP_LAST',
             'depth': 10,
-            'durability': 'VOLATILE',
-            'lifespan': 0.0,
-            'deadline': 0.0,
-            'liveliness': 'AUTOMATIC',
-            'lease-duration': 0.0,
+            'durability': 'TRANSIENT_LOCAL',
+            'lifespan': 2.0,
+            'deadline': 2.0,
+            'liveliness': 'MANUAL_BY_TOPIC',
+            'lease-duration': 2.0,
         }
     }
 
-    assert len(interfaces) == 3
+    assert len(interfaces) == 2
     assert qa_test_topic_dict in interfaces
     assert qa_test_topic_dict_2 in interfaces
