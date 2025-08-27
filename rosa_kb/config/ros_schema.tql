@@ -50,8 +50,5 @@ QoSProfile sub entity,
 rate sub attribute,
     value double;
 
-service-interface sub measurement-interface,
-    owns rate;
-
 topic-interface sub measurement-interface,
     relates qos;

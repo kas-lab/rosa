@@ -682,18 +682,7 @@ def test_get_measures_inferfaces(kb_interface):
             'lease-duration': 0.0,
         }
     }
-    qa_test_service_dict = {
-        'type': 'service-interface',
-        'measure-name': 'qa_test_service',
-        'measurement-interface-name': '/service',
-        'measurement-interface-type': 'std_srvs/srv/SetBool',
-        'measurement-function-name': 'get_data_field',
-        'measurement-function-lib': 'rosa_monitor.monitor_functions',
-        'measurement-function-args': 'success',
-        'rate': 10.0,
-    }
 
     assert len(interfaces) == 3
     assert qa_test_topic_dict in interfaces
     assert qa_test_topic_dict_2 in interfaces
-    assert qa_test_service_dict in interfaces

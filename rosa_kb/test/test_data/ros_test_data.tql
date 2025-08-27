@@ -38,12 +38,3 @@ $qa_interface_test2 isa QualityAttribute, has measure-name 'qa_test_topic_2';
 (measure: $qa_interface_test2, qos: $qos_test) isa topic-interface,
     has measurement-interface-name '/subscription',
     has measurement-interface-type 'std_msgs/msg/Float64';
-
-$qa_interface_service isa QualityAttribute, has measure-name 'qa_test_service';
-(measure: $qa_interface_service) isa service-interface,
-    has measurement-interface-name '/service',
-    has measurement-interface-type 'std_srvs/srv/SetBool',
-    has measurement-function-name 'get_data_field',
-    has measurement-function-lib 'rosa_monitor.monitor_functions',
-    has measurement-function-args 'success',
-    has rate 10.0;
