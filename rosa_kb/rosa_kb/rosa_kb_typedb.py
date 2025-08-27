@@ -58,7 +58,13 @@ from ros_typedb.ros_typedb_interface import set_query_result_value
 import diagnostic_msgs.msg
 from diagnostic_msgs.msg import DiagnosticArray
 
-from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy
+from rclpy.duration import Duration
+
+from rclpy.qos import QoSDurabilityPolicy
+from rclpy.qos import QoSLivelinessPolicy
+from rclpy.qos import QoSHistoryPolicy
+from rclpy.qos import QoSProfile
+from rclpy.qos import QoSReliabilityPolicy
 
 
 def publish_event(event_type: str):
@@ -91,16 +97,80 @@ def get_ros_msg_type_from_string(message_type: str):
     msg_module = importlib.import_module(msg_type_list[0] + "." + msg_type_list[1])
     return getattr(msg_module, msg_type_list[2])
 
-_QOS_DICT = {
-    ('reliability', 'BEST_EFFORT') : QoSReliabilityPolicy.BEST_EFFORT,
-    ('reliability', 'RELIABLE') : QoSReliabilityPolicy.RELIABLE,
-    ('history', 'KEEP_LAST') : QoSHistoryPolicy.KEEP_LAST,
-    ('history', 'KEEP_ALL') : QoSHistoryPolicy.KEEP_ALL,
-    ('durability', 'TRANSIENT_LOCAL') : QoSDurabilityPolicy.TRANSIENT_LOCAL,
-    ('durability', 'VOLATILE') : QoSDurabilityPolicy.VOLATILE,
-    ('liveliness', 'AUTOMATIC') : QoSLivelinessPolicy.AUTOMATIC,
-    ('liveliness', 'MANUAL') : QoSLivelinessPolicy.MANUAL_BY_TOPIC,
+RELIABILITY_MAP = {
+    "RELIABLE": QoSReliabilityPolicy.RELIABLE,
+    "BEST_EFFORT": QoSReliabilityPolicy.BEST_EFFORT,
+    "SYSTEM_DEFAULT": QoSReliabilityPolicy.SYSTEM_DEFAULT,
 }
+
+HISTORY_MAP = {
+    "KEEP_LAST": QoSHistoryPolicy.KEEP_LAST,
+    "KEEP_ALL": QoSHistoryPolicy.KEEP_ALL,
+    "SYSTEM_DEFAULT": QoSHistoryPolicy.SYSTEM_DEFAULT,
+}
+
+DURABILITY_MAP = {
+    "VOLATILE": QoSDurabilityPolicy.VOLATILE,
+    "TRANSIENT_LOCAL": QoSDurabilityPolicy.TRANSIENT_LOCAL,
+    "SYSTEM_DEFAULT": QoSDurabilityPolicy.SYSTEM_DEFAULT,
+}
+
+LIVELINESS_MAP = {
+    "AUTOMATIC": QoSLivelinessPolicy.AUTOMATIC,
+    "MANUAL_BY_TOPIC": QoSLivelinessPolicy.MANUAL_BY_TOPIC,
+    "SYSTEM_DEFAULT": QoSLivelinessPolicy.SYSTEM_DEFAULT,
+}
+
+def _to_duration(v):
+    # Accept Duration, seconds as int/float, or a dict {"sec": int, "nanosec": int}
+    if isinstance(v, Duration):
+        return v
+    if isinstance(v, (int, float)):
+        secs = int(v)
+        nsec = int(round((v - secs) * 1_000_000_000))
+        return Duration(seconds=secs, nanoseconds=nsec)
+    raise TypeError(f"Unsupported duration value: {v!r}")
+
+def get_qos_from_qos_dict(qos_dict: dict) -> QoSProfile:
+    # depth must be provided when KEEP_LAST; default to 10
+    if qos_dict is None:
+        return QoSProfile(depth=10)
+
+    qos = QoSProfile(depth=int(qos_dict.get("depth", 10)))
+
+    # Policies
+    if 'reliability' in qos_dict:
+        qos.reliability = RELIABILITY_MAP[qos_dict['reliability']]
+    if 'history' in qos_dict:
+        qos.history = HISTORY_MAP[qos_dict['history']]
+    if 'durability' in qos_dict:
+        qos.durability = DURABILITY_MAP[qos_dict['durability']]
+    if 'liveliness' in qos_dict:
+        qos.liveliness = LIVELINESS_MAP[qos_dict['liveliness']]
+
+    # Durations (convert to Duration)
+    if 'lifespan' in qos_dict:
+        qos.lifespan = _to_duration(qos_dict['lifespan'])
+    if 'deadline' in qos_dict:
+        qos.deadline = _to_duration(qos_dict['deadline'])
+
+    # Lease duration (portable across distros)
+    lease_input = None
+    if 'lease_duration' in qos_dict:
+        lease_input = qos_dict['lease_duration']
+    elif 'lease-duration' in qos_dict:
+        lease_input = qos_dict['lease-duration']
+    elif 'liveliness_lease_duration' in qos_dict:
+        lease_input = qos_dict['liveliness_lease_duration']
+
+    if lease_input is not None:
+        d = _to_duration(lease_input)
+        if hasattr(qos, 'lease_duration'):
+            qos.lease_duration = d                # Iron+ or backports
+        else:
+            qos.liveliness_lease_duration = d     # Humble
+
+    return qos
 
 class RosaKB(ROSTypeDBInterface):
     """ROS lifecycle node implementing ROSA's KB."""

@@ -11,7 +11,7 @@ ROSNode sub Component,
     owns executable;
 
 LifeCycleNode sub ROSNode;
-   
+
 
 ### QoS attributes
 reliability sub attribute,
@@ -31,7 +31,7 @@ lifespan sub attribute,
     value double;  # 0.0 indicates infinite
 liveliness sub attribute,
     value string,
-    regex "^(AUTOMATIC|MANUAL)";
+    regex "^(AUTOMATIC|MANUAL_BY_TOPIC)";
 lease-duration sub attribute,
     value double;  # 0.0 indicates infinite
 

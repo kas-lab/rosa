@@ -22,8 +22,6 @@ import pytest
 import rclpy
 import traceback
 
-from threading import Thread
-
 import sys
 
 from diagnostic_msgs.msg import DiagnosticArray
@@ -33,6 +31,13 @@ from diagnostic_msgs.msg import KeyValue
 from lifecycle_msgs.srv import ChangeState
 from lifecycle_msgs.srv import GetState
 
+from rclpy.duration import Duration
+
+from rclpy.qos import QoSDurabilityPolicy
+from rclpy.qos import QoSLivelinessPolicy
+from rclpy.qos import QoSHistoryPolicy
+from rclpy.qos import QoSProfile
+from rclpy.qos import QoSReliabilityPolicy
 
 from rosa_msgs.msg import Component
 from rosa_msgs.msg import ComponentConfiguration
@@ -65,6 +70,7 @@ from ros_typedb_msgs.srv import Query
 
 from rclpy.node import Node
 
+from rosa_kb.rosa_kb_typedb import get_qos_from_qos_dict
 from rosa_kb.rosa_kb_typedb import get_ros_msg_type_from_string
 
 @launch_pytest.fixture
@@ -114,6 +120,36 @@ def test_get_ros_msg_type_from_string():
     import rcl_interfaces
     assert get_ros_msg_type_from_string('rcl_interfaces/msg/ParameterEvent') == rcl_interfaces.msg.ParameterEvent
     assert get_ros_msg_type_from_string('rosa_msgs/srv/ActionQuery') == ActionQuery
+
+def test_get_qos_from_qos_dict():
+    qos = {}
+    assert get_qos_from_qos_dict(qos) == QoSProfile(depth=10)
+
+    assert get_qos_from_qos_dict(None) == QoSProfile(depth=10)
+
+    qos = {
+        'reliability' : 'BEST_EFFORT',
+        'history': 'KEEP_LAST',
+        'depth': 10,
+        'durability': 'VOLATILE',
+        'lifespan': 0.0,
+        'deadline': 0.0,
+        'liveliness': 'AUTOMATIC',
+        'lease-duration': 0.0,
+    }
+
+    expected = QoSProfile(
+        reliability=QoSReliabilityPolicy.BEST_EFFORT,
+        history=QoSHistoryPolicy.KEEP_LAST,
+        depth=10,
+        durability=QoSDurabilityPolicy.VOLATILE,
+        lifespan=Duration(seconds=0),
+        deadline=Duration(seconds=0),
+        liveliness=QoSLivelinessPolicy.AUTOMATIC,
+        liveliness_lease_duration=Duration(seconds=0)
+    )
+
+    assert get_qos_from_qos_dict(qos) == expected
 
 @pytest.mark.launch(fixture=generate_test_description)
 def test_rosa_kb_lc_states(rosa_kb_node):
