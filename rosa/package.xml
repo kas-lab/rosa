@@ -12,6 +12,7 @@
   <depend>rosa_plan</depend>
   <depend>rosa_execute</depend>
   <depend>rosa_msgs</depend>
+  <depend>rosa_monitor</depend>
   <depend>rosa_task_plan_bt</depend>
   <depend>rosa_task_plan_plansys</depend>
 
