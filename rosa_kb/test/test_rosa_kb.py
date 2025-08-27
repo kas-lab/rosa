@@ -1112,6 +1112,71 @@ def test_create_measure_topic_interface(executor, test_node, rosa_kb_node):
     executor.remove_node(test_node)
     executor.remove_node(rosa_kb_node)
 
+def test_create_measures_interfaces(executor, test_node, rosa_kb_node):
+    executor.add_node(test_node)
+    executor.add_node(rosa_kb_node)
+
+    rosa_kb_node.create_measures_interfaces()
+
+    assert 'qa_test_topic' in rosa_kb_node.measures_subscribers
+
+    from std_msgs.msg import Float64
+    publisher = test_node.create_publisher(
+        Float64,
+        '/subscription',
+        10
+    )
+
+    # Wait for discovery
+    deadline = time.time() + 2.0
+    while time.time() < deadline and publisher.get_subscription_count() == 0:
+        time.sleep(0.02)
+
+    publisher.publish(Float64(data=3.0))
+
+    t_end = time.time() + 1.0
+    while time.time() < t_end:
+        time.sleep(0.1)
+
+    measurement = rosa_kb_node.typedb_interface.get_latest_measurement('qa_test_topic')
+    assert measurement == 3.0
+
+    assert 'qa_test_topic_2' in rosa_kb_node.measures_subscribers
+
+    pub_qos = QoSProfile(
+        reliability=QoSReliabilityPolicy.RELIABLE,
+        history=QoSHistoryPolicy.KEEP_LAST,
+        depth=10,
+        durability=QoSDurabilityPolicy.TRANSIENT_LOCAL,
+        lifespan=_to_duration(2.0),
+        deadline=_to_duration(1.0),
+        liveliness=QoSLivelinessPolicy.MANUAL_BY_TOPIC,
+        liveliness_lease_duration=_to_duration(1.0)
+    )
+
+    publisher2 = test_node.create_publisher(
+        Float64,
+        '/subscription2',
+        pub_qos
+    )
+
+    # Wait for discovery
+    deadline = time.time() + 2.0
+    while time.time() < deadline and publisher2.get_subscription_count() == 0:
+        time.sleep(0.02)
+
+    publisher2.publish(Float64(data=4.5))
+
+    t_end = time.time() + 1.0
+    while time.time() < t_end:
+        time.sleep(0.1)
+
+    measurement = rosa_kb_node.typedb_interface.get_latest_measurement('qa_test_topic_2')
+    assert measurement == 4.5
+
+    executor.remove_node(test_node)
+    executor.remove_node(rosa_kb_node)
+
 
 class MakeTestNode(Node):
 

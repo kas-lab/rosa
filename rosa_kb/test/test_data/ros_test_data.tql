@@ -28,13 +28,13 @@ $qos_test isa QoSProfile,
 	has reliability 'RELIABLE',
 	has history 'KEEP_LAST',
 	has depth 10,
-	has durability 'VOLATILE',
-	has lifespan 0.0,
-	has deadline 0.0,
-	has liveliness 'AUTOMATIC',
-	has lease-duration 0.0;
+	has durability 'TRANSIENT_LOCAL',
+	has lifespan 2.0,
+	has deadline 2.0,
+	has liveliness 'MANUAL_BY_TOPIC',
+	has lease-duration 2.0;
 
 $qa_interface_test2 isa QualityAttribute, has measure-name 'qa_test_topic_2';
 (measure: $qa_interface_test2, qos: $qos_test) isa topic-interface,
-    has measurement-interface-name '/subscription',
+    has measurement-interface-name '/subscription2',
     has measurement-interface-type 'std_msgs/msg/Float64';

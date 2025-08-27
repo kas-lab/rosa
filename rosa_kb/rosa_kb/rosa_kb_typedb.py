@@ -382,6 +382,8 @@ class RosaKB(ROSTypeDBInterface):
             callback_group=self.query_cb_group
         )
 
+        self.create_measures_interfaces()
+
         return config_res
 
     def on_cleanup(self, state: State) -> TransitionCallbackReturn:
@@ -436,6 +438,12 @@ class RosaKB(ROSTypeDBInterface):
             measurement_qos,
             callback_group=self.query_cb_group
         )
+
+    def create_measures_interfaces(self):
+        measures_interfaces = self.typedb_interface.get_measures_inferfaces()
+        for interface in measures_interfaces:
+            if interface.get('type') == 'topic-interface':
+                self.create_measure_topic_interface(interface)
 
     @publish_event(event_type='insert_monitoring_data')
     def update_measurement(
