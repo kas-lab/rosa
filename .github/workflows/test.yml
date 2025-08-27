@@ -25,6 +25,6 @@ jobs:
           required-ros-distributions: humble
       - uses: ros-tooling/action-ros-ci@0.4.3
         with:
-          package-name: rosa_msgs rosa_kb rosa_plan rosa_bringup
+          package-name: rosa_msgs rosa_kb rosa_plan rosa_bringup rosa_monitor
           target-ros2-distro: humble
           vcs-repo-file-url: rosa.repos
