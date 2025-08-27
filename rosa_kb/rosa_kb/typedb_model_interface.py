@@ -1538,11 +1538,6 @@ class ModelInterface(TypeDBInterface):
         """
         Get measures with custom interfaces.
 
-        Returns:
-            A list of dictionaries where each dict contains:
-                - measure-name: str
-                - topic interface fields (str keys)
-                - optionally 'qos': dict with qos attributes
         :return: a list of dictionaries
         """
         query = '''

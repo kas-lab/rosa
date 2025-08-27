@@ -398,6 +398,7 @@ class RosaKB(ROSTypeDBInterface):
     def create_measure_topic_interface(self, topic_interface):
         """
         Create a subscription for a measure topic using details in `topic_interface`.
+
         Expected keys:
         - 'measure-name' (str)
         - 'measurement-interface-name' (str)
