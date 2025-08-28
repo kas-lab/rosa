@@ -20,11 +20,13 @@ from rosa_monitor.utils import _get_tf_buffer_for_node
 from rosa_monitor.utils import _parse_bool
 from rosa_monitor.utils import _parse_float
 
+
 def get_nearest_laser_scan_distance(_, msg):
     return min(
         (r for r in msg.ranges if not math.isinf(r) and not math.isnan(r)),
         default=float('inf')
     )
+
 
 def get_nearest_scan_distance_in_base(
     node,
@@ -34,8 +36,7 @@ def get_nearest_scan_distance_in_base(
     planar: str = "True",
 ) -> float:
     """
-    Compute the nearest valid LaserScan hit distance measured in `target_frame`,
-    given only string parameters (for model-transformation constraints).
+    Compute the nearest valid LaserScan hit distance measured in`target_frame`.
 
     Args:
         node: rclpy Node that owns the TF buffer.
@@ -44,8 +45,11 @@ def get_nearest_scan_distance_in_base(
         timeout_sec: TF lookup timeout, as string (e.g., '0.1').
         planar: 'True'/'False' as string. If True -> sqrt(x^2+y^2); else 3D distance.
 
-    Returns:
+    Returns
+    -------
         Nearest distance in meters (float('inf') if no valid reading or TF unavailable).
+    ---
+
     """
     # Parse string args
     timeout_f = _parse_float(timeout_sec)
@@ -62,11 +66,15 @@ def get_nearest_scan_distance_in_base(
             Duration(seconds=timeout_f),
         ).transform
     except Exception as ex:
-        # Optional: node.get_logger().warn(f"TF lookup failed: {ex}")
+        node.get_logger().warn(f"TF lookup failed: {ex}")
         return float("inf")
 
     # Build homogeneous transform T from quaternion + translation
-    quat = [tf_msg.rotation.x, tf_msg.rotation.y, tf_msg.rotation.z, tf_msg.rotation.w]
+    quat = [
+        tf_msg.rotation.x,
+        tf_msg.rotation.y,
+        tf_msg.rotation.z,
+        tf_msg.rotation.w]
     trans = [tf_msg.translation.x, tf_msg.translation.y, tf_msg.translation.z]
 
     T = tf_transformations.quaternion_matrix(quat)  # 4x4; upper-left is R
@@ -96,7 +104,9 @@ def get_nearest_scan_distance_in_base(
         bx, by, bz, _ = T @ vec
 
         # Planar or full 3D distance in target frame
-        d = math.hypot(bx, by) if planar_b else math.sqrt(bx*bx + by*by + bz*bz)
+        d = math.hypot(
+            bx, by) if planar_b else math.sqrt(
+            bx * bx + by * by + bz * bz)
 
         if d < best:
             best = d
