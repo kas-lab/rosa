@@ -63,7 +63,7 @@ def get_nearest_scan_distance_in_base(
     # Lookup transform at the scan time
     try:
         tf_msg = tf_buffer.lookup_transform(
-            target_frame,
+            target_frame if target_frame != '' else 'base_link',
             scan.header.frame_id,
             scan.header.stamp,
             Duration(seconds=timeout_f),
