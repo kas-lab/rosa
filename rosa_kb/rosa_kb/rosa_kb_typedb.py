@@ -421,7 +421,7 @@ class RosaKB(ROSTypeDBInterface):
                             or 'get_data_field')
 
         function_args_str = topic_interface.get('measurement-function-args')
-        function_args = [arg.strip() for arg in function_args_str.split(',')] if function_args_str else ['data']
+        function_args = [arg.strip() for arg in function_args_str.split(',')] if function_args_str else ['']
 
         function_lib = importlib.import_module(function_lib_name)
         measure_function = getattr(function_lib, function_name)
@@ -430,7 +430,7 @@ class RosaKB(ROSTypeDBInterface):
                 _measure_name=measure_name,
                 _measure_function=measure_function,
                 _function_args=function_args):
-            self.typedb_interface.add_measurement(_measure_name, _measure_function(msg, *_function_args))
+            self.typedb_interface.add_measurement(_measure_name, _measure_function(self, msg, *_function_args))
 
         self.measures_subscribers[measure_name] = self.create_subscription(
             topic_type,

@@ -18,6 +18,7 @@ import launch_ros
 
 from pathlib import Path
 
+import math
 import pytest
 import rclpy
 import time
@@ -42,6 +43,10 @@ from rclpy.qos import QoSLivelinessPolicy
 from rclpy.qos import QoSHistoryPolicy
 from rclpy.qos import QoSProfile
 from rclpy.qos import QoSReliabilityPolicy
+
+from builtin_interfaces.msg import Time
+from geometry_msgs.msg import TransformStamped
+from sensor_msgs.msg import LaserScan
 
 from rosa_msgs.msg import Component
 from rosa_msgs.msg import ComponentConfiguration
@@ -78,6 +83,7 @@ from rosa_kb.rosa_kb_typedb import get_qos_from_qos_dict
 from rosa_kb.rosa_kb_typedb import get_ros_msg_type_from_string
 from rosa_kb.rosa_kb_typedb import _to_duration
 from rosa_kb.rosa_kb_typedb import RosaKB
+
 
 @launch_pytest.fixture
 def generate_test_description():
@@ -1112,6 +1118,65 @@ def test_create_measure_topic_interface(executor, test_node, rosa_kb_node):
     executor.remove_node(test_node)
     executor.remove_node(rosa_kb_node)
 
+
+class DummyTFBuffer:
+    """
+    Minimal stand-in for tf2_ros.Buffer that returns a fixed transform.
+
+    Configure translation and yaw (about Z). Set fail=True to simulate lookup failure.
+    """
+
+    def __init__(self, tx=0.0, ty=0.0, tz=0.0, yaw_rad=0.0, fail=False):
+        self.tx = tx
+        self.ty = ty
+        self.tz = tz
+        self.yaw = yaw_rad
+        self.fail = fail
+
+    def lookup_transform(self, target, source, stamp, timeout):
+        if self.fail:
+            raise RuntimeError("TF lookup failed (simulated)")
+
+        t = TransformStamped()
+        t.header.stamp = stamp
+        t.header.frame_id = target
+        t.child_frame_id = source
+
+        t.transform.translation.x = self.tx
+        t.transform.translation.y = self.ty
+        t.transform.translation.z = self.tz
+
+        # yaw rotation about Z
+        half = 0.5 * self.yaw
+        t.transform.rotation.x = 0.0
+        t.transform.rotation.y = 0.0
+        t.transform.rotation.z = math.sin(half)
+        t.transform.rotation.w = math.cos(half)
+
+        return t
+
+
+# --------------------------
+# Helpers
+# --------------------------
+
+def make_scan(ranges,
+              angle_min=-math.pi/4,
+              angle_inc=math.pi/4,
+              frame_id="laser",
+              rmin=0.0,
+              rmax=100.0,
+              stamp_sec=0):
+    scan = LaserScan()
+    scan.header.frame_id = frame_id
+    scan.header.stamp = Time(sec=stamp_sec)
+    scan.angle_min = angle_min
+    scan.angle_increment = angle_inc
+    scan.range_min = rmin
+    scan.range_max = rmax
+    scan.ranges = list(ranges)
+    return scan
+
 def test_create_measures_interfaces(executor, test_node, rosa_kb_node):
     executor.add_node(test_node)
     executor.add_node(rosa_kb_node)
@@ -1174,7 +1239,6 @@ def test_create_measures_interfaces(executor, test_node, rosa_kb_node):
     measurement = rosa_kb_node.typedb_interface.get_latest_measurement('qa_test_topic_2')
     assert measurement == 4.5
 
-    from sensor_msgs.msg import LaserScan
     publish_laser_scan = test_node.create_publisher(
         LaserScan,
         '/scan',
@@ -1186,7 +1250,10 @@ def test_create_measures_interfaces(executor, test_node, rosa_kb_node):
     while time.time() < deadline and publish_laser_scan.get_subscription_count() == 0:
         time.sleep(0.02)
 
-    publish_laser_scan.publish(LaserScan(ranges=[3.0, 2.3, 1.1, 1.57, 6.6]))
+    rosa_kb_node._nearestscan_tf_buffer = DummyTFBuffer()
+
+    scan = make_scan([3.0, 2.3, 1.1, 1.57, 6.6])
+    publish_laser_scan.publish(scan)
 
     t_end = time.time() + 1.0
     while time.time() < t_end:

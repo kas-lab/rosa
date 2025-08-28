@@ -123,6 +123,59 @@ def test_add_measurement(kb_interface):
     measured_value = kb_interface.get_latest_measurement('ea_measurement')
     assert value == measured_value
 
+@pytest.mark.parametrize(
+    "raw, expected",
+    [
+        (1.32, 1.32),
+        ("1.78", 1.78),
+        ("  1.19  ", 1.19),
+        (42, 42.0),
+        ("44", 44.0),
+        ("-0.5", -0.5),
+        (-1.22323, -1.22323),
+        (0.0, 0.0),
+    ],
+)
+def test_add_measurement_accepts_and_stores_valid_numbers(kb_interface, raw, expected):
+    kb_interface.add_measurement("ea_measurement", raw)
+    measured_value = kb_interface.get_latest_measurement("ea_measurement")
+    assert measured_value == pytest.approx(expected)
+
+@pytest.mark.parametrize(
+    "bad",
+    [
+        float("nan"),
+        "nan",
+        float("inf"),
+        "inf",
+        "-inf",
+    ],
+)
+def test_add_measurement_rejects_nan_inf(kb_interface, bad, caplog):
+    before = kb_interface.get_latest_measurement("ea_measurement")
+    kb_interface.add_measurement("ea_measurement", bad)
+
+    after = kb_interface.get_latest_measurement("ea_measurement")
+    assert after == before  # should not change
+
+@pytest.mark.parametrize(
+    "bad",
+    [
+        "abc",
+        None,
+        {"x": 1},
+        object(),
+        [],
+        "",  # empty string
+    ],
+)
+def test_add_measurement_rejects_unparseable_inputs(kb_interface, bad, caplog):
+    before = kb_interface.get_latest_measurement("ea_measurement")
+    kb_interface.add_measurement("ea_measurement", bad)
+
+    after = kb_interface.get_latest_measurement("ea_measurement")
+    assert after == before
+
 
 def test_select_function_design(kb_interface):
     kb_interface.select_function_design('function2', 'f2_fd1_c2_c3')
@@ -688,8 +741,8 @@ def test_get_measures_inferfaces(kb_interface):
         'measure-name': 'laser_nearest_object',
         'measurement-interface-name': '/scan',
         'measurement-interface-type': 'sensor_msgs/msg/LaserScan',
-        'measurement-function-name': 'get_nearest_laser_scan_distance',
-        'measurement-function-lib': 'rosa_monitor.monitor_functions',
+        'measurement-function-name': 'get_nearest_scan_distance_in_base',
+        'measurement-function-lib': 'rosa_monitor.laser_scan_functions',
         'qos': {
             'reliability' : 'BEST_EFFORT',
             'history': 'KEEP_LAST',
