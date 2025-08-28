@@ -15,7 +15,7 @@ import tf2_ros
 
 
 def _parse_bool(s: str) -> bool:
-    return str(s).strip().lower() in {"1", "true", "yes", "y", "on"}
+    return str(s).strip().lower() in {'1', 'true', 'yes', 'y', 'on'}
 
 
 def _parse_float(s: str) -> float:
@@ -33,7 +33,7 @@ def _get_tf_buffer_for_node(node) -> tf2_ros.Buffer:
     Avoids creating a new listener per call.
     """
     # attribute names chosen to be unlikely to clash
-    if not hasattr(node, "_nearestscan_tf_buffer"):
+    if not hasattr(node, '_nearestscan_tf_buffer'):
         node._nearestscan_tf_buffer = tf2_ros.Buffer()
         node._nearestscan_tf_listener = tf2_ros.TransformListener(
             node._nearestscan_tf_buffer, node, spin_thread=True)

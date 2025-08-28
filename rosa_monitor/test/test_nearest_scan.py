@@ -11,15 +11,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import math
-import pytest
 import logging
+import math
 
 from builtin_interfaces.msg import Time
 from geometry_msgs.msg import TransformStamped
+import pytest
+from rosa_monitor.laser_scan_functions import get_nearest_scan_distance_in_base
 from sensor_msgs.msg import LaserScan
 
-from rosa_monitor.laser_scan_functions import get_nearest_scan_distance_in_base
 
 # --------------------------
 # Minimal Node + Fake TF
@@ -54,7 +54,7 @@ class DummyTFBuffer:
 
     def lookup_transform(self, target, source, stamp, timeout):
         if self.fail:
-            raise RuntimeError("TF lookup failed (simulated)")
+            raise RuntimeError('TF lookup failed (simulated)')
 
         t = TransformStamped()
         t.header.stamp = stamp
@@ -82,7 +82,7 @@ class DummyTFBuffer:
 def make_scan(ranges,
               angle_min=-math.pi / 4,
               angle_inc=math.pi / 4,
-              frame_id="laser",
+              frame_id='laser',
               rmin=0.0,
               rmax=100.0,
               stamp_sec=0):
@@ -108,7 +108,7 @@ def test_identity_transform_planar_min_is_min_range():
     scan = make_scan([3.0, 1.0, 2.0])
 
     d = get_nearest_scan_distance_in_base(
-        node, scan, "base_link", "0.1", "True")
+        node, scan, 'base_link', '0.1', 'True')
     assert pytest.approx(d, 1.0)
 
 
@@ -119,7 +119,7 @@ def test_translation_x_only_planar():
     scan = make_scan([10.0, 1.0, 10.0])
 
     d = get_nearest_scan_distance_in_base(
-        node, scan, "base_link", "0.1", "True")
+        node, scan, 'base_link', '0.1', 'True')
     assert pytest.approx(d, 2.0)
 
 
@@ -130,7 +130,7 @@ def test_rotation_90deg_about_z_planar():
     scan = make_scan([1.0, 1.0, 1.0])
 
     d = get_nearest_scan_distance_in_base(
-        node, scan, "base_link", "0.1", "True")
+        node, scan, 'base_link', '0.1', 'True')
     assert pytest.approx(d, 1.0)
 
 
@@ -145,7 +145,7 @@ def test_invalid_values_are_filtered():
     )
 
     d = get_nearest_scan_distance_in_base(
-        node, scan, "base_link", "0.2", "True")
+        node, scan, 'base_link', '0.2', 'True')
     assert pytest.approx(d, 2.5)
 
 
@@ -155,7 +155,7 @@ def test_no_valid_readings_returns_inf():
     scan = make_scan(ranges=[math.inf, math.nan, 0.05], rmin=0.1, rmax=0.09)
 
     d = get_nearest_scan_distance_in_base(
-        node, scan, "base_link", "0.1", "True")
+        node, scan, 'base_link', '0.1', 'True')
     assert math.isinf(d)
 
 
@@ -165,7 +165,7 @@ def test_tf_lookup_failure_returns_inf():
     scan = make_scan([1.0, 2.0, 3.0])
 
     d = get_nearest_scan_distance_in_base(
-        node, scan, "base_link", "0.1", "True")
+        node, scan, 'base_link', '0.1', 'True')
     assert math.isinf(d)
 
 
@@ -176,11 +176,11 @@ def test_full_3d_distance_changes_with_height():
     scan = make_scan([10.0, 1.0, 10.0])
 
     d3 = get_nearest_scan_distance_in_base(
-        node, scan, "base_link", "0.1", "False")
+        node, scan, 'base_link', '0.1', 'False')
     assert pytest.approx(d3, math.sqrt(1.0**2 + 0.5**2))
 
     dp = get_nearest_scan_distance_in_base(
-        node, scan, "base_link", "0.1", "True")
+        node, scan, 'base_link', '0.1', 'True')
     assert pytest.approx(dp, 1.0)
 
 
@@ -189,7 +189,7 @@ def test_string_parsing_variants_for_planar_true():
     node._nearestscan_tf_buffer = DummyTFBuffer()
     scan = make_scan([2.0, 1.0, 3.0])
 
-    for val in ["true", "TRUE", "1", "Yes", "on", "TrUe"]:
+    for val in ['true', 'TRUE', '1', 'Yes', 'on', 'TrUe']:
         d = get_nearest_scan_distance_in_base(
-            node, scan, "base_link", "0.05", val)
+            node, scan, 'base_link', '0.05', val)
         assert pytest.approx(d, 1.0)

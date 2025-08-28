@@ -12,13 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import math
+
 import numpy as np
+
 from rclpy.duration import Duration
-from sensor_msgs.msg import LaserScan
-import tf_transformations  # provides quaternion_matrix()
 from rosa_monitor.utils import _get_tf_buffer_for_node
 from rosa_monitor.utils import _parse_bool
 from rosa_monitor.utils import _parse_float
+from sensor_msgs.msg import LaserScan
+
+import tf_transformations  # provides quaternion_matrix()
 
 
 def get_nearest_laser_scan_distance(_, msg):
@@ -31,9 +34,9 @@ def get_nearest_laser_scan_distance(_, msg):
 def get_nearest_scan_distance_in_base(
     node,
     scan: LaserScan,
-    target_frame: str = "base_link",
-    timeout_sec: str = "0.1",
-    planar: str = "True",
+    target_frame: str = 'base_link',
+    timeout_sec: str = '0.1',
+    planar: str = 'True',
 ) -> float:
     """
     Compute the nearest valid LaserScan hit distance measured in`target_frame`.
@@ -66,8 +69,8 @@ def get_nearest_scan_distance_in_base(
             Duration(seconds=timeout_f),
         ).transform
     except Exception as ex:
-        node.get_logger().warn(f"TF lookup failed: {ex}")
-        return float("inf")
+        node.get_logger().warn(f'TF lookup failed: {ex}')
+        return float('inf')
 
     # Build homogeneous transform T from quaternion + translation
     quat = [
@@ -85,7 +88,7 @@ def get_nearest_scan_distance_in_base(
     inc = scan.angle_increment
     rmin, rmax = scan.range_min, scan.range_max
 
-    best = float("inf")
+    best = float('inf')
 
     for r in scan.ranges:
         # Filter invalid readings early
