@@ -378,7 +378,7 @@ class ConfigurationExecutor(Node):
                 parameters=res_get_param.parameters)
             res_set_param = self.call_service(
                 set_parameters_atomically_srv, req_set_param)
-            if res_set_param.result.successful is False:
+            if res_set_param is None or res_set_param.result.successful is False:
                 return_value = False
                 self.get_logger().error(
                     f'''Error in parameter adaptation with:
