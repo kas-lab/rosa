@@ -24,9 +24,7 @@ if(BUILD_TESTING)
   # a copyright and license is added to all source files
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
-endif()
 
-if(BUILD_TESTING)
   ament_add_pytest_test(
     nearest_scan_tests
     test/test_nearest_scan.py
