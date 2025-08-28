@@ -15,3 +15,42 @@ $force_data_2 isa ComponentParameter, has parameter-key 'force_data', has parame
 $data_path_2 isa ComponentParameter, has parameter-key 'data_path', has parameter-value '[test_data/test_data.tql]', has parameter-type 'string_array';
 (component:$ros_typedb_2, parameter:$database_name_2, parameter:$force_database_2, parameter:$force_data_2, parameter:$data_path_2) isa component-configuration,
     has component-configuration-name 'ros_typedb_config_2';
+
+$qa_interface_test isa QualityAttribute, has measure-name 'qa_test_topic';
+(measure: $qa_interface_test) isa topic-interface,
+    has measurement-interface-name '/subscription',
+    has measurement-interface-type 'std_msgs/msg/Float64',
+    has measurement-function-name 'get_data_field',
+    has measurement-function-lib 'rosa_monitor.monitor_functions',
+    has measurement-function-args 'data';
+
+$qos_test isa QoSProfile,
+	has reliability 'RELIABLE',
+	has history 'KEEP_LAST',
+	has depth 10,
+	has durability 'TRANSIENT_LOCAL',
+	has lifespan 2.0,
+	has deadline 2.0,
+	has liveliness 'MANUAL_BY_TOPIC',
+	has lease-duration 2.0;
+
+$qa_interface_test2 isa QualityAttribute, has measure-name 'qa_test_topic_2';
+(measure: $qa_interface_test2, qos: $qos_test) isa topic-interface,
+    has measurement-interface-name '/subscription2',
+    has measurement-interface-type 'std_msgs/msg/Float64';
+
+$sensor_qos isa QoSProfile,
+	has reliability 'BEST_EFFORT',
+	has history 'KEEP_LAST',
+	has depth 5,
+	has durability 'VOLATILE',
+	has lifespan 0.0,
+	has deadline 0.0,
+	has liveliness 'SYSTEM_DEFAULT',
+	has lease-duration 0.0;
+$ea_laser_nearest_object isa EnvironmentalAttribute, has measure-name "laser_nearest_object";
+(measure: $ea_laser_nearest_object, qos: $sensor_qos) isa topic-interface,
+    has measurement-interface-name '/scan',
+    has measurement-interface-type 'sensor_msgs/msg/LaserScan',
+    has measurement-function-name 'get_nearest_laser_scan_distance',
+    has measurement-function-lib 'rosa_monitor.monitor_functions';

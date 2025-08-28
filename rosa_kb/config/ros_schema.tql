@@ -11,5 +11,44 @@ ROSNode sub Component,
     owns executable;
 
 LifeCycleNode sub ROSNode;
-   
 
+
+### QoS attributes
+reliability sub attribute,
+    value string,
+    regex "^(BEST_EFFORT|RELIABLE|SYSTEM_DEFAULT)";
+history sub attribute,
+    value string,
+    regex "^(KEEP_LAST|KEEP_ALL|SYSTEM_DEFAULT)";
+depth sub attribute,
+    value long;
+durability sub attribute,
+    value string,
+    regex "^(TRANSIENT_LOCAL|VOLATILE|SYSTEM_DEFAULT)";
+deadline sub attribute,
+    value double;  # 0.0 indicates infinite
+lifespan sub attribute,
+    value double;  # 0.0 indicates infinite
+liveliness sub attribute,
+    value string,
+    regex "^(AUTOMATIC|MANUAL_BY_TOPIC|SYSTEM_DEFAULT)";
+lease-duration sub attribute,
+    value double;  # 0.0 indicates infinite
+
+QoSProfile sub entity,
+    owns reliability,
+    owns history,
+    owns depth,
+    owns durability,
+    owns deadline,
+    owns lifespan,
+    owns liveliness,
+    owns lease-duration,
+    plays topic-interface:qos;
+
+### ROS measurement interfaces
+rate sub attribute,
+    value double;
+
+topic-interface sub measurement-interface,
+    relates qos;

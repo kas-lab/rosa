@@ -13,6 +13,7 @@
 # limitations under the License.
 """ROS wrapper for ROSA's typedb model."""
 import sys
+import importlib
 from datetime import datetime
 
 import rosa_msgs
@@ -57,7 +58,13 @@ from ros_typedb.ros_typedb_interface import set_query_result_value
 import diagnostic_msgs.msg
 from diagnostic_msgs.msg import DiagnosticArray
 
-from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy
+from rclpy.duration import Duration
+
+from rclpy.qos import QoSDurabilityPolicy
+from rclpy.qos import QoSLivelinessPolicy
+from rclpy.qos import QoSHistoryPolicy
+from rclpy.qos import QoSProfile
+from rclpy.qos import QoSReliabilityPolicy
 
 
 def publish_event(event_type: str):
@@ -85,6 +92,85 @@ def check_lc_active(response):
         return inner
     return _check_lc_active
 
+def get_ros_msg_type_from_string(message_type: str):
+    msg_type_list = message_type.split('/')
+    msg_module = importlib.import_module(msg_type_list[0] + "." + msg_type_list[1])
+    return getattr(msg_module, msg_type_list[2])
+
+RELIABILITY_MAP = {
+    "RELIABLE": QoSReliabilityPolicy.RELIABLE,
+    "BEST_EFFORT": QoSReliabilityPolicy.BEST_EFFORT,
+    "SYSTEM_DEFAULT": QoSReliabilityPolicy.SYSTEM_DEFAULT,
+}
+
+HISTORY_MAP = {
+    "KEEP_LAST": QoSHistoryPolicy.KEEP_LAST,
+    "KEEP_ALL": QoSHistoryPolicy.KEEP_ALL,
+    "SYSTEM_DEFAULT": QoSHistoryPolicy.SYSTEM_DEFAULT,
+}
+
+DURABILITY_MAP = {
+    "VOLATILE": QoSDurabilityPolicy.VOLATILE,
+    "TRANSIENT_LOCAL": QoSDurabilityPolicy.TRANSIENT_LOCAL,
+    "SYSTEM_DEFAULT": QoSDurabilityPolicy.SYSTEM_DEFAULT,
+}
+
+LIVELINESS_MAP = {
+    "AUTOMATIC": QoSLivelinessPolicy.AUTOMATIC,
+    "MANUAL_BY_TOPIC": QoSLivelinessPolicy.MANUAL_BY_TOPIC,
+    "SYSTEM_DEFAULT": QoSLivelinessPolicy.SYSTEM_DEFAULT,
+}
+
+def _to_duration(v):
+    # Accept Duration, seconds as int/float, or a dict {"sec": int, "nanosec": int}
+    if isinstance(v, Duration):
+        return v
+    if isinstance(v, (int, float)):
+        secs = int(v)
+        nsec = int(round((v - secs) * 1_000_000_000))
+        return Duration(seconds=secs, nanoseconds=nsec)
+    raise TypeError(f"Unsupported duration value: {v!r}")
+
+def get_qos_from_qos_dict(qos_dict: dict) -> QoSProfile:
+    # depth must be provided when KEEP_LAST; default to 10
+    if qos_dict is None:
+        return QoSProfile(depth=10)
+
+    qos = QoSProfile(depth=int(qos_dict.get("depth", 10)))
+
+    # Policies
+    if 'reliability' in qos_dict:
+        qos.reliability = RELIABILITY_MAP[qos_dict['reliability']]
+    if 'history' in qos_dict:
+        qos.history = HISTORY_MAP[qos_dict['history']]
+    if 'durability' in qos_dict:
+        qos.durability = DURABILITY_MAP[qos_dict['durability']]
+    if 'liveliness' in qos_dict:
+        qos.liveliness = LIVELINESS_MAP[qos_dict['liveliness']]
+
+    # Durations (convert to Duration)
+    if 'lifespan' in qos_dict:
+        qos.lifespan = _to_duration(qos_dict['lifespan'])
+    if 'deadline' in qos_dict:
+        qos.deadline = _to_duration(qos_dict['deadline'])
+
+    # Lease duration (portable across distros)
+    lease_input = None
+    if 'lease_duration' in qos_dict:
+        lease_input = qos_dict['lease_duration']
+    elif 'lease-duration' in qos_dict:
+        lease_input = qos_dict['lease-duration']
+    elif 'liveliness_lease_duration' in qos_dict:
+        lease_input = qos_dict['liveliness_lease_duration']
+
+    if lease_input is not None:
+        d = _to_duration(lease_input)
+        if hasattr(qos, 'lease_duration'):
+            qos.lease_duration = d                # Iron+ or backports
+        else:
+            qos.liveliness_lease_duration = d     # Humble
+
+    return qos
 
 class RosaKB(ROSTypeDBInterface):
     """ROS lifecycle node implementing ROSA's KB."""
@@ -94,6 +180,7 @@ class RosaKB(ROSTypeDBInterface):
         self.active = False
         super().__init__(node_name, **kwargs)
         self.typedb_interface_class = ModelInterface
+        self.measures_subscribers = {}
 
     def on_activate(self, state: State) -> TransitionCallbackReturn:
         self.get_logger().info(self.get_name() + ': on_activate() is called.')
@@ -295,6 +382,8 @@ class RosaKB(ROSTypeDBInterface):
             callback_group=self.query_cb_group
         )
 
+        self.create_measures_interfaces()
+
         return config_res
 
     def on_cleanup(self, state: State) -> TransitionCallbackReturn:
@@ -305,6 +394,57 @@ class RosaKB(ROSTypeDBInterface):
         """
         self.active = False
         return super().on_cleanup(state)
+
+    def create_measure_topic_interface(self, topic_interface):
+        """
+        Create a subscription for a measure topic using details in `topic_interface`.
+
+        Expected keys:
+        - 'measure-name' (str)
+        - 'measurement-interface-name' (str)
+        - 'measurement-interface-type' (str ROS msg type)
+        - optional: 'measurement-function-lib' (str, module path)
+        - optional: 'measurement-function-name' (str, callable name)
+        - optional: 'measurement-function-args' (str, comma-separated args)
+        - optional: 'qos' (dict for QoSProfile construction)
+        """
+        measure_name = topic_interface['measure-name']
+        topic_name = topic_interface['measurement-interface-name']
+        ros_msg_type_str = topic_interface['measurement-interface-type']
+
+        topic_type = get_ros_msg_type_from_string(ros_msg_type_str)
+        measurement_qos = get_qos_from_qos_dict(topic_interface.get('qos', {}))
+
+        function_lib_name = (topic_interface.get('measurement-function-lib')
+                                or 'rosa_monitor.monitor_functions')
+        function_name = (topic_interface.get('measurement-function-name')
+                            or 'get_data_field')
+
+        function_args_str = topic_interface.get('measurement-function-args')
+        function_args = [arg.strip() for arg in function_args_str.split(',')] if function_args_str else ['data']
+
+        function_lib = importlib.import_module(function_lib_name)
+        measure_function = getattr(function_lib, function_name)
+
+        def _cb(msg,
+                _measure_name=measure_name,
+                _measure_function=measure_function,
+                _function_args=function_args):
+            self.typedb_interface.add_measurement(_measure_name, _measure_function(msg, *_function_args))
+
+        self.measures_subscribers[measure_name] = self.create_subscription(
+            topic_type,
+            topic_name,
+            _cb,
+            measurement_qos,
+            callback_group=self.query_cb_group
+        )
+
+    def create_measures_interfaces(self):
+        measures_interfaces = self.typedb_interface.get_measures_inferfaces()
+        for interface in measures_interfaces:
+            if interface.get('type') == 'topic-interface':
+                self.create_measure_topic_interface(interface)
 
     @publish_event(event_type='insert_monitoring_data')
     def update_measurement(

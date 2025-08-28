@@ -20,8 +20,11 @@ from datetime import datetime
 
 from typedb.driver import ConceptMap
 
+from typing import Any
+from typing import Dict
 from typing import Iterator
 from typing import Literal
+from typing import List
 from typing import Tuple
 from typing import TypedDict
 from typing import Optional
@@ -1530,3 +1533,55 @@ class ModelInterface(TypeDBInterface):
             'end-time',
             datetime.now()
         )
+
+    def get_measures_inferfaces(self) -> List[Dict[str, Any]]:
+        """
+        Get measures with custom interfaces.
+
+        :return: a list of dictionaries
+        """
+        query = '''
+            match
+                $measure isa Measure, has $measure-name;
+                $measurement_interface (measure: $measure) isa measurement-interface;
+            fetch
+                $measure-name;
+                $measurement_interface: attribute;
+                qos_sub_query: {
+                    match
+                        $measure_interface (measure: $measure, qos: $qos) isa topic-interface;
+                        $qos isa QoSProfile;
+                    fetch
+                        $qos: attribute;
+                };
+        '''
+
+        result_list_dict = []
+
+        for result in self.fetch_database(query):
+            result_dict = {}
+            measure = result.get('measure-name')
+            if measure:
+                result_dict['measure-name'] = convert_query_type_to_py_type(measure)
+
+            measurement_interface = result.get('measurement_interface') or {}
+            result_dict['type'] = measurement_interface.get('type').get('label')
+            for attribute in measurement_interface.get('attribute'):
+                attribute_label = attribute.get('type').get('label')
+                result_dict[attribute_label] = convert_query_type_to_py_type(attribute)
+
+            qos_list = result.get('qos_sub_query')
+            qos_dict = {}
+            if isinstance(qos_list, list) and qos_list:
+                qos = qos_list[0].get('qos')
+                for attribute in qos.get('attribute'):
+                    attribute_label = attribute.get('type').get('label')
+                    qos_dict[attribute_label] = convert_query_type_to_py_type(attribute)
+
+            if qos_dict:
+                result_dict['qos'] = qos_dict
+
+            if result_dict:
+                result_list_dict.append(result_dict)
+
+        return result_list_dict
