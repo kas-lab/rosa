@@ -18,6 +18,11 @@
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
+  <test_depend>ament_cmake_pytest</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>pytest</test_depend>
+
+  <exec_depend>tf_transformations</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

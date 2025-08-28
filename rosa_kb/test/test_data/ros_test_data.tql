@@ -1,6 +1,6 @@
 insert
 
-$ros_typedb isa LifeCycleNode, has component-name "ros_typedb_test", has package "ros_typedb", has executable "ros_typedb";
+$ros_typedb isa LifeCycleNode, has component-name 'ros_typedb_test', has package 'ros_typedb', has executable 'ros_typedb';
 $database_name isa ComponentParameter, has parameter-key 'database_name', has parameter-value 'ros_typedb_executor', has parameter-type 'string';
 $force_database isa ComponentParameter, has parameter-key 'force_database', has parameter-value 'true', has parameter-type 'boolean';
 $force_data isa ComponentParameter, has parameter-key 'force_data', has parameter-value 'false', has parameter-type 'boolean';
@@ -8,7 +8,7 @@ $data_path isa ComponentParameter, has parameter-key 'data_path', has parameter-
 (component:$ros_typedb, parameter:$database_name, parameter:$force_database, parameter:$force_data, parameter:$data_path) isa component-configuration,
     has component-configuration-name 'ros_typedb_config';
 
-$ros_typedb_2 isa LifeCycleNode, has component-name "ros_typedb_test_2", has package "ros_typedb", has executable "ros_typedb";
+$ros_typedb_2 isa LifeCycleNode, has component-name 'ros_typedb_test_2', has package 'ros_typedb', has executable 'ros_typedb';
 $database_name_2 isa ComponentParameter, has parameter-key 'database_name', has parameter-value 'ros_typedb_executor_2', has parameter-type 'string';
 $force_database_2 isa ComponentParameter, has parameter-key 'force_database', has parameter-value 'false', has parameter-type 'boolean';
 $force_data_2 isa ComponentParameter, has parameter-key 'force_data', has parameter-value 'true', has parameter-type 'boolean';
@@ -48,9 +48,9 @@ $sensor_qos isa QoSProfile,
 	has deadline 0.0,
 	has liveliness 'SYSTEM_DEFAULT',
 	has lease-duration 0.0;
-$ea_laser_nearest_object isa EnvironmentalAttribute, has measure-name "laser_nearest_object";
+$ea_laser_nearest_object isa EnvironmentalAttribute, has measure-name 'laser_nearest_object';
 (measure: $ea_laser_nearest_object, qos: $sensor_qos) isa topic-interface,
     has measurement-interface-name '/scan',
     has measurement-interface-type 'sensor_msgs/msg/LaserScan',
-    has measurement-function-name 'get_nearest_laser_scan_distance',
-    has measurement-function-lib 'rosa_monitor.monitor_functions';
+    has measurement-function-name 'get_nearest_scan_distance_in_base',
+    has measurement-function-lib 'rosa_monitor.laser_scan_functions';

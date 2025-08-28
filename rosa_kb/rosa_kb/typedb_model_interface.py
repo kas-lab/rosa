@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """python interface to interact with typedb's ROSA knowledge model."""
+import math
 
 from ros_typedb.typedb_interface import TypeDBInterface
 from ros_typedb.typedb_interface import convert_query_type_to_py_type
@@ -25,9 +26,10 @@ from typing import Dict
 from typing import Iterator
 from typing import Literal
 from typing import List
+from typing import Optional
 from typing import Tuple
 from typing import TypedDict
-from typing import Optional
+from typing import Union
 
 
 class MatchResultDict(TypedDict):
@@ -633,7 +635,7 @@ class ModelInterface(TypeDBInterface):
             value)
 
     def add_measurement(
-            self, name: str, value: str) -> Iterator[ConceptMap] | None:
+            self, name: str, value: Union[str, float, int]) -> Optional[Iterator[ConceptMap]]:
         """
         Add new Quality Attribute or EnvironmentalAttribute measurement.
 
@@ -645,6 +647,25 @@ class ModelInterface(TypeDBInterface):
         :param value: measured value
         :return: query result
         """
+        if not isinstance(value, (str, float, int)):
+            self.logger.error('Unsupported type %s for Measure %s', type(value), name)
+            return None
+        try:
+            val = float(value)
+        except (ValueError, TypeError):
+            self.logger.error(
+                '[add_measurement] Invalid value: %r for Measure %s. Cannot convert to float!',
+                value, name
+            )
+            return None
+
+        if math.isinf(val) or math.isnan(val):
+            self.logger.info(
+                '[add_measurement] Invalid value: %r for Measure %s',
+                val, name
+            )
+            return None
+
         query = f"""
             match
                 $attr isa Measure, has measure-name "{name}";
