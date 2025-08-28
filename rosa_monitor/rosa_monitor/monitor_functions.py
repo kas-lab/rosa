@@ -11,13 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import math
 
-def get_data_field(msg, field):
-	return getattr(msg, field)
-
-def get_nearest_laser_scan_distance(msg, *args):
-    return min(
-        (r for r in msg.ranges if not math.isinf(r) and not math.isnan(r)),
-        default=float('inf')
-    )
+def get_data_field(_, msg, field=''):
+    if field == '':
+        return getattr(msg, 'data')
+    return getattr(msg, field)
