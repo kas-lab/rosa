@@ -11,18 +11,56 @@ find_package(ament_cmake_python REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclpy REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(diagnostic_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
 find_package(ament_cmake_pytest REQUIRED)
 
+set(ROSA_MONITOR_SOURCES
+  src/rosa_monitor/wifi_monitor.cpp
+)
+
+# specify include directories
+add_library(${PROJECT_NAME} SHARED ${ROSA_MONITOR_SOURCES})
+target_include_directories(${PROJECT_NAME} PUBLIC
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>"
+  "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>")
+target_link_libraries(${PROJECT_NAME}
+  PUBLIC
+  rclcpp::rclcpp
+  ${diagnostic_msgs_TARGETS}
+)
+
+add_executable(wifi_monitor_node src/wifi_monitor_node.cpp)
+target_include_directories(wifi_monitor_node PRIVATE
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+  "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
+)
+target_link_libraries(wifi_monitor_node
+  PRIVATE
+  ${PROJECT_NAME}
+  rclcpp::rclcpp
+)
+
+install(DIRECTORY include/
+  DESTINATION include/${PROJECT_NAME}
+)
+
+install(TARGETS ${PROJECT_NAME}
+  EXPORT export_${PROJECT_NAME}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+
+install(TARGETS
+  wifi_monitor_node
+  RUNTIME DESTINATION lib/${PROJECT_NAME}
+)
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
-  # the following line skips the linter which checks for copyrights
-  # comment the line when a copyright and license is added to all source files
-  set(ament_cmake_copyright_FOUND TRUE)
-  # the following line skips cpplint (only works in a git repo)
-  # comment the line when this package is in a git repo and when
-  # a copyright and license is added to all source files
-  set(ament_cmake_cpplint_FOUND TRUE)
+
   ament_lint_auto_find_test_dependencies()
 
   ament_add_pytest_test(
@@ -33,5 +71,12 @@ endif()
 
 # Install Python modules
 ament_python_install_package(${PROJECT_NAME})
+
+ament_export_include_directories("include/${PROJECT_NAME}")
+ament_export_libraries(${PROJECT_NAME})
+ament_export_targets(export_${PROJECT_NAME})
+ament_export_dependencies(
+  rclcpp
+)
 
 ament_package()
