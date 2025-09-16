@@ -40,6 +40,7 @@ from typing import Dict, List, Optional, Tuple
 import rclpy
 from rclpy.callback_groups import ReentrantCallbackGroup
 from rclpy.executors import Executor
+from rclpy.executors import SingleThreadedExecutor
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
 from rclpy.qos import (
@@ -182,29 +183,28 @@ class TopicStats:
         return self.bytes_total / self.count
 
 
-class TopicAuditNode(Node):
-    """
-    ROS 2 node for auditing topics and endpoints.
+# class TopicAuditNode(Node):
+#     """
+#     ROS 2 node for auditing topics and endpoints.
 
-    Methods:
-        list_topics(): Return all topic names and types.
-        endpoints(topic): Return publishers and subscribers for a topic.
-    """
+#     Methods:
+#         endpoints(topic): Return publishers and subscribers for a topic.
+#     """
 
-    def __init__(self, name: str = 'topic_audit') -> None:
-        """Initialize the audit node."""
-        super().__init__(name)
-        # self.sub_cb_group = MutuallyExclusiveCallbackGroup()
-        self.sub_cb_group = ReentrantCallbackGroup()
+#     def __init__(self, name: str = 'topic_audit') -> None:
+#         """Initialize the audit node."""
+#         super().__init__(name)
+#         # self.sub_cb_group = MutuallyExclusiveCallbackGroup()
+#         # self.sub_cb_group = ReentrantCallbackGroup()
 
-    def endpoints(
-        self, topic: str
-    ) -> Tuple[List[TopicEndpointInfo], List[TopicEndpointInfo]]:
-        """Return publisher and subscriber endpoint info for a topic."""
-        pubs = self.get_publishers_info_by_topic(topic)
-        self.get_logger().info(f'[{topic}] has pubs [{[get_full_node_name(p.node_namespace, p.node_name) for p in pubs]}]')
-        subs = self.get_subscriptions_info_by_topic(topic)
-        return pubs, subs
+#     def endpoints(
+#         self, topic: str
+#     ) -> Tuple[List[TopicEndpointInfo], List[TopicEndpointInfo]]:
+#         """Return publisher and subscriber endpoint info for a topic."""
+#         pubs = self.get_publishers_info_by_topic(topic)
+#         self.get_logger().info(f'[{topic}] has pubs [{[get_full_node_name(p.node_namespace, p.node_name) for p in pubs]}]')
+#         subs = self.get_subscriptions_info_by_topic(topic)
+#         return pubs, subs
 
 
 def choose_subscription_qos(
@@ -240,6 +240,14 @@ def choose_subscription_qos(
         durability=QoSDurabilityPolicy.VOLATILE,
     )
 
+def get_endpoints(
+        node, topic: str
+    ) -> Tuple[List[TopicEndpointInfo], List[TopicEndpointInfo]]:
+        """Return publisher and subscriber endpoint info for a topic."""
+        pubs = node.get_publishers_info_by_topic(topic)
+        node.get_logger().info(f'[{topic}] has pubs [{[get_full_node_name(p.node_namespace, p.node_name) for p in pubs]}]')
+        subs = node.get_subscriptions_info_by_topic(topic)
+        return pubs, subs
 
 def endpoint_summaries(
     infos: List[TopicEndpointInfo],
@@ -265,8 +273,13 @@ def endpoint_summaries(
     return out
 
 
-def discover_topics(node, executor, stable_threshold: int = 3, timeout_s: float = 2.0) -> List[Tuple[str, List[str]]]:
+# def discover_topics(node, executor, stable_threshold: int = 3, timeout_s: float = 2.0) -> List[Tuple[str, List[str]]]:
+def discover_topics(stable_threshold: int = 3, timeout_s: float = 2.0) -> List[Tuple[str, List[str]]]:
     """Spin briefly so ROS graph discovery converges, then return topics."""
+    node = Node('discover_topics_node')
+    executor = SingleThreadedExecutor()
+    executor.add_node(node)
+
     end = time.monotonic() + timeout_s
     last_len = -1
     stable = 0
@@ -284,11 +297,20 @@ def discover_topics(node, executor, stable_threshold: int = 3, timeout_s: float 
             last_len = len(now)
     if not topics:  # fallback if we left by timeout
         topics = node.get_topic_names_and_types(no_demangle=False)
+
+    # Teardown: remove node from executor BEFORE destroying entities.
+    executor.spin_once(timeout_sec=0.0)
+    executor.remove_node(node)
+
+    time.sleep(0.5)
+
+    node.destroy_node()
+
     return topics
 
 def measure_topic(
-    node: TopicAuditNode,
-    executor: Executor,
+    # node: TopicAuditNode,
+    # executor: Executor,
     topic: str,
     type_str: str,
     duration_s: float,
@@ -299,8 +321,6 @@ def measure_topic(
     Subscribe to a topic temporarily and measure statistics.
 
     Args:
-        node: Active TopicAuditNode.
-        executor: Executor for spinning callbacks.
         topic: Topic name.
         type_str: ROS 2 message type as string.
         duration_s: Sampling duration in seconds.
@@ -310,9 +330,11 @@ def measure_topic(
         TopicStats with frequency, bandwidth, and timing statistics.
     """
     stats = TopicStats()
+
+    node = Node('topic_measurement_node')
     try:
         msg_cls = get_message(type_str)
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         node.get_logger().warn(
             f'Cannot resolve type for {topic} ({type_str}): {exc}'
         )
@@ -325,29 +347,49 @@ def measure_topic(
         try:
             payload = serialize_message(msg)
             stats.add(t, len(payload))
-        except Exception:  # noqa: BLE001
+        except Exception:
             stats.add(t, 0)
 
-    sub = node.create_subscription(msg_cls, topic, cb, qos, callback_group=node.sub_cb_group)
+    # Should we use a MutuallyExclusiveCallbackGroup ?
+    meas_group = ReentrantCallbackGroup()
+    sub = node.create_subscription(
+        msg_cls, topic, cb, qos, callback_group=meas_group
+    )
 
-    t_first: Optional[float] = None
-    end_time: Optional[float] = None
-    safety_deadline = time.perf_counter() + max(2.0, duration_s * 2.0)
+    # Private executor so nothing else can touch this wait-set.
+    # Should we use a MultiThreadedExecutor ?
+    mexec = SingleThreadedExecutor()
+    mexec.add_node(node)
 
-    while True:
-        executor.spin_once(timeout_sec=executor_spin_time_out)
-        if stats.count > 0 and t_first is None:
-            t_first = stats.ts[0]
-            end_time = t_first + duration_s
-        now = time.perf_counter()
-        if end_time is not None and now >= end_time:
-            break
-        if now >= safety_deadline:
-            break
+    try:
+        t_first: Optional[float] = None
+        end_time: Optional[float] = None
+        safety_deadline = time.perf_counter() + max(2.0, duration_s * 2.0)
 
-    executor.spin_once(timeout_sec=0.0)
-    node.destroy_subscription(sub)
-    executor.spin_once(timeout_sec=0.0)
+        while True:
+            mexec.spin_once(timeout_sec=executor_spin_time_out)
+
+            if stats.count > 0 and t_first is None:
+                t_first = stats.ts[0]
+                end_time = t_first + duration_s
+
+            now = time.perf_counter()
+            if (end_time is not None and now >= end_time) or now >= safety_deadline:
+                break
+    finally:
+        # Teardown: remove node from executor BEFORE destroying entities.
+        mexec.spin_once(timeout_sec=0.0)
+        mexec.remove_node(node)
+
+        # Tiny guard to ensure any in-flight callback returns to idle.
+        # (SingleThreadedExecutor makes this essentially a no-op.)
+        time.sleep(max(0.5 * executor_spin_time_out, 0.001))
+
+        try:
+            node.destroy_subscription(sub)
+        finally:
+            node.destroy_node()
+
     return stats
 
 
@@ -411,13 +453,14 @@ def main() -> None:
     rclpy.init()
     try:
         start_time = time.monotonic()
-        node = TopicAuditNode()
+        # node = TopicAuditNode()
+        node = Node('topic_audit_node')
         executor = MultiThreadedExecutor()
         executor.add_node(node)
 
         topics = discover_topics(
-            node=node,
-            executor=executor,
+            # node=node,
+            # executor=executor,
             stable_threshold=3,
             timeout_s=args.discovery_timeout
         )
@@ -437,7 +480,8 @@ def main() -> None:
             if exclude_re and exclude_re.search(topic):
                 continue
 
-            pubs, subs = node.endpoints(topic)
+            # pubs, subs = node.endpoints(topic)
+            pubs, subs = get_endpoints(node, topic)
             if args.skip_quiet and len(pubs) == 0:
                 continue
 
@@ -451,8 +495,11 @@ def main() -> None:
             std_period: Optional[float] = None
 
             if pubs:
+                # stats = measure_topic(
+                #     node, executor, topic, type_str, args.duration, pubs, args.spin_timeout
+                # )
                 stats = measure_topic(
-                    node, executor, topic, type_str, args.duration, pubs, args.spin_timeout
+                    topic, type_str, args.duration, pubs, args.spin_timeout
                 )
                 hz = stats.freq_from_samples()
                 avg_sz = stats.avg_size()
