@@ -9,6 +9,8 @@ This is still a work in progress, therefore the repository is unstable.
 
 This package was tested with ROS 2 Humble and TypeDB 2.27.0
 
+**Note for Ubuntu 22.04 (Jammy) users:** If you're using ROS 2 Rolling on Ubuntu 22.04, please see the special rosdep setup instructions below to resolve missing dependency definitions.
+
 ## Installing
 
 [Install ROS 2 Humble](https://docs.ros.org/en/humble/Installation.html)
@@ -39,6 +41,10 @@ Install dependencies:
 ```Bash
 cd ~/rosa_ws/
 source /opt/ros/humble/setup.bash
+
+# For Ubuntu 22.04 (Jammy) with ROS 2 Rolling, setup custom rosdep dependencies first:
+./src/rosa/setup_rosdep.sh
+
 rosdep install --from-paths src --ignore-src -r -y
 ```
 
@@ -47,6 +53,24 @@ Build ROSA:
 cd ~/rosa_ws/
 source /opt/ros/humble/setup.bash
 colcon build --symlink-install
+```
+
+### Troubleshooting Ubuntu 22.04 (Jammy) with ROS 2 Rolling
+
+If you encounter rosdep errors about missing definitions for packages like `behaviortree_cpp`, `popf`, `launch_pytest`, `rclcpp_cascade_lifecycle`, or `tf_transformations`, you can manually add the custom rosdep source:
+
+```Bash
+# Create rosdep sources directory
+mkdir -p ~/.ros/rosdep/sources.list.d/
+
+# Add ROSA custom rosdep definitions
+echo "yaml file://$(pwd)/src/rosa/rosdep.yaml" > ~/.ros/rosdep/sources.list.d/50-rosa.list
+
+# Update rosdep database
+rosdep update
+
+# Now retry the rosdep install
+rosdep install --from-paths src --ignore-src -r -y
 ```
 
 ## Running

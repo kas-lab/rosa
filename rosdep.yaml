@@ -1,0 +1,36 @@
+# Custom rosdep definitions for ROSA dependencies on Ubuntu 22.04 (Jammy)
+# This file provides missing rosdep keys for dependencies not available in the standard rosdep database
+
+behaviortree_cpp:
+  ubuntu:
+    jammy: [ros-rolling-behaviortree-cpp]
+  
+rclcpp_cascade_lifecycle:
+  ubuntu:
+    jammy: [ros-rolling-rclcpp-cascade-lifecycle]
+
+launch_pytest:
+  ubuntu:
+    jammy: [ros-rolling-launch-pytest]
+
+tf_transformations:
+  ubuntu:
+    jammy: [python3-tf-transformations]
+
+popf:
+  ubuntu:
+    jammy: [ros-rolling-popf]
+
+# External dependencies from kas-lab organization
+# These packages need to be built from source as specified in rosa.repos
+ros_pytest:
+  ubuntu:
+    jammy: [python3-pytest]
+
+ros_typedb:
+  ubuntu:
+    jammy: []  # Built from source, no system dependency
+
+ros_typedb_msgs:
+  ubuntu: 
+    jammy: []  # Built from source, no system dependency
