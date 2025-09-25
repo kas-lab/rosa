@@ -45,6 +45,9 @@ source /opt/ros/humble/setup.bash
 # For Ubuntu 22.04 (Jammy) with ROS 2 Rolling, setup custom rosdep dependencies first:
 ./src/rosa/setup_rosdep.sh
 
+# Optional: Validate that the rosdep setup worked correctly
+./src/rosa/validate_rosdep.sh
+
 rosdep install --from-paths src --ignore-src -r -y
 ```
 
@@ -72,6 +75,8 @@ rosdep update
 # Now retry the rosdep install
 rosdep install --from-paths src --ignore-src -r -y
 ```
+
+**Note:** The `rosdep.yaml` file in this repository provides custom definitions for packages that are not available in the standard rosdep database for Ubuntu 22.04 (Jammy). Some dependencies like `ros_typedb` and `ros_typedb_msgs` are built from source as specified in `rosa.repos`, so they don't require system packages.
 
 ## Running
 

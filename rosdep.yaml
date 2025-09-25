@@ -4,6 +4,8 @@
 behaviortree_cpp:
   ubuntu:
     jammy: [ros-rolling-behaviortree-cpp]
+    # Alternative for other distributions if needed
+    # focal: [ros-foxy-behaviortree-cpp]
   
 rclcpp_cascade_lifecycle:
   ubuntu:
@@ -16,6 +18,7 @@ launch_pytest:
 tf_transformations:
   ubuntu:
     jammy: [python3-tf-transformations]
+    # This package is generally available across Ubuntu versions
 
 popf:
   ubuntu:
