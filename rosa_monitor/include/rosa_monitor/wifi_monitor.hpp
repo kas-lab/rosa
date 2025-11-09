@@ -49,8 +49,9 @@ private:
 	void tick();
 
 	// Members
-	rclcpp::Publisher<diagnostic_msgs::msg::DiagnosticArray>::SharedPtr pub_;
-	rclcpp::TimerBase::SharedPtr timer_;
+	rclcpp::Publisher<diagnostic_msgs::msg::DiagnosticArray>::SharedPtr wifi_diagnostics_pub_;
+	rclcpp::TimerBase::SharedPtr wifi_diagnostics_timer_;
+	std::string wifi_diagnostics_topic_{"diagnostics"};
 
 	std::string iface_;
 	int period_ms_;

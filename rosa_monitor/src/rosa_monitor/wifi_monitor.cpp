@@ -16,13 +16,15 @@
 
 namespace rosa_monitor {
 
-	WifiMonitor::WifiMonitor() : rclcpp::Node("wifi_mon")
+	WifiMonitor::WifiMonitor() : rclcpp::Node("wifi_monitor")
 	{
 		iface_     = declare_parameter<std::string>("iface", "wlan0");
 		period_ms_ = declare_parameter<int>("period_ms", 1000);
 		ema_alpha_     = declare_parameter<double>("ema_alpha", 0.2);   // 0..1
 
-		pub_ = create_publisher<diagnostic_msgs::msg::DiagnosticArray>("wifi/status", rclcpp::QoS(1).best_effort());
+		wifi_diagnostics_topic_ = declare_parameter<std::string>("wifi_diagnostics_topic", wifi_diagnostics_topic_);
+
+		wifi_diagnostics_pub_ = create_publisher<diagnostic_msgs::msg::DiagnosticArray>(wifi_diagnostics_topic_, rclcpp::QoS(1).best_effort());
 
 		prev_rx_ = read_uint64(sys_path("rx_bytes"));
 		prev_tx_ = read_uint64(sys_path("tx_bytes"));
@@ -31,7 +33,7 @@ namespace rosa_monitor {
 		ema_rx_bps_.reset();
 		ema_tx_bps_.reset();
 
-		timer_ = create_wall_timer(std::chrono::milliseconds(period_ms_), [this]{ tick(); });
+		wifi_diagnostics_timer_ = create_wall_timer(std::chrono::milliseconds(period_ms_), [this]{ tick(); });
 	}
 
 	std::optional<std::pair<double, double>> WifiMonitor::read_wireless() {
@@ -123,7 +125,7 @@ namespace rosa_monitor {
 		diagnostic_msgs::msg::DiagnosticArray arr;
 		arr.header.stamp = t;
 		arr.status.push_back(std::move(st));
-		pub_->publish(std::move(arr));
+		wifi_diagnostics_pub_->publish(std::move(arr));
   	}
 
 }  // namespace rosa_monitor
