@@ -23,7 +23,6 @@
 #include <rclcpp/rclcpp.hpp>
 #include <diagnostic_msgs/msg/diagnostic_array.hpp>
 
-using std::chrono_literals;
 
 namespace rosa_monitor
 {
