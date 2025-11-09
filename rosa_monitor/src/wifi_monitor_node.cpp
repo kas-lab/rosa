@@ -14,7 +14,8 @@
 
 #include "rosa_monitor/wifi_monitor.hpp"
 
-int main(int argc, char** argv) {
+int main(int argc, char ** argv)
+{
   rclcpp::init(argc, argv);
   rclcpp::spin(std::make_shared<rosa_monitor::WifiMonitor>());
   rclcpp::shutdown();

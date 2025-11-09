@@ -11,56 +11,63 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+#pragma once
 
-#include <rclcpp/rclcpp.hpp>
-#include <diagnostic_msgs/msg/diagnostic_array.hpp>
-#include <fstream>
-#include <string>
 #include <chrono>
 #include <cmath>
 #include <cstdio>
+#include <fstream>
+#include <string>
+#include <utility>
 
-using namespace std::chrono_literals;
+#include <rclcpp/rclcpp.hpp>
+#include <diagnostic_msgs/msg/diagnostic_array.hpp>
 
-namespace rosa_monitor {
+using std::chrono_literals;
 
-uint64_t read_uint64(const std::string &path) {
-    std::ifstream f(path);
-    uint64_t v = 0;
-    if (f) f >> v;
-    return v;
+namespace rosa_monitor
+{
+
+uint64_t read_uint64(const std::string & path)
+{
+  std::ifstream f(path);
+  uint64_t v = 0;
+  if (f) {f >> v;}
+  return v;
 }
 
-class WifiMonitor : public rclcpp::Node {
+class WifiMonitor : public rclcpp::Node
+{
 public:
- 	WifiMonitor();
+  WifiMonitor();
 
 private:
-	inline std::string sys_path(const std::string &name) const {
-		return "/sys/class/net/" + iface_ + "/statistics/" + name;
-	}
+  inline std::string sys_path(const std::string & name) const
+  {
+    return "/sys/class/net/" + iface_ + "/statistics/" + name;
+  }
 
-  	// Returns true on success; fills sig_dbm and link (driver-dependent scale, often 0..70)
-	std::optional<std::pair<double, double>> read_wireless();
+  // Returns true on success; fills sig_dbm and link (driver-dependent scale, often 0..70)
+  std::optional<std::pair<double, double>> read_wireless();
 
-	// One EMA step with lazy initialization
-	double ema_step(const double &sample, const double &alpha, std::optional<double> &state);
+  // One EMA step with lazy initialization
+  double ema_step(const double & sample, const double & alpha, std::optional<double> & state);
 
-	void tick();
+  void tick();
 
-	// Members
-	rclcpp::Publisher<diagnostic_msgs::msg::DiagnosticArray>::SharedPtr wifi_diagnostics_pub_;
-	rclcpp::TimerBase::SharedPtr wifi_diagnostics_timer_;
-	std::string wifi_diagnostics_topic_{"diagnostics"};
+  // Members
+  rclcpp::Publisher<diagnostic_msgs::msg::DiagnosticArray>::SharedPtr wifi_diagnostics_pub_;
+  rclcpp::TimerBase::SharedPtr wifi_diagnostics_timer_;
+  std::string wifi_diagnostics_topic_{"diagnostics"};
 
-	std::string iface_;
-	int period_ms_;
-	rclcpp::Time last_t_;
-	uint64_t prev_rx_{0}, prev_tx_{0};
+  std::string iface_;
+  int period_ms_;
+  rclcpp::Time last_t_;
+  uint64_t prev_rx_{0}, prev_tx_{0};
 
-	double ema_alpha_;
-	std::optional<double> ema_rx_bps_;
-	std::optional<double> ema_tx_bps_;
+  double ema_alpha_;
+  std::optional<double> ema_rx_bps_;
+  std::optional<double> ema_tx_bps_;
 };
 
 }  // namespace rosa_monitor
