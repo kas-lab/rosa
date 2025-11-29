@@ -69,6 +69,8 @@ class ConfigurationExecutor(Node):
         self.active = False
         self.cb_group = MutuallyExclusiveCallbackGroup()
 
+        self.declare_parameter('fake_execution', False)
+
     def on_configure(self, state: State) -> TransitionCallbackReturn:
         self.get_logger().info(self.get_name() + ': on_configure() is called.')
 
@@ -203,6 +205,10 @@ class ConfigurationExecutor(Node):
 
     @check_lc_active
     def perform_reconfiguration_plan(self, reconfig_plan):
+        if self.get_parameter('fake_execution').value is True:
+            self.get_logger().info('Fake execution enabled, skipping reconfiguration.')
+            return True
+
         result_deactivation = self.deactivate_components(
             reconfig_plan.components_deactivate)
         result_activation = self.activate_components(

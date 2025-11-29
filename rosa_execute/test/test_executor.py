@@ -399,6 +399,36 @@ def test_perform_reconfiguration_plan(
 
 @pytest.mark.launch(fixture=generate_test_description)
 @pytest.mark.usefixtures(fixture=tester_node)
+def test_fake_perform_reconfiguration_plan(
+   configuration_executor_node, tester_node):
+    try:
+        tester_node.activate_lc_node(rosa_kb_name)
+
+        component = Component()
+        component.name = 'fake'
+        component.package = 'rosa_execute'
+        component.executable = 'configuration_executor'
+        component.node_type = 'LifeCycleNode'
+
+        config = ComponentConfiguration(name='fake_config')
+
+        reconfig_plan = ReconfigurationPlan()
+        reconfig_plan.components_deactivate = [component]
+        reconfig_plan.components_activate = [component]
+        reconfig_plan.component_configurations = [config]
+
+        configuration_executor_node.set_parameters([rclpy.parameter.Parameter(
+            'fake_execution', rclpy.Parameter.Type.BOOL, True)])
+        result = configuration_executor_node.perform_reconfiguration_plan(
+            reconfig_plan)
+
+        assert result is True
+
+    finally:
+        configuration_executor_node.kill_all_components()
+
+@pytest.mark.launch(fixture=generate_test_description)
+@pytest.mark.usefixtures(fixture=tester_node)
 def test_execute(configuration_executor_node, tester_node):
     try:
         tester_node.activate_lc_node(rosa_kb_name)
@@ -429,7 +459,7 @@ def test_execute(configuration_executor_node, tester_node):
             ParameterValue(type=1, bool_value=True),
             ParameterValue(type=1, bool_value=False),
             ParameterValue(
-                type=9, string_array_value=["test_data/test_data.tql"]),
+                type=9, string_array_value=['test_data/test_data.tql']),
         ]
         assert component_state.current_state.id == 2 and \
             'executor_mock' in active_nodes and \
