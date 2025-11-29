@@ -1,0 +1,6 @@
+rosa\_execute.configuration\_executor.check\_lc\_active
+=======================================================
+
+.. currentmodule:: rosa_execute.configuration_executor
+
+.. autofunction:: check_lc_active
