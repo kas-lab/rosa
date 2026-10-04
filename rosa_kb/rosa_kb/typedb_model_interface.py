@@ -139,7 +139,11 @@ class ModelInterface(TypeDBInterface):
             data_path: Optional[list[str] | str] = None,
             force_database: Optional[bool] = False,
             force_data: Optional[bool] = False,
-            infer: Optional[bool] = False) -> None:
+            infer: Optional[bool] = False,
+            sort_fetch_results: Optional[bool] = False,
+            driver_timeout_s: Optional[float] = 10.0,
+            query_timeout_s: Optional[float] = None,
+            reload_schema: Optional[bool] = True) -> None:
 
         super().__init__(
             address,
