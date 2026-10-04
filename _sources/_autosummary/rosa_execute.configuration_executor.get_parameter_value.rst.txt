@@ -1,0 +1,6 @@
+rosa\_execute.configuration\_executor.get\_parameter\_value
+===========================================================
+
+.. currentmodule:: rosa_execute.configuration_executor
+
+.. autofunction:: get_parameter_value
