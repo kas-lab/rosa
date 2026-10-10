@@ -18,9 +18,14 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.actions import IncludeLaunchDescription
+from launch.actions import RegisterEventHandler
+from launch.actions import Shutdown
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
-from launch_ros.actions import Node
+from launch_ros.actions import LifecycleTransition
+from launch_ros.event_handlers import OnStateTransition
+from launch_ros.events.lifecycle import StateTransition
+from lifecycle_msgs.msg import Transition
 
 
 def generate_launch_description():
@@ -31,7 +36,7 @@ def generate_launch_description():
     force_data = LaunchConfiguration('force_data')
     force_database = LaunchConfiguration('force_database')
     infer = LaunchConfiguration('infer')
-    managed_nodes = LaunchConfiguration('managed_nodes')
+    query_timeout_s = LaunchConfiguration('query_timeout_s')
 
     pkg_rosa_kb = get_package_share_directory(
         'rosa_kb')
@@ -101,13 +106,10 @@ def generate_launch_description():
         description='inference engine'
     )
 
-    default_managed_nodes = "[{0},{1},{2}]".format(
-        'rosa_kb', 'configuration_planner', 'configuration_executor')
-
-    managed_nodes_arg = DeclareLaunchArgument(
-        'managed_nodes',
-        default_value=default_managed_nodes,
-        description='path for KB schema'
+    query_timeout_s_arg = DeclareLaunchArgument(
+        'query_timeout_s',
+        default_value='4.0',
+        description='ROSA TypeDB query timeout in seconds'
     )
 
     rosa_kb = IncludeLaunchDescription(
@@ -120,6 +122,7 @@ def generate_launch_description():
             'force_data': force_data,
             'force_database': force_database,
             'infer': infer,
+            'query_timeout_s': query_timeout_s,
         }.items()
     )
 
@@ -131,14 +134,45 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(rosa_execute_launch_path),
     )
 
-    lc_manager_node = Node(
-        package='rosa_bringup',
-        executable='lifecycle_manager',
-        name='rosa_lc_manager',
-        parameters=[{
-            'managed_nodes': managed_nodes
-        }]
+    lc_transition = LifecycleTransition(
+        lifecycle_node_names=[
+            'rosa_kb',
+            'configuration_planner',
+            'configuration_executor',
+        ],
+        transition_ids=[
+            Transition.TRANSITION_CONFIGURE,
+            Transition.TRANSITION_ACTIVATE,
+        ],
     )
+
+    def lifecycle_error_matcher(node_name):
+        if not node_name.startswith('/'):
+            node_name = f'/{node_name}'
+
+        return lambda event: (
+            isinstance(event, StateTransition) and
+            event.action.node_name == node_name and
+            event.goal_state == 'errorprocessing'
+        )
+
+    lifecycle_error_handlers = [
+        RegisterEventHandler(
+            OnStateTransition(
+                matcher=lifecycle_error_matcher(node_name),
+                entities=[
+                    Shutdown(
+                        reason=f'{node_name} entered errorprocessing',
+                    ),
+                ],
+            )
+        )
+        for node_name in [
+            'rosa_kb',
+            'configuration_planner',
+            'configuration_executor',
+        ]
+    ]
 
     return LaunchDescription([
         schema_path_arg,
@@ -148,9 +182,10 @@ def generate_launch_description():
         force_data_arg,
         force_database_arg,
         infer_arg,
-        managed_nodes_arg,
+        query_timeout_s_arg,
         rosa_kb,
         rosa_plan,
         rosa_execute,
-        lc_manager_node,
+        *lifecycle_error_handlers,
+        lc_transition,
     ])

@@ -14,6 +14,7 @@
 """ROS wrapper for ROSA's typedb model."""
 import sys
 import importlib
+import time
 from datetime import datetime
 
 import rosa_msgs
@@ -91,6 +92,23 @@ def check_lc_active(response):
             return response
         return inner
     return _check_lc_active
+
+
+def log_service_duration(service_name: str):
+    """Log service callback duration (Decorator)."""
+    def _log_service_duration(func):
+        def inner(*args, **kwargs):
+            start_time = time.monotonic()
+            try:
+                return func(*args, **kwargs)
+            finally:
+                elapsed = time.monotonic() - start_time
+                args[0].get_logger().info(
+                    '{} completed in {:.3f} seconds'.format(
+                        service_name, elapsed))
+        return inner
+    return _log_service_duration
+
 
 def get_ros_msg_type_from_string(message_type: str):
     msg_type_list = message_type.split('/')
@@ -517,6 +535,7 @@ class RosaKB(ROSTypeDBInterface):
                 self.update_component_status(diagnostic_status)
 
     @check_lc_active(response=ActionQuery.Response())
+    @log_service_duration('~/action/request')
     @publish_event(event_type='action_update')
     def action_request_cb(
         self,
@@ -759,6 +778,7 @@ class RosaKB(ROSTypeDBInterface):
         return res
 
     @check_lc_active(response=ActionQueryArray.Response())
+    @log_service_duration('~/action/selectable')
     def action_selectable_cb(
         self,
         req: rosa_msgs.srv.ActionQueryArray.Request,
@@ -782,6 +802,7 @@ class RosaKB(ROSTypeDBInterface):
         return res
 
     @check_lc_active(response=AdaptableFunctions.Response())
+    @log_service_duration('~/function/adaptable')
     def function_adaptable_cb(
         self,
         req: rosa_msgs.srv.AdaptableFunctions.Request,
@@ -809,6 +830,7 @@ class RosaKB(ROSTypeDBInterface):
         return res
 
     @check_lc_active(response=AdaptableComponents.Response())
+    @log_service_duration('~/component/adaptable')
     def component_adaptable_cb(
         self,
         req: rosa_msgs.srv.AdaptableComponents.Request,
@@ -839,6 +861,7 @@ class RosaKB(ROSTypeDBInterface):
         return res
 
     @check_lc_active(response=SelectableFunctionDesigns.Response())
+    @log_service_duration('~/function_designs/selectable')
     def selectable_fd_cb(
         self,
         req: rosa_msgs.srv.SelectableFunctionDesigns.Request,
@@ -943,6 +966,7 @@ class RosaKB(ROSTypeDBInterface):
         return res
 
     @check_lc_active(response=SelectedConfigurations.Response())
+    @log_service_duration('~/select_configuration')
     @publish_event(event_type='insert_reconfiguration_plan')
     def select_configuration_cb(
         self,
@@ -1029,6 +1053,7 @@ class RosaKB(ROSTypeDBInterface):
         return reconfig_plan
 
     @check_lc_active(response=ReconfigurationPlanQuery.Response())
+    @log_service_duration('~/reconfiguration_plan/get_latest')
     def get_latest_reconfiguration_plan_cb(
         self,
         req: rosa_msgs.srv.ReconfigurationPlanQuery.Request,

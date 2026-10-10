@@ -4,6 +4,11 @@ from setuptools import find_packages, setup
 
 package_name = 'rosa_plan'
 
+
+def package_files(pattern):
+    return [path for path in glob(pattern) if os.path.isfile(path)]
+
+
 setup(
     name=package_name,
     version='0.0.0',
@@ -13,7 +18,7 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
         (os.path.join('share', package_name, 'launch'),
-            glob('launch/*'))
+            package_files('launch/*'))
     ],
     install_requires=['setuptools'],
     zip_safe=True,
