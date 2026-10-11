@@ -165,7 +165,7 @@ def test_manual_event_cb():
             Query, rosa_kb_name + '/query')
 
         query_req = Query.Request()
-        query_req.query_type = 'fetch'
+        query_req.query_type = Query.Request.FETCH
         query_req.query = '''
             match $rp isa reconfiguration-plan, has start-time $time;
             fetch $time;

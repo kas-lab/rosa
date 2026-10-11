@@ -18,7 +18,7 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
-from launch_ros.actions import Node
+from launch_ros.actions import LifecycleNode
 
 
 def generate_launch_description():
@@ -29,6 +29,7 @@ def generate_launch_description():
     force_data = LaunchConfiguration('force_data')
     force_database = LaunchConfiguration('force_database')
     infer = LaunchConfiguration('infer')
+    query_timeout_s = LaunchConfiguration('query_timeout_s')
 
     pkg_rosa_kb = get_package_share_directory('rosa_kb')
 
@@ -78,10 +79,17 @@ def generate_launch_description():
         description='use inference engine'
     )
 
-    rosa_kb_node = Node(
+    query_timeout_s_arg = DeclareLaunchArgument(
+        'query_timeout_s',
+        default_value='4.0',
+        description='TypeDB query timeout in seconds'
+    )
+
+    rosa_kb_node = LifecycleNode(
         package='rosa_kb',
         executable='rosa_kb',
         name='rosa_kb',
+        namespace='',
         output='screen',
         parameters=[{
             'schema_path': schema_path,
@@ -91,6 +99,7 @@ def generate_launch_description():
             'force_data': force_data,
             'force_database': force_database,
             'infer': infer,
+            'query_timeout_s': query_timeout_s,
         }]
     )
 
@@ -102,5 +111,6 @@ def generate_launch_description():
         force_data_arg,
         force_database_arg,
         infer_arg,
+        query_timeout_s_arg,
         rosa_kb_node,
     ])

@@ -12,13 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 from launch import LaunchDescription
-from launch_ros.actions import Node
+from launch_ros.actions import LifecycleNode
 
 
 def generate_launch_description():
-    configuration_planner_node = Node(
+    configuration_planner_node = LifecycleNode(
         package='rosa_plan',
         executable='configuration_planner_node',
+        name='configuration_planner',
+        namespace='',
+        output='screen',
     )
 
     return LaunchDescription([
