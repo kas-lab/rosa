@@ -1,0 +1,49 @@
+ConfigurationExecutor
+=====================
+
+.. currentmodule:: rosa_execute.configuration_executor
+
+.. autoclass:: ConfigurationExecutor
+  :members:
+  :undoc-members:
+  :special-members: __init__
+
+  
+  .. rubric:: Methods
+
+  .. autosummary::
+  
+     ~ConfigurationExecutor.__init__
+     ~ConfigurationExecutor.activate_components
+     ~ConfigurationExecutor.activate_lc_component
+     ~ConfigurationExecutor.call_service
+     ~ConfigurationExecutor.change_lc_node_state
+     ~ConfigurationExecutor.deactivate_components
+     ~ConfigurationExecutor.deactivate_lc_component
+     ~ConfigurationExecutor.event_cb
+     ~ConfigurationExecutor.execute
+     ~ConfigurationExecutor.get_lc_node_state
+     ~ConfigurationExecutor.kill_all_components
+     ~ConfigurationExecutor.kill_component
+     ~ConfigurationExecutor.kill_component_component_process
+     ~ConfigurationExecutor.on_activate
+     ~ConfigurationExecutor.on_cleanup
+     ~ConfigurationExecutor.on_configure
+     ~ConfigurationExecutor.on_deactivate
+     ~ConfigurationExecutor.on_shutdown
+     ~ConfigurationExecutor.perform_parameter_adaptation
+     ~ConfigurationExecutor.perform_reconfiguration_plan
+     ~ConfigurationExecutor.run_process
+     ~ConfigurationExecutor.set_component_active
+     ~ConfigurationExecutor.start_component
+     ~ConfigurationExecutor.start_ros_launchfile
+     ~ConfigurationExecutor.start_ros_node
+     ~ConfigurationExecutor.update_component_activation_attribute
+  
+
+  
+  .. rubric:: Attributes
+
+  .. autosummary::
+  
+  
