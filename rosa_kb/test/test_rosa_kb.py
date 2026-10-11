@@ -75,6 +75,7 @@ from rosa_msgs.srv import SelectableFunctionDesigns
 from rcl_interfaces.msg import Parameter
 from rcl_interfaces.msg import ParameterValue
 from ros_typedb_msgs.msg import Attribute
+from ros_typedb_msgs.msg import QueryResult
 from ros_typedb_msgs.srv import Query
 
 from rclpy.node import Node
@@ -83,6 +84,16 @@ from rosa_kb.rosa_kb_typedb import get_qos_from_qos_dict
 from rosa_kb.rosa_kb_typedb import get_ros_msg_type_from_string
 from rosa_kb.rosa_kb_typedb import _to_duration
 from rosa_kb.rosa_kb_typedb import RosaKB
+
+
+def query_response_attributes(query_res):
+    """Yield every attribute contained in a ros_typedb Query response."""
+    for result_tree in query_res.results:
+        for result in result_tree.results:
+            if result.type == QueryResult.ATTRIBUTE:
+                yield result.attribute
+            elif result.type == QueryResult.THING:
+                yield from result.thing.attributes
 
 
 @launch_pytest.fixture
@@ -251,7 +262,7 @@ def test_rosa_kb_diagnostics(test_node):
         test_node.diagnostics_pub.publish(diag_msg)
 
         query_req = Query.Request()
-        query_req.query_type = 'fetch'
+        query_req.query_type = Query.Request.FETCH
         query_req.query = """
             match $ea isa Measure,
                 has measure-name "ea_measurement";
@@ -262,12 +273,12 @@ def test_rosa_kb_diagnostics(test_node):
         query_res = test_node.call_service(test_node.query_srv, query_req)
 
         measurement = Attribute(
-            name='measurement',
+            variable_name='measurement',
             label='measurement-value',
             value=ParameterValue(type=3, double_value=1.72))
 
         query_req = Query.Request()
-        query_req.query_type = 'fetch'
+        query_req.query_type = Query.Request.FETCH
         query_req.query = """
             match $c isa Component,
                 has component-name "component1",
@@ -276,12 +287,12 @@ def test_rosa_kb_diagnostics(test_node):
         """
         query_res2 = test_node.call_service(test_node.query_srv, query_req)
         c_status = Attribute(
-            name='c_status',
+            variable_name='c_status',
             label='component-status',
             value=ParameterValue(type=4, string_value='failure'))
 
         query_req = Query.Request()
-        query_req.query_type = 'fetch'
+        query_req.query_type = Query.Request.FETCH
         query_req.query = """
             match $c isa Component,
                 has component-name "component_failure",
@@ -290,25 +301,15 @@ def test_rosa_kb_diagnostics(test_node):
         """
         query_res3 = test_node.call_service(test_node.query_srv, query_req)
         c_status2 = Attribute(
-            name='c_status',
+            variable_name='c_status',
             label='component-status',
             value=ParameterValue(type=4, string_value='feasible'))
 
-        measurement_correct = False
-        for result in query_res.results:
-            if measurement in result.attributes:
-                measurement_correct = True
-                break
-        c_status_correct = False
-        for result in query_res2.results:
-            if c_status in result.attributes:
-                c_status_correct = True
-                break
-        c_status2_correct = False
-        for result in query_res3.results:
-            if c_status2 in result.attributes:
-                c_status2_correct = True
-                break
+        measurement_correct = \
+            measurement in query_response_attributes(query_res)
+        c_status_correct = c_status in query_response_attributes(query_res2)
+        c_status2_correct = \
+            c_status2 in query_response_attributes(query_res3)
 
         assert measurement_correct and c_status_correct and c_status2_correct
     except Exception as exception:
@@ -331,7 +332,7 @@ def test_rosa_kb_action_request(test_node, name, is_required):
     response = test_node.call_service(test_node.action_req_srv, request)
 
     query_req = Query.Request()
-    query_req.query_type = 'fetch'
+    query_req.query_type = Query.Request.FETCH
     query_req.query = f"""
         match $ea isa Action,
             has action-name "{name}",
@@ -340,11 +341,10 @@ def test_rosa_kb_action_request(test_node, name, is_required):
     """
     query_res = test_node.call_service(test_node.query_srv, query_req)
     correct_res = False
-    for result in query_res.results:
-        for r in result.attributes:
-            if r.name == 'action-required' \
-                and r.value.bool_value is is_required:
-                correct_res = True
+    for r in query_response_attributes(query_res):
+        if r.variable_name == 'action-required' \
+            and r.value.bool_value is is_required:
+            correct_res = True
 
     if len(query_res.results) == 0 and is_required is False:
         correct_res = True
@@ -365,7 +365,7 @@ def test_rosa_kb_action_insert(test_node):
     response = test_node.call_service(test_node.insert_srv, request)
 
     query_req = Query.Request()
-    query_req.query_type = 'get_aggregate'
+    query_req.query_type = Query.Request.GET_AGGREGATE
     query_req.query = f"""
         match $action isa Action,
             has action-name "{name}";
@@ -407,7 +407,7 @@ def test_rosa_kb_function_insert(test_node):
     response = test_node.call_service(test_node.insert_srv, request)
 
     query_req = Query.Request()
-    query_req.query_type = 'get_aggregate'
+    query_req.query_type = Query.Request.GET_AGGREGATE
     query_req.query = f"""
         match $function isa Function,
             has function-name "{name}";
@@ -434,7 +434,7 @@ def test_rosa_kb_component_insert(test_node):
     response = test_node.call_service(test_node.insert_srv, request)
 
     query_req = Query.Request()
-    query_req.query_type = 'get_aggregate'
+    query_req.query_type = Query.Request.GET_AGGREGATE
     query_req.query = f"""
         match $component isa LifeCycleNode,
             has component-name "{name}",
@@ -492,7 +492,7 @@ def test_rosa_kb_function_design_insert(test_node):
     response = test_node.call_service(test_node.fd_insert_srv, request)
 
     query_req = Query.Request()
-    query_req.query_type = 'fetch'
+    query_req.query_type = Query.Request.FETCH
     query_req.query = f"""
         match
             $fd (function: $f, required-component: $c)
@@ -507,19 +507,20 @@ def test_rosa_kb_function_design_insert(test_node):
     correct_function = False
     correct_components = False
     correct_priority = False
-    for result in query_res.results:
-        for attr in result.attributes:
-            if attr.name == 'c_name' and attr.value.string_value in c_names:
-                correct_components = True
-            elif attr.name == 'c_name':
-                correct_components = False
+    for attr in query_response_attributes(query_res):
+        if attr.variable_name == 'c_name' \
+            and attr.value.string_value in c_names:
+            correct_components = True
+        elif attr.variable_name == 'c_name':
+            correct_components = False
 
-            if attr.name == 'f_name' \
-                and attr.value.string_value == 'f_function_design_insert_test':
-                correct_function = True
+        if attr.variable_name == 'f_name' \
+            and attr.value.string_value == 'f_function_design_insert_test':
+            correct_function = True
 
-            if attr.name == 'priority' and attr.value.double_value == 1.5:
-                correct_priority = True
+        if attr.variable_name == 'priority' \
+            and attr.value.double_value == 1.5:
+            correct_priority = True
 
     assert response.success is True and correct_function and \
         correct_components and correct_priority
@@ -555,7 +556,7 @@ def test_rosa_kb_functional_requirement_insert(test_node):
     response = test_node.call_service(test_node.fr_insert_srv, request)
 
     query_req = Query.Request()
-    query_req.query_type = 'get_aggregate'
+    query_req.query_type = Query.Request.GET_AGGREGATE
     query_req.query = f"""
         match
             $a has action-name "{a_name}";
@@ -593,7 +594,7 @@ def test_rosa_kb_component_process_insert(test_node):
         test_node.component_process_insert_srv, request)
 
     query_req = Query.Request()
-    query_req.query_type = 'get_aggregate'
+    query_req.query_type = Query.Request.GET_AGGREGATE
     query_req.query = f"""
         match
             $c has component-name "{c_name}";
@@ -686,7 +687,7 @@ def test_rosa_kb_component_process_set_end_active(test_node):
     )
 
     query_req = Query.Request()
-    query_req.query_type = 'get_aggregate'
+    query_req.query_type = Query.Request.GET_AGGREGATE
     query_req.query = f"""
         match
             $c has component-name "{c_name}";
